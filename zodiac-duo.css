@@ -176,7 +176,7 @@
 .zd-grid.zd-grid--row { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; margin-right: calc(-1 * var(--zd-pad)); padding-right: var(--zd-pad);
   -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 40px), transparent); mask-image: linear-gradient(90deg, #000 calc(100% - 40px), transparent); }
 .zd-grid--row::-webkit-scrollbar { display: none; }
-.zd-grid.zd-grid--row .zd-sw { flex: 1 0 78px; }
+.zd-grid.zd-grid--row .zd-sw { flex: 1 0 76px; }
 .zd-body2.is-in { animation: zd-in .32s var(--zd-ease); }
 .zd-body2.is-in-back { animation: zd-in-back .32s var(--zd-ease); }
 @keyframes zd-in { from { opacity: 0; transform: translateX(14px); } to { opacity: 1; transform: none; } }
@@ -199,8 +199,10 @@
 
 /* единый свотч */
 .zd-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 14px 4px; }
-.zd-grid--sign { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px 10px; }
-.zd-grid--sign .zd-sw__l { font-size: 11.5px; letter-spacing: -.01em; }
+.zd-grid--sign { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px 4px; }
+/* длинные названия знаков и пресетов не обрезаются: до двух строк, перенос только по словам */
+.zd-grid--sign .zd-sw__l, .zd-grid--row .zd-sw__l { font-size: 12px; white-space: normal; text-overflow: clip; overflow-wrap: normal; word-break: normal;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-height: 1.2; }
 .zd-grid--sign .zd-sw__ring { width: 56px; height: 56px; }
 .zd-grid--sign .zd-sw__c { width: 48px; height: 48px; }
 .zd-grid--sign .zd-sw__s { display: none; }
@@ -369,6 +371,7 @@
   .zd-nav__n { width: 22px; height: 22px; font-size: 11px; }
   .zd-nav__name { font-size: 12.5px; line-height: 1.2; }
   .zd-nav__full { display: none; }
+  .zd-grid--sign .zd-sw__l { font-size: 11px; }
   .zd-nav__short { display: inline; }
   .zd-nav__val { font-size: 11px; white-space: normal; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; }
   .zd-nav__item.is-active button::before { display: none; }

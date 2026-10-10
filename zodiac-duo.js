@@ -706,7 +706,7 @@
         m.blocks.push({ id: "presets", optional: true, cls: "zd-grid--row", title: t(UI.g.presets), opts: PRESETS.map(function (p) {
           return { id: p.id, label: t(p.name), sw: sw("frame_" + p.s.frame), sel: false, infoTitle: t(p.full), info: self.presetInfo(p),
             pick: function () { self.set(Object.assign({}, p.s, { sign: s.sign })); track("zd_preset", { preset: p.id }); } };
-        }).concat([{ id: "random", label: t(UI.random), iconSw: "dice", sel: false, info: UI.randomInfo, pick: function () { self.tool_random(); } }]) });
+        }).concat([{ id: "random", label: { ru: "Случайно", en: "Random" }[LANG], infoTitle: t(UI.random), iconSw: "dice", sel: false, info: UI.randomInfo, pick: function () { self.tool_random(); } }]) });
         // на мобильном две группы первого шага — вкладками, чтобы в шторке была одна лента
         if (this.isMobile()) { m.tabs = m.blocks; m.blocks = []; }
         else {
