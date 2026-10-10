@@ -72,6 +72,8 @@
     openCode: L("Открыть по коду", "Open by code"), openBtn: L("Открыть", "Open"),
     codeOpened: L("Сборка {n} открыта", "Design {n} opened"),
     codeBad: L("Код не распознан — проверьте символы", "Code not recognised — please check the characters"),
+    codeOld: L("Это код прежней версии конфигуратора — по нему сборку не восстановить. Попросите ссылку из заявки или новый код вида ZD-SAG-XXXX-XXXX.",
+               "This code is from an earlier version and cannot be restored. Ask for the link from the request or a new code like ZD-SAG-XXXX-XXXX."),
     oneMetalDone: L("Металл рамы применён к кругу, медальону и рамке панели", "Frame metal applied to circle, medallion and panel frame"),
     noDownload: L("Скачивание изображения работает на сайте; при открытии файла с диска браузер его блокирует.",
                   "Image download works on the website; browsers block it for files opened from disk."),
@@ -952,7 +954,11 @@
       e.preventDefault();
       var v = inp.value.trim(), st = decodeCode(v);
       if (!st && /zd=/.test(v)) { var mm = /zd=([^&\s]+)/.exec(v); st = mm && parseHashStr(mm[1]); }
-      if (!st) { msg.textContent = t(UI.codeBad); inp.classList.add("is-bad"); return; }
+      if (!st) {
+        // код прежнего формата (до 11.10.2026): 4 символа после знака, сборку не хранил
+        var old = /^ZD[-\s]?[A-Z]{3}[-\s]?[0-9A-Z]{4}$/i.test(v.replace(/\s+/g, " ").trim());
+        msg.textContent = t(old ? UI.codeOld : UI.codeBad); inp.classList.add("is-bad"); return;
+      }
       self.commit(Object.assign(clone(DEFAULT), st), { silent: true });
       self.toast(fmt(t(UI.codeOpened), self.code()));
       track("zd_code_open", { code: self.code() });
