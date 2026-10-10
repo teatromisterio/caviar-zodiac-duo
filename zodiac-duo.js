@@ -591,13 +591,14 @@
     this.work = el("section", { class: "zd-work" });
     this.handle = el("button", { class: "zd-handle", type: "button", "aria-label": "", html: "<span></span>" });
     this.mstep = el("div", { class: "zd-mstep" });
+    this.mstepWrap = el("div", { class: "zd-mstep-wrap" }, [this.mstep]);
     this.mcur = el("div", { class: "zd-mcur" });
     this.head = el("header", { class: "zd-work__head" });
     this.tabsBar = el("div", { class: "zd-tabs2", role: "tablist" });
     this.content = el("div", { class: "zd-content" });
     this.foot = el("div", { class: "zd-work__foot" });
     this.cta = el("div", { class: "zd-cta-bar" });
-    [this.handle, this.mstep, this.mcur, this.head, this.tabsBar, this.content, this.foot, this.cta].forEach(function (n) { self.work.appendChild(n); });
+    [this.handle, this.mstepWrap, this.mcur, this.head, this.tabsBar, this.content, this.foot, this.cta].forEach(function (n) { self.work.appendChild(n); });
 
     r.appendChild(this.stage);
     r.appendChild(this.nav);
@@ -708,6 +709,12 @@
         }).concat([{ id: "random", label: t(UI.random), iconSw: "dice", sel: false, info: UI.randomInfo, pick: function () { self.tool_random(); } }]) });
         // на мобильном две группы первого шага — вкладками, чтобы в шторке была одна лента
         if (this.isMobile()) { m.tabs = m.blocks; m.blocks = []; }
+        else {
+          // карточка знака — под пресетами: «Выбор Caviar» остаётся в первом экране и на планшете
+          m.blocks[0].noCard = true;
+          var curSign = m.blocks[0].opts.filter(function (o) { return o.sel; })[0];
+          if (curSign) m.blocks.push({ id: "signcard", kind: "card", opt: curSign });
+        }
         break;
       case "frame":
         m.blocks.push({ id: "metal", title: t(UI.g.metal), opts: metalOpts("frame", frameSw) });
@@ -1019,6 +1026,7 @@
         depInner.appendChild(this.renderGroup(g, true));
       } else {
         m.blocks.forEach(function (b) {
+          if (b.kind === "card") { depInner.appendChild(self.matCard(b.opt)); return; }
           if (b.kind === "action") {
             depInner.appendChild(el("button", { class: "zd-link", type: "button", onclick: b.act, html: icon("link") + "<span>" + b.label + "</span>" }));
             return;
@@ -1073,7 +1081,7 @@
     this.cta.classList.toggle("is-main", isSum);
     this.cta.appendChild(el("button", { class: "zd-cta" + (isSum ? " zd-cta--big" : ""), type: "button", text: t(UI.order), onclick: function () { self.openForm(); } }));
     this.cta.appendChild(el("div", { class: "zd-cta__cap" }, [
-      el("span", { class: "zd-cta__code", text: isSum ? t(UI.price) + " · " + this.code() : t(UI.build) + " " + this.code() + " · " }),
+      isSum ? el("span", { class: "zd-cta__code", text: t(UI.price) + " · " + this.code() }) : null,
       isSum ? null : el("span", { text: fmt(t(UI.progress), this.progress()) })
     ]));
     // мобильный: на шагах 1–7 вместо второй большой кнопки — тонкая строка «прогресс · Оформить →»
