@@ -69,6 +69,9 @@
     build: L("Сборка", "Your design"),
     copied: L("Ссылка на вашу сборку скопирована", "Link to your design copied"),
     codeCopied: L("Код сборки скопирован", "Design code copied"),
+    openCode: L("Открыть по коду", "Open by code"), openBtn: L("Открыть", "Open"),
+    codeOpened: L("Сборка {n} открыта", "Design {n} opened"),
+    codeBad: L("Код не распознан — проверьте символы", "Code not recognised — please check the characters"),
     oneMetalDone: L("Металл рамы применён к кругу, медальону и рамке панели", "Frame metal applied to circle, medallion and panel frame"),
     noDownload: L("Скачивание изображения работает на сайте; при открытии файла с диска браузер его блокирует.",
                   "Image download works on the website; browsers block it for files opened from disk."),
@@ -434,11 +437,14 @@
     this.build();
     this.renderPhone();
     this.renderUI(false);
+    if (this.openedByCode) { this.visited = { sign: 1, frame: 1, plate: 1, ring: 1, medal: 1, panel: 1, base: 1 }; this.go("summary"); }
     track("zd_open", { sign: this.state.sign });
   }
   var P = Widget.prototype;
 
   P.loadState = function () {
+    var qc = /[?&]code=([^&#]+)/.exec(location.search), fromCode = qc && decodeCode(decodeURIComponent(qc[1]));
+    if (fromCode) { this.openedByCode = true; return Object.assign(clone(DEFAULT), fromCode); }
     var s = clone(DEFAULT), fromHash = parseHash();
     if (fromHash) return Object.assign(s, fromHash);
     try { var saved = JSON.parse(localStorage.getItem(CFG.storageKey)); if (saved) Object.assign(s, saved); } catch (e) { }
@@ -895,6 +901,7 @@
     this.navBuild.innerHTML = "";
     this.navBuild.appendChild(el("div", { class: "zd-nav__bt", text: t(UI.build) }));
     this.navBuild.appendChild(this.codeChip());
+    this.navBuild.appendChild(this.codeOpener());
     this.navBuild.appendChild(el("div", { class: "zd-nav__acts" }, [
       this.actBtn("share", function () { self.tool_share(); }), this.actBtn("download", function () { self.tool_download(); })
     ]));
@@ -930,6 +937,30 @@
   P.actBtn = function (k, fn) {
     return el("button", { class: "zd-act", type: "button", onclick: fn }, [el("span", { class: "zd-act__i", html: icon(k) }), el("span", { text: t(UI.tools[k]) })]);
   };
+  // Поле «Открыть по коду»: менеджер вводит код (или вставляет ссылку) — открывается сборка и её итог
+  P.codeOpener = function () {
+    var self = this, msg = el("div", { class: "zd-open__msg", role: "status" });
+    var inp = el("input", { class: "zd-open__in", type: "text", inputmode: "text", autocomplete: "off", autocapitalize: "characters", spellcheck: "false",
+      placeholder: "ZD-ARI-XXXX-XXXX", "aria-label": t(UI.openCode) });
+    var form = el("form", { class: "zd-open", novalidate: true }, [
+      el("label", { class: "zd-open__l", text: t(UI.openCode) }),
+      el("div", { class: "zd-open__row" }, [inp, el("button", { class: "zd-open__b", type: "submit", text: t(UI.openBtn) })]),
+      msg
+    ]);
+    inp.addEventListener("input", function () { msg.textContent = ""; inp.classList.remove("is-bad"); });
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var v = inp.value.trim(), st = decodeCode(v);
+      if (!st && /zd=/.test(v)) { var mm = /zd=([^&\s]+)/.exec(v); st = mm && parseHashStr(mm[1]); }
+      if (!st) { msg.textContent = t(UI.codeBad); inp.classList.add("is-bad"); return; }
+      self.commit(Object.assign(clone(DEFAULT), st), { silent: true });
+      self.toast(fmt(t(UI.codeOpened), self.code()));
+      track("zd_code_open", { code: self.code() });
+      self.go("summary");
+    });
+    return form;
+  };
+
   P.codeChip = function (big) {
     var self = this;
     return el("div", { class: "zd-code" + (big ? " zd-code--big" : "") }, [
@@ -1209,12 +1240,12 @@
   P.spec = function () {
     return this.specRows().map(function (r) { return [t(UI.steps[r.step]) + " · " + r.label, r.value]; });
   };
-  P.code = function () { return "ZD-" + this.state.sign.slice(0, 3).toUpperCase() + "-" + ("0000" + hash(serialize(this.state))).slice(-4); };
+  P.code = function () { return encodeCode(this.state); };
   P.shareUrl = function () { return location.href.split("#")[0] + "#zd=" + serialize(this.state); };
 
   P.renderSummary = function () {
     var self = this, box = el("div", { class: "zd-summary" });
-    box.appendChild(el("div", { class: "zd-sum__code" }, [this.codeChip(true), el("p", { class: "zd-sum__hint", text: t(UI.codeHint) })]));
+    box.appendChild(el("div", { class: "zd-sum__code" }, [this.codeChip(true), el("p", { class: "zd-sum__hint", text: t(UI.codeHint) }), this.codeOpener()]));
     var list = el("div", { class: "zd-spec" }), rows = this.specRows(), last = null, grp = null;
     rows.forEach(function (r) {
       if (r.step !== last) {
@@ -1626,10 +1657,66 @@
   /* ================================================================== hash state */
   var KEYS = ["sign", "frame", "medal", "medalOn", "plate", "plateColor", "ring", "decor", "enamel", "core", "panel", "panelFrame", "panelFill", "panelEnamel", "panelTex", "panelMetal", "base"];
   function serialize(s) { return KEYS.map(function (k) { var v = s[k]; return v == null ? "" : String(v).replace("#", ""); }).join("."); }
+  /* ================================================================== design code */
+  // Код сборки сам хранит конфигурацию: ZD-<знак>-XXXX-XXXX[-HEX6][-HEX6]
+  // 7 знаков — сборка в смешанной системе счисления (base32 Crockford, без I/L/O/U), 8-й — контрольный.
+  // Свои оттенки эмали (не из готовых) добавляются хвостом HEX.
+  var B32 = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
+  var SIGN_CODE = { aries: "ARI", taurus: "TAU", gemini: "GEM", cancer: "CAN", leo: "LEO", virgo: "VIR", libra: "LIB", scorpio: "SCO", sagittarius: "SAG", capricorn: "CAP", aquarius: "AQU", pisces: "PIS" };
+  var PLATES = ["metal:silver", "metal:gold", "metal:rose", "metal:black"].concat(LEATHERS.reduce(function (a, l) { return a.concat(l.colors.map(function (c) { return l.id + ":" + c[0]; })); }, []));
+  var MIDS = METALS.map(function (m) { return m.id; });
+  var EN = [null].concat(ENAMEL_PRESETS.map(function (p) { return p.hex; })).concat(["custom"]);
+  var FIELDS = [
+    ["frame", MIDS], ["medal", MIDS], ["medalOn", [0, 1]], ["_plate", PLATES], ["ring", MIDS], ["decor", ["metal", "white", "black", "ruby"]],
+    ["enamel", EN], ["core", CORES.map(function (c) { return c.id; })], ["panel", ["clear", "solid", "none"]], ["panelFrame", MIDS],
+    ["panelFill", ["meteorite", "enamel"]], ["panelEnamel", EN], ["panelTex", [1, 2]], ["panelMetal", MIDS], ["base", BASES.map(function (b) { return b.id; })]
+  ];
+  function enIdx(v) { if (v == null) return 0; var i = EN.indexOf(v); return i < 0 ? EN.length - 1 : i; }
+  function encodeCode(s) {
+    var n = 0, tail = [];
+    FIELDS.forEach(function (f) {
+      var k = f[0], list = f[1], i;
+      if (k === "_plate") i = PLATES.indexOf(s.plate + ":" + s.plateColor);
+      else if (k === "enamel" || k === "panelEnamel") { i = enIdx(s[k]); if (EN[i] === "custom") tail.push(s[k].slice(1).toUpperCase()); }
+      else i = list.indexOf(s[k]);
+      n = n * list.length + Math.max(0, i);
+    });
+    var body = "", sum = 0;
+    for (var j = 0; j < 7; j++) { body = B32[n % 32] + body; n = Math.floor(n / 32); }
+    for (var q = 0; q < 7; q++) sum += B32.indexOf(body[q]) * (q + 3);
+    body += B32[sum % 32];
+    return ["ZD", SIGN_CODE[s.sign] || "ARI", body.slice(0, 4), body.slice(4)].concat(tail).join("-");
+  }
+  function decodeCode(raw) {
+    var str = String(raw || "").toUpperCase().replace(/[\s_–—]/g, "-");
+    var m = /ZD-?([A-Z]{3})-?([0-9A-Z]{4})-?([0-9A-Z]{4})((?:-?[0-9A-F]{6}){0,2})/.exec(str);
+    if (!m) return null;
+    var sign = null;
+    for (var k in SIGN_CODE) if (SIGN_CODE[k] === m[1]) sign = k;
+    if (!sign) return null;
+    var body = (m[2] + m[3]).replace(/O/g, "0").replace(/[IL]/g, "1"), sum = 0, n = 0;
+    for (var q = 0; q < 8; q++) if (B32.indexOf(body[q]) < 0) return null;
+    for (q = 0; q < 7; q++) { sum += B32.indexOf(body[q]) * (q + 3); n = n * 32 + B32.indexOf(body[q]); }
+    if (B32[sum % 32] !== body[7]) return null;
+    var tail = (m[4].match(/[0-9A-F]{6}/g) || []).map(function (h) { return "#" + h; });
+    var st = { sign: sign }, vals = [];
+    for (var i = FIELDS.length - 1; i >= 0; i--) { var len = FIELDS[i][1].length; vals[i] = n % len; n = Math.floor(n / len); }
+    if (n !== 0) return null;
+    FIELDS.forEach(function (f, i) {
+      var v = f[1][vals[i]];
+      if (f[0] === "_plate") { var pp = v.split(":"); st.plate = pp[0]; st.plateColor = pp[1]; }
+      else if (v === "custom") st[f[0]] = tail.shift() || null;
+      else st[f[0]] = v;
+    });
+    return st;
+  }
+
   function parseHash() {
     var mt = /[#&]zd=([^&]+)/.exec(location.hash);
-    if (!mt) return null;
-    var parts = decodeURIComponent(mt[1]).split("."), s = {};
+    return mt ? parseHashStr(mt[1]) : null;
+  }
+  function parseHashStr(str) {
+    var parts = decodeURIComponent(str).split("."), s = {};
     if (parts.length !== KEYS.length) return null;
     KEYS.forEach(function (k, i) {
       var v = parts[i];
