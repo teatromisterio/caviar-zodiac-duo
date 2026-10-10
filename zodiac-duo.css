@@ -17,7 +17,7 @@
 
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 55fr) minmax(200px, 15fr) minmax(360px, 30fr);
+  grid-template-columns: minmax(0, 52fr) minmax(240px, 17fr) minmax(360px, 31fr);
   height: clamp(680px, 100vh, 940px);
   background: var(--zd-black);
   color: var(--zd-ink);
@@ -111,7 +111,8 @@
 .zd-nav__n svg { width: 14px; height: 14px; }
 .zd-nav__t { display: flex; flex-direction: column; min-width: 0; }
 .zd-nav__name { font-size: 13.5px; font-weight: 700; color: var(--zd-ink-2); }
-.zd-nav__val { font-size: 12px; color: var(--zd-mute); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.zd-nav__val { font-size: 12px; line-height: 1.3; color: var(--zd-mute); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.zd-nav__short { display: none; }
 .zd-nav__item:not(.is-active):not(.is-done) button { opacity: .62; }
 .zd-nav__item:not(.is-active):not(.is-done) button:hover { opacity: 1; }
 .zd-nav__item.is-done .zd-nav__n { border-color: rgba(168, 153, 116, .55); color: var(--zd-gold-l); }
@@ -128,7 +129,7 @@
 
 .zd-code { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 0 8px; padding: 8px 8px 8px 12px; border-radius: 10px; background: rgba(255, 255, 255, .04); border: 1px solid var(--zd-line); }
 .zd-code__l { grid-column: 1; font-size: 11px; color: var(--zd-mute); }
-.zd-code__v { grid-column: 1; font-weight: 800; letter-spacing: .08em; font-size: 14px; font-variant-numeric: tabular-nums; }
+.zd-code__v { grid-column: 1; font-weight: 800; letter-spacing: .03em; font-size: 13px; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .zd-code__copy { grid-column: 2; grid-row: 1 / span 2; width: 34px; height: 34px; display: grid; place-items: center; border-radius: 8px; color: var(--zd-mute); }
 .zd-code__copy:hover { color: var(--zd-gold-l); background: rgba(255, 255, 255, .05); }
 .zd-code__copy svg { width: 17px; height: 17px; }
@@ -175,10 +176,10 @@
 .zd-tabs2 { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; margin-bottom: 16px; }
 .zd-tabs2::-webkit-scrollbar { display: none; }
 .zd-tabs2--top { margin: 0; padding: 4px var(--zd-pad) 12px; flex: none; }
-.zd-tab2 { flex: 1 1 0; display: flex; flex-direction: column; align-items: flex-start; min-width: 0; padding: 7px 12px; border-radius: 10px;
+.zd-tab2 { flex: 1 1 0; justify-content: flex-start; display: flex; flex-direction: column; align-items: flex-start; min-width: 0; padding: 7px 9px; border-radius: 10px;
   border: 1px solid var(--zd-line); line-height: 1.2; transition: border-color .2s, background .2s; }
 .zd-tab2__t { font-size: 11px; color: var(--zd-mute); }
-.zd-tab2__v { max-width: 100%; font-size: 13px; font-weight: 600; color: var(--zd-ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.zd-tab2__v { max-width: 100%; font-size: 12px; line-height: 1.25; font-weight: 600; color: var(--zd-ink-2); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; word-break: break-word; }
 .zd-tab2:hover { border-color: rgba(168, 153, 116, .45); }
 .zd-tab2.is-active { border-color: var(--zd-gold); background: rgba(168, 153, 116, .13); }
 .zd-tab2.is-active .zd-tab2__v { color: var(--zd-ink); }
@@ -186,7 +187,7 @@
 /* единый свотч */
 .zd-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 14px 4px; }
 .zd-grid--sign { grid-template-columns: repeat(auto-fill, minmax(78px, 1fr)); gap: 12px 2px; }
-.zd-sw { position: relative; display: flex; flex-direction: column; align-items: center; gap: 6px; min-width: 0; padding: 4px 2px; border-radius: 12px; text-align: center; }
+.zd-sw { position: relative; display: flex; flex-direction: column; align-items: center; gap: 6px; min-width: 0; padding: 4px 0; border-radius: 12px; text-align: center; }
 .zd-sw__ring { position: relative; width: 64px; height: 64px; border-radius: 50%; display: grid; place-items: center; border: 2px solid transparent; transition: border-color .2s; }
 .zd-sw__c { width: 56px; height: 56px; border-radius: 50%; background: #222 center / cover no-repeat; display: grid; place-items: center; color: var(--zd-gold-l);
   box-shadow: 0 0 0 1px var(--zd-line), 0 6px 16px rgba(0, 0, 0, .35); transition: transform .2s var(--zd-ease); }
@@ -195,7 +196,7 @@
 .zd-sw__ok { position: absolute; right: -2px; bottom: -2px; width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; background: var(--zd-gold); color: var(--zd-black);
   border: 2px solid var(--zd-panel); opacity: 0; transform: scale(.6); transition: opacity .2s, transform .2s var(--zd-ease); }
 .zd-sw__ok svg { width: 12px; height: 12px; stroke-width: 2.6; }
-.zd-sw__l { max-width: 100%; font-size: 12.5px; line-height: 1.25; color: var(--zd-ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.zd-sw__l { max-width: 100%; font-size: 12px; line-height: 1.25; color: var(--zd-ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .zd-sw__s { font-size: 11px; color: var(--zd-mute); margin-top: -4px; white-space: nowrap; }
 .zd-sw.is-sel .zd-sw__ring { border-color: var(--zd-gold); }
 .zd-sw.is-sel .zd-sw__ok { opacity: 1; transform: none; }
@@ -205,6 +206,15 @@
 .zd-sw.is-off .zd-sw__ring::after { content: ""; position: absolute; left: 50%; top: 4px; bottom: 4px; width: 2px; background: rgba(229, 154, 143, .9); transform: rotate(45deg); border-radius: 2px; }
 .zd-sw.is-off .zd-sw__l { color: var(--zd-mute); text-decoration: line-through; }
 .zd-grid--dots { grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); }
+
+.zd-cta__link { display: none; }
+
+/* карточка выбранного материала (десктоп) */
+.zd-mat { display: flex; gap: 14px; align-items: center; margin-top: 18px; padding: 14px; border-radius: 14px; background: rgba(255, 255, 255, .03); border: 1px solid var(--zd-line);
+  animation: zd-fade .3s ease-out; }
+.zd-mat__img { flex: none; width: 76px; height: 76px; border-radius: 50%; background: #222 center / cover no-repeat; box-shadow: 0 0 0 1px var(--zd-line), 0 8px 22px rgba(0, 0, 0, .4); }
+.zd-mat__t { font-weight: 700; font-size: 14px; color: var(--zd-ink); }
+.zd-mat__d { margin-top: 3px; font-size: 12.5px; line-height: 1.45; color: #CFCAC0; }
 
 /* родительский выбор — карточки */
 .zd-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
@@ -335,7 +345,9 @@
   .zd-nav__item button { grid-template-columns: 1fr; gap: 4px; padding: 7px 8px; }
   .zd-nav__n { width: 22px; height: 22px; font-size: 11px; }
   .zd-nav__name { font-size: 12.5px; line-height: 1.2; }
-  .zd-nav__val { font-size: 11px; white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+  .zd-nav__full { display: none; }
+  .zd-nav__short { display: inline; }
+  .zd-nav__val { font-size: 11px; white-space: normal; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; }
   .zd-nav__item.is-active button::before { display: none; }
   .zd-nav__build { display: none; }
   .zd-work { grid-column: 2; grid-row: 2; border-top: 1px solid var(--zd-line); }
@@ -350,7 +362,7 @@
   .zd-stage { position: absolute; inset: 0; padding: 12px var(--zd-pad) 0; }
   .zd-stage__head { padding-right: 96px; }
   .zd-brand__t { font-size: 18px; }
-  .zd-brand__l { font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .zd-brand__l { display: none; }
   .zd-zoom { position: absolute; left: 0; right: 0; top: 58px; bottom: calc(var(--zd-sheet-h) - 14px); transition: bottom .32s var(--zd-ease); }
   .zd-tools { top: 12px; right: 12px; gap: 6px; }
   .zd-tool { width: 36px; height: 36px; padding: 0; justify-content: center; }
@@ -364,7 +376,8 @@
     border-radius: 18px 18px 0 0; box-shadow: 0 -16px 40px rgba(0, 0, 0, .45); transition: height .32s var(--zd-ease); overflow: hidden; }
   .zd-handle { display: grid; place-items: center; flex: none; height: 22px; touch-action: none; cursor: grab; }
   .zd-handle span { width: 40px; height: 4px; border-radius: 2px; background: rgba(255, 255, 255, .22); }
-  .zd-mstep { display: flex; flex: none; gap: 2px; overflow-x: auto; padding: 0 10px 8px; scrollbar-width: none; touch-action: pan-x; overscroll-behavior-x: contain; }
+  .zd-mstep { display: flex; flex: none; gap: 2px; overflow-x: auto; padding: 0 10px 8px; scrollbar-width: none; touch-action: pan-x; overscroll-behavior-x: contain;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 28px, #000 calc(100% - 28px), transparent); mask-image: linear-gradient(90deg, transparent, #000 28px, #000 calc(100% - 28px), transparent); }
   .zd-mstep::-webkit-scrollbar { display: none; }
   .zd-mstep__b { flex: none; display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px 6px 7px; border-radius: 999px; font-size: 13px; color: var(--zd-mute); white-space: nowrap; }
   .zd-mstep__n { width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; font-size: 11px; font-weight: 700; border: 1px solid var(--zd-line); }
@@ -415,7 +428,18 @@
   .zd-slider { grid-template-columns: 86px 1fr; }
   .zd-hex { display: none; }
 
-  .zd-work__foot { padding: 6px var(--zd-pad); }
+  .zd-work__foot { padding: 6px var(--zd-pad); border-top: 0; }
+  .zd-btn--ghost { width: 40px; padding: 0; justify-content: center; border: 1px solid var(--zd-line); }
+  .zd-btn--ghost .zd-btn__l { display: none; }
+  .zd-btn--next { flex: 1 1 auto; justify-content: center; }
+  .zd-mat { display: none; }
+  /* шаги 1–7: тонкая строка «Сборка · прогресс · Оформить →» вместо второй большой кнопки */
+  .zd-cta-bar:not(.is-main) { display: flex; align-items: center; gap: 10px; padding: 8px var(--zd-pad) calc(8px + env(safe-area-inset-bottom)); }
+  .zd-cta-bar:not(.is-main) .zd-cta { display: none; }
+  .zd-cta-bar:not(.is-main) .zd-cta__cap { margin: 0; flex: 1 1 auto; text-align: left; }
+  .zd-cta-bar:not(.is-main) .zd-cta__code { display: none; }
+  .zd-cta__link { display: inline-flex; align-items: center; gap: 4px; flex: none; color: var(--zd-gold-l); font-size: 13.5px; font-weight: 700; }
+  .zd-cta__link svg { width: 16px; height: 16px; }
   .zd-btn { min-height: 40px; }
   .zd-cta-bar { padding: 8px var(--zd-pad) calc(10px + env(safe-area-inset-bottom)); }
   .zd-cta { padding: 12px 16px; font-size: 13px; }

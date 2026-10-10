@@ -40,7 +40,7 @@
     steps: {
       sign: L("Знак зодиака", "Zodiac sign"), frame: L("Рама", "Frame"), plate: L("Плато", "Back plate"),
       ring: L("Зодиакальный круг", "Zodiac circle"), medal: L("Медальон", "Medallion"),
-      panel: L("Декоративная панель", "Decorative panel"), base: L("Корпус iPhone", "iPhone body"), summary: L("Итог", "Summary")
+      panel: L("Декоративная панель", "Decorative panel"), base: L("Базовый корпус", "Base body"), summary: L("Итог", "Summary")
     },
     short: {
       sign: L("Знак", "Sign"), frame: L("Рама", "Frame"), plate: L("Плато", "Plate"), ring: L("Круг", "Circle"),
@@ -85,7 +85,7 @@
     progress: L("{n} из 7 настроено", "{n} of 7 set"),
     disclaimer: L("Изображение носит иллюстративный характер. Финальный вид изделия согласуется с менеджером.",
                   "The image is for illustration only. The final appearance is agreed with your manager."),
-    enamelDefault: L("Как в эскизе", "As designed"), tune: L("Настроить оттенок", "Fine-tune colour"), tuneHide: L("Скрыть настройку", "Hide fine-tuning"),
+    enamelDefault: L("Бургундия", "Burgundy"), enamelDefaultInfo: L("Оттенок из эскиза Caviar — рекомендация дома.", "The shade from the Caviar sketch — the house recommendation."), tune: L("Настроить оттенок", "Fine-tune colour"), tuneHide: L("Скрыть настройку", "Hide fine-tuning"),
     hue: L("Оттенок", "Hue"), sat: L("Насыщенность", "Saturation"), light: L("Яркость", "Lightness"),
     random: L("Удивите меня", "Surprise me"),
     randomInfo: L("Случайная сборка из допустимых сочетаний. Нажмите ещё раз — будет новая.", "A random design from valid combinations. Tap again for another."),
@@ -183,13 +183,13 @@
   };
 
   var PRESETS = [
-    { id: "midnight", name: L("Полночь", "Midnight"),
+    { id: "midnight", name: L("Полночь", "Midnight"), full: L("Полночь", "Midnight"),
       s: { frame: "black", medal: "black", medalOn: 1, plate: "calf", plateColor: "black", ring: "black", decor: "metal", enamel: null, core: "blacksky", panel: "solid", panelTex: 1, panelMetal: "black", base: "nightsky" } },
-    { id: "imperial", name: L("Имперское золото", "Imperial gold"),
+    { id: "imperial", name: L("Империя", "Imperial"), full: L("Имперское золото", "Imperial gold"),
       s: { frame: "gold", medal: "gold", medalOn: 1, plate: "croc", plateColor: "burgundy", ring: "gold", decor: "white", enamel: null, core: "red", panel: "clear", panelFrame: "gold", panelFill: "enamel", panelEnamel: null, base: "starwhite" } },
-    { id: "moon", name: L("Лунное серебро", "Moon silver"),
+    { id: "moon", name: L("Луна", "Moon"), full: L("Лунное серебро", "Moon silver"),
       s: { frame: "silver", medal: "silver", medalOn: 1, plate: "python", plateColor: "paleblue", ring: "silver", decor: "white", enamel: "#123E8C", core: "bluesky", panel: "clear", panelFrame: "silver", panelFill: "meteorite", base: "nightsky" } },
-    { id: "dawn", name: L("Розовый рассвет", "Rose dawn"),
+    { id: "dawn", name: L("Рассвет", "Dawn"), full: L("Розовый рассвет", "Rose dawn"),
       s: { frame: "rose", medal: "rose", medalOn: 1, plate: "calf", plateColor: "rosepink", ring: "rose", decor: "ruby", enamel: "#A3121F", core: "white", panel: "solid", panelTex: 2, panelMetal: "rose", base: "starwhite" } }
   ];
 
@@ -695,7 +695,7 @@
             pick: function () { self.set({ sign: z.id }); } };
         }) });
         m.blocks.push({ id: "presets", optional: true, title: t(UI.g.presets), opts: PRESETS.map(function (p) {
-          return { id: p.id, label: t(p.name), sw: sw("frame_" + p.s.frame), sel: false, infoTitle: t(p.name), info: self.presetInfo(p),
+          return { id: p.id, label: t(p.name), sw: sw("frame_" + p.s.frame), sel: false, infoTitle: t(p.full), info: self.presetInfo(p),
             pick: function () { self.set(Object.assign({}, p.s, { sign: s.sign })); track("zd_preset", { preset: p.id }); } };
         }).concat([{ id: "random", label: t(UI.random), iconSw: "dice", sel: false, info: UI.randomInfo, pick: function () { self.tool_random(); } }]) });
         // на мобильном две группы первого шага — вкладками, чтобы в шторке была одна лента
@@ -840,7 +840,7 @@
     if (step === "summary") track("zd_summary", {});
     if (this.isMobile()) {
       // шаг круга уже разбит на вкладки и помещается в половину; развёрнутая шторка — для итога
-      if (step === "summary") { if (this.sheet === "half") { this.setSheet("expanded"); this.sheetAuto = true; } }
+      if (false) { /* итог остаётся в половине шторки: превью не сжимается, список листается внутри */ }
       else if (this.sheetAuto && this.sheet === "expanded") { this.setSheet("half"); this.sheetAuto = false; }
       if (opt.fromZone && this.sheet === "collapsed") this.setSheet("half");
     }
@@ -894,7 +894,7 @@
       var li = el("li", { class: "zd-nav__item" + (active ? " is-active" : "") + (done ? " is-done" : "") + (self.hintStep === id ? " is-hint" : ""), "data-step": id }, [
         el("button", { type: "button", "aria-current": active ? "step" : null, onclick: function () { self.go(id); } }, [
           el("span", { class: "zd-nav__n", html: done ? icon("check") : String(i + 1) }),
-          el("span", { class: "zd-nav__t" }, [el("span", { class: "zd-nav__name", text: t(UI.steps[id]) }), el("span", { class: "zd-nav__val", text: self.stepValue(id) })])
+          el("span", { class: "zd-nav__t" }, [el("span", { class: "zd-nav__name" }, [el("span", { class: "zd-nav__full", text: t(UI.steps[id]) }), el("span", { class: "zd-nav__short", text: t(UI.short[id]) })]), el("span", { class: "zd-nav__val", text: self.stepValue(id) })])
         ])
       ]);
       self.navList.appendChild(li);
@@ -903,7 +903,6 @@
     this.navBuild.innerHTML = "";
     this.navBuild.appendChild(el("div", { class: "zd-nav__bt", text: t(UI.build) }));
     this.navBuild.appendChild(this.codeChip());
-    this.navBuild.appendChild(this.codeOpener());
     this.navBuild.appendChild(el("div", { class: "zd-nav__acts" }, [
       this.actBtn("share", function () { self.tool_share(); }), this.actBtn("download", function () { self.tool_download(); })
     ]));
@@ -1053,8 +1052,8 @@
 
     // низ: Назад / Далее
     this.foot.innerHTML = "";
-    if (idx > 0) this.foot.appendChild(el("button", { class: "zd-btn zd-btn--ghost", type: "button", onclick: function () { self.prev(); } },
-      [el("span", { class: "zd-btn__i", html: icon("left") }), el("span", { text: t(UI.back) })]));
+    if (idx > 0) this.foot.appendChild(el("button", { class: "zd-btn zd-btn--ghost", type: "button", "aria-label": t(UI.back), onclick: function () { self.prev(); } },
+      [el("span", { class: "zd-btn__i", html: icon("left") }), el("span", { class: "zd-btn__l", text: t(UI.back) })]));
     var nl = this.nextLabel();
     if (nl) this.foot.appendChild(el("button", { class: "zd-btn zd-btn--next", type: "button", onclick: function () { self.next(); } },
       [el("span", { text: nl }), el("span", { class: "zd-btn__i", html: icon("right") })]));
@@ -1064,7 +1063,13 @@
     var isSum = step === "summary";
     this.cta.classList.toggle("is-main", isSum);
     this.cta.appendChild(el("button", { class: "zd-cta" + (isSum ? " zd-cta--big" : ""), type: "button", text: t(UI.order), onclick: function () { self.openForm(); } }));
-    this.cta.appendChild(el("div", { class: "zd-cta__cap", text: isSum ? t(UI.price) + " · " + this.code() : t(UI.build) + " " + this.code() + " · " + fmt(t(UI.progress), this.progress()) }));
+    this.cta.appendChild(el("div", { class: "zd-cta__cap" }, [
+      el("span", { class: "zd-cta__code", text: isSum ? t(UI.price) + " · " + this.code() : t(UI.build) + " " + this.code() + " · " }),
+      isSum ? null : el("span", { text: fmt(t(UI.progress), this.progress()) })
+    ]));
+    // мобильный: на шагах 1–7 вместо второй большой кнопки — тонкая строка «прогресс · Оформить →»
+    if (!isSum) this.cta.appendChild(el("button", { class: "zd-cta__link", type: "button", onclick: function () { self.openForm(); } },
+      [el("span", { text: { ru: "Оформить", en: "Request" }[LANG] }), el("span", { class: "zd-btn__i", html: icon("right") })]));
   };
 
   // Родительский выбор — крупные карточки
@@ -1093,7 +1098,20 @@
     var row = el("div", { class: "zd-grid" + (g.cls ? " " + g.cls : "") });
     g.opts.forEach(function (o) { row.appendChild(self.renderOpt(o)); });
     box.appendChild(row);
+    // карточка выбранного материала — статично под свотчами (ховер остаётся дополнением)
+    var sel = null;
+    g.opts.forEach(function (o) { if (o.sel) sel = o; });
+    if (sel && sel.info && !g.noCard) box.appendChild(this.matCard(sel));
     return box;
+  };
+  P.matCard = function (o) {
+    var img = el("span", { class: "zd-mat__img" });
+    if (o.sw) img.style.backgroundImage = "url('" + o.sw + "')";
+    if (o.color) img.style.background = o.color;
+    return el("div", { class: "zd-mat" }, [img, el("div", { class: "zd-mat__txt" }, [
+      el("div", { class: "zd-mat__t", text: o.infoTitle || o.label }),
+      el("div", { class: "zd-mat__d", text: t(o.info) })
+    ])]);
   };
 
   // Единый свотч: круг 60 px + подпись в одну строку; выбранный — кольцо, галочка, жирная подпись
@@ -1160,8 +1178,9 @@
     var self = this, field = g.field, cur = this.state[field], hex = cur || g.base, hsl = hexToHsl(hex);
     var box = el("div", { class: "zd-color" });
     var row = el("div", { class: "zd-grid zd-grid--dots" });
-    row.appendChild(this.renderOpt({ id: "default", label: t(UI.enamelDefault), color: g.base, sel: !cur, info: ENAMEL_INFO, pick: function () { var p = {}; p[field] = null; self.set(p); } }));
-    ENAMEL_PRESETS.forEach(function (p) {
+    row.appendChild(this.renderOpt({ id: "default", label: t(UI.enamelDefault), color: g.base, sel: !cur, info: UI.enamelDefaultInfo, infoTitle: t(UI.enamelDefault) + " · Caviar", pick: function () { var p = {}; p[field] = null; self.set(p); } }));
+    // «Бургундия» уже представлена оттенком из эскиза — в списке не дублируем
+    ENAMEL_PRESETS.filter(function (p) { return p.id !== "burgundy"; }).forEach(function (p) {
       row.appendChild(self.renderOpt({ id: p.id, label: t(p.name), color: p.hex, sel: cur === p.hex, pick: function () { var x = {}; x[field] = p.hex; self.set(x); } }));
     });
     box.appendChild(row);
@@ -1393,7 +1412,14 @@
   P.zoomToCanvas = function (z, x, y, smooth) {
     var k = this.phone.offsetWidth / CROP.w;
     var dx = (x - CROP.x - CROP.w / 2) * k, dy = (y - CROP.y - CROP.h / 2) * k;
-    this.zs.z = z; this.zs.ox = -dx * z; this.zs.oy = -dy * z; this.zs.target = { x: x, y: y };
+    // на мобильном центрируем в свободной области над шторкой (если шторка перекрывает сцену)
+    var shift = 0;
+    if (this.isMobile()) {
+      var zb = this.zoomBox.getBoundingClientRect(), top = this.work.getBoundingClientRect().top;
+      var visBottom = Math.min(zb.bottom, top - 8);
+      shift = (zb.top + visBottom) / 2 - (zb.top + zb.bottom) / 2;
+    }
+    this.zs.z = z; this.zs.ox = -dx * z; this.zs.oy = -dy * z + shift; this.zs.target = { x: x, y: y };
     this.clampZoom(); this.applyZoom(smooth);
   };
   P.resetZoom = function (smooth) { this.zs = { z: 1, ox: 0, oy: 0, manual: false }; this.applyZoom(smooth); };
