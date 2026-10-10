@@ -193,7 +193,7 @@
       s: { frame: "rose", medal: "rose", medalOn: 1, plate: "calf", plateColor: "rosepink", ring: "rose", decor: "ruby", enamel: "#A3121F", core: "white", panel: "solid", panelTex: 2, panelMetal: "rose", base: "starwhite" } }
   ];
 
-  var STEP_IDS = ["sign", "frame", "plate", "ring", "medal", "panel", "base", "summary"];
+  var STEP_IDS = ["sign", "base", "frame", "plate", "ring", "medal", "panel", "summary"];
 
   // Зоны телефона в координатах холста PSD: подсветка изменений и навигация кликом по превью
   var ZONES = {
@@ -839,7 +839,7 @@
     this.visited[step] = true;
     if (step === "summary") track("zd_summary", {});
     if (this.isMobile()) {
-      // шаг 4 уже разбит на вкладки и помещается в половину; развёрнутая шторка — для итога
+      // шаг круга уже разбит на вкладки и помещается в половину; развёрнутая шторка — для итога
       if (step === "summary") { if (this.sheet === "half") { this.setSheet("expanded"); this.sheetAuto = true; } }
       else if (this.sheetAuto && this.sheet === "expanded") { this.setSheet("half"); this.sheetAuto = false; }
       if (opt.fromZone && this.sheet === "collapsed") this.setSheet("half");
@@ -1223,6 +1223,7 @@
     function metal(id) { return t(find(METALS, id).full); }
     var sign = find(SIGNS, s.sign);
     R.push({ step: "sign", label: t(UI.g.sign), value: t(sign.name) + " " + sign.sym + "︎" });
+    R.push({ step: "base", label: t(UI.g.color), value: t(find(BASES, s.base).name) });
     R.push({ step: "frame", label: t(UI.g.metal), value: metal(s.frame) });
     R.push({ step: "plate", label: t(UI.g.base), value: s.plate === "metal" ? { ru: "Металл, лучевой гильош · ", en: "Metal, radial guilloché · " }[LANG] + metal(s.plateColor) : t(find(LEATHERS, s.plate).name) + " · " + colorName(s.plate, s.plateColor) });
     R.push({ step: "ring", tab: "metal", label: t(UI.g.metal), value: metal(s.ring) });
@@ -1240,7 +1241,6 @@
       R.push({ step: "panel", tab: "texture", label: t(UI.g.texture), value: t(find(TEXTURES, s.panelTex).name) });
       R.push({ step: "panel", tab: "metal", label: t(UI.g.metal), value: metal(s.panelMetal) });
     }
-    R.push({ step: "base", label: t(UI.g.color), value: t(find(BASES, s.base).name) });
     return R;
   };
   P.spec = function () {
