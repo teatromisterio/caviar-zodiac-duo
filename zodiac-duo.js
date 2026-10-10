@@ -82,7 +82,8 @@
     codeHint: L("Назовите код менеджеру или отправьте ссылку — он откроет вашу сборку в точности.",
                 "Give this code to your manager or send the link — they will open your exact design."),
     order: L("Оформить заявку", "Request this design"),
-    progress: L("{n} из 7 настроено", "{n} of 7 set"),
+    progress: L("{n} из 7 пройдено", "{n} of 7 viewed"),
+    openOther: L("Открыть другую сборку по коду", "Open another design by code"),
     disclaimer: L("Изображение носит иллюстративный характер. Финальный вид изделия согласуется с менеджером.",
                   "The image is for illustration only. The final appearance is agreed with your manager."),
     enamelDefault: L("Бургундия", "Burgundy"), enamelDefaultInfo: L("Оттенок из эскиза Caviar — рекомендация дома.", "The shade from the Caviar sketch — the house recommendation."), tune: L("Настроить оттенок", "Fine-tune colour"), tuneHide: L("Скрыть настройку", "Hide fine-tuning"),
@@ -120,6 +121,10 @@
     ["sagittarius", "Стрелец", "Sagittarius", "♐", "22.11–21.12"], ["capricorn", "Козерог", "Capricorn", "♑", "22.12–19.01"],
     ["aquarius", "Водолей", "Aquarius", "♒", "20.01–18.02"], ["pisces", "Рыбы", "Pisces", "♓", "19.02–20.03"]
   ].map(function (s) { return { id: s[0], name: L(s[1], s[2]), sym: s[3], dates: s[4] }; });
+
+  var EL = { fire: L("Огонь", "Fire"), earth: L("Земля", "Earth"), air: L("Воздух", "Air"), water: L("Вода", "Water") };
+  var ELEMENTS = { aries: EL.fire, taurus: EL.earth, gemini: EL.air, cancer: EL.water, leo: EL.fire, virgo: EL.earth, libra: EL.air,
+    scorpio: EL.water, sagittarius: EL.fire, capricorn: EL.earth, aquarius: EL.air, pisces: EL.water };
 
   var METALS = [
     { id: "silver", name: L("Серебро", "Silver"), full: L("Серебро", "Silver"),
@@ -690,11 +695,14 @@
     switch (step) {
       case "sign":
         m.blocks.push({ id: "sign", title: t(UI.g.sign), cls: "zd-grid--sign", opts: SIGNS.map(function (z) {
+          var elm = ELEMENTS[z.id];
           return { id: z.id, label: t(z.name), sub: z.dates, sw: sw("sign_" + z.id), sel: s.sign === z.id,
-            info: L(t(z.name) + " · " + z.dates, t(z.name) + " · " + z.dates), infoTitle: z.sym + "︎ " + t(z.name),
+            cardSw: sw("const_" + z.id), cardTitle: t(z.name) + " · " + t(elm), cardSub: z.dates,
+            info: L("Созвездие знака выложено бриллиантами в центре круга, на медальоне — барельеф знака.", "The constellation is set with diamonds in the centre of the circle; the medallion carries a bas-relief of the sign."),
+            infoTitle: t(z.name) + " · " + z.dates,
             pick: function () { self.set({ sign: z.id }); } };
         }) });
-        m.blocks.push({ id: "presets", optional: true, title: t(UI.g.presets), opts: PRESETS.map(function (p) {
+        m.blocks.push({ id: "presets", optional: true, cls: "zd-grid--row", title: t(UI.g.presets), opts: PRESETS.map(function (p) {
           return { id: p.id, label: t(p.name), sw: sw("frame_" + p.s.frame), sel: false, infoTitle: t(p.full), info: self.presetInfo(p),
             pick: function () { self.set(Object.assign({}, p.s, { sign: s.sign })); track("zd_preset", { preset: p.id }); } };
         }).concat([{ id: "random", label: t(UI.random), iconSw: "dice", sel: false, info: UI.randomInfo, pick: function () { self.tool_random(); } }]) });
@@ -1042,6 +1050,7 @@
     this.content.innerHTML = "";
     this.content.appendChild(body);
     this.content.scrollTop = keepScroll;
+    this.checkMore();
     // в горизонтальных лентах выбранный вариант всегда в поле зрения
     if (this.isMobile()) body.querySelectorAll(".zd-grid, .zd-cards, .zd-tabs2").forEach(function (row) {
       var sel = row.querySelector(".is-sel, .is-active");
@@ -1070,6 +1079,18 @@
     // мобильный: на шагах 1–7 вместо второй большой кнопки — тонкая строка «прогресс · Оформить →»
     if (!isSum) this.cta.appendChild(el("button", { class: "zd-cta__link", type: "button", onclick: function () { self.openForm(); } },
       [el("span", { text: { ru: "Оформить", en: "Request" }[LANG] }), el("span", { class: "zd-btn__i", html: icon("right") })]));
+  };
+
+  // Затухание над кнопками, если ниже в шаге есть ещё контент
+  P.checkMore = function () {
+    var c = this.content, self = this;
+    if (!this._moreBound) {
+      this._moreBound = true;
+      c.addEventListener("scroll", function () { self.checkMore(); }, { passive: true });
+      if (window.ResizeObserver) new ResizeObserver(function () { self.checkMore(); }).observe(c);
+    }
+    var upd = function () { c.classList.toggle("has-more", c.scrollHeight - c.scrollTop - c.clientHeight > 6); };
+    upd(); setTimeout(upd, 120); // повтор — после загрузки картинок и анимации входа
   };
 
   // Родительский выбор — крупные карточки
@@ -1106,10 +1127,11 @@
   };
   P.matCard = function (o) {
     var img = el("span", { class: "zd-mat__img" });
-    if (o.sw) img.style.backgroundImage = "url('" + o.sw + "')";
+    if (o.cardSw || o.sw) img.style.backgroundImage = "url('" + (o.cardSw || o.sw) + "')";
     if (o.color) img.style.background = o.color;
     return el("div", { class: "zd-mat" }, [img, el("div", { class: "zd-mat__txt" }, [
-      el("div", { class: "zd-mat__t", text: o.infoTitle || o.label }),
+      el("div", { class: "zd-mat__t", text: o.cardTitle || o.infoTitle || o.label }),
+      o.cardSub ? el("div", { class: "zd-mat__s", text: o.cardSub }) : null,
       el("div", { class: "zd-mat__d", text: t(o.info) })
     ])]);
   };
@@ -1270,7 +1292,7 @@
 
   P.renderSummary = function () {
     var self = this, box = el("div", { class: "zd-summary" });
-    box.appendChild(el("div", { class: "zd-sum__code" }, [this.codeChip(true), el("p", { class: "zd-sum__hint", text: t(UI.codeHint) }), this.codeOpener()]));
+    box.appendChild(el("div", { class: "zd-sum__code" }, [this.codeChip(true), el("p", { class: "zd-sum__hint", text: t(UI.codeHint) })]));
     var list = el("div", { class: "zd-spec" }), rows = this.specRows(), last = null, grp = null;
     rows.forEach(function (r) {
       if (r.step !== last) {
@@ -1288,6 +1310,9 @@
       this.actBtn("share", function () { self.tool_share(); }), this.actBtn("download", function () { self.tool_download(); })
     ]));
     box.appendChild(el("p", { class: "zd-disc", text: t(UI.disclaimer) }));
+    // инструмент менеджера — свёрнут в самом низу итога
+    var det = el("details", { class: "zd-other" }, [el("summary", { text: t(UI.openOther) }), this.codeOpener()]);
+    box.appendChild(det);
     return box;
   };
 
