@@ -327,6 +327,96 @@
     this.ctx.putImageData(this.out, 0, 0);
   };
 
+  /* ================================================================== starfield */
+  // Звёздное небо: звёзды рождаются у краёв сцены и медленно плывут к телефону, уменьшаясь и угасая —
+  // телефон словно парит в глубине. Плюс неподвижный дальний слой с мерцанием.
+  function Sky(canvas, center) {
+    var self = this;
+    this.c = canvas; this.ctx = canvas.getContext("2d"); this.center = center;
+    this.stars = []; this.far = []; this.running = false; this.visible = true; this.last = 0;
+    // спрайт звезды: мягкое ядро с ореолом
+    var sp = document.createElement("canvas"); sp.width = sp.height = 64;
+    var g = sp.getContext("2d"), gr = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+    gr.addColorStop(0, "rgba(255,250,238,1)"); gr.addColorStop(0.12, "rgba(255,246,226,0.9)");
+    gr.addColorStop(0.35, "rgba(236,222,186,0.22)"); gr.addColorStop(1, "rgba(236,222,186,0)");
+    g.fillStyle = gr; g.fillRect(0, 0, 64, 64);
+    this.sprite = sp;
+    this.resize();
+    if (window.ResizeObserver) new ResizeObserver(function () { self.resize(); }).observe(canvas.parentNode);
+    else window.addEventListener("resize", function () { self.resize(); });
+    document.addEventListener("visibilitychange", function () { self.toggle(); });
+    if (window.IntersectionObserver) new IntersectionObserver(function (e) { self.visible = e[0].isIntersecting; self.toggle(); }).observe(canvas);
+    this.toggle();
+  }
+  Sky.prototype.resize = function () {
+    var r = this.c.parentNode.getBoundingClientRect(), dpr = Math.min(2, window.devicePixelRatio || 1);
+    this.w = r.width; this.h = r.height; this.dpr = dpr;
+    this.c.width = Math.round(r.width * dpr); this.c.height = Math.round(r.height * dpr);
+    var n = Math.round(Math.max(70, Math.min(230, r.width * r.height / 5200)));
+    this.stars = [];
+    for (var i = 0; i < n; i++) this.stars.push(this.spawn(Math.random()));
+    this.far = [];
+    for (var j = 0; j < Math.round(n * 0.45); j++) this.far.push({ x: Math.random(), y: Math.random(), s: 0.35 + Math.random() * 0.55, a: 0.12 + Math.random() * 0.3, f: 0.2 + Math.random() * 0.6, ph: Math.random() * 6.28 });
+    if (REDUCED || !this.running) this.draw(0);
+  };
+  Sky.prototype.spawn = function (progress) {
+    var near = Math.random();
+    return {
+      th: Math.random() * Math.PI * 2,
+      out: 1.02 + Math.random() * 0.14,                     // старт чуть за краем сцены
+      inn: 0.42 + Math.random() * 0.3,                       // финиш у силуэта телефона
+      T: (17 + Math.random() * 15) * (1.25 - near * 0.5),     // 13–40 с на путь: медленно
+      t: progress,                                           // 0..1 — доля пути
+      s: 0.6 + near * 1.7,                                   // ближние крупнее
+      a: 0.45 + near * 0.55,
+      tw: 0.6 + Math.random() * 1.4, ph: Math.random() * 6.28
+    };
+  };
+  Sky.prototype.toggle = function () {
+    var on = this.visible && !document.hidden && !REDUCED;
+    if (on && !this.running) { this.running = true; this.last = 0; var self = this; requestAnimationFrame(function f(ts) { if (!self.running) return; self.frame(ts); requestAnimationFrame(f); }); }
+    else if (!on) this.running = false;
+  };
+  Sky.prototype.frame = function (ts) {
+    var dt = this.last ? Math.min(0.05, (ts - this.last) / 1000) : 0;
+    this.last = ts;
+    for (var i = 0; i < this.stars.length; i++) {
+      var st = this.stars[i];
+      st.t += dt / st.T;
+      if (st.t >= 1) this.stars[i] = this.spawn(0);
+    }
+    this.draw(ts / 1000);
+  };
+  function smooth(a, b, x) { x = Math.max(0, Math.min(1, (x - a) / (b - a))); return x * x * (3 - 2 * x); }
+  Sky.prototype.draw = function (time) {
+    var ctx = this.ctx, dpr = this.dpr, w = this.w, h = this.h, c = this.center();
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, w, h);
+    ctx.globalCompositeOperation = "lighter";
+    var sp = this.sprite;
+    // дальний слой — неподвижный, медленно мерцает
+    for (var j = 0; j < this.far.length; j++) {
+      var f = this.far[j], fa = f.a * (0.65 + 0.35 * Math.sin(time * f.f + f.ph)), fs = f.s * 4;
+      ctx.globalAlpha = fa;
+      ctx.drawImage(sp, f.x * w - fs / 2, f.y * h - fs / 2, fs, fs);
+    }
+    // путь от края к телефону по эллипсу сцены
+    var RX = Math.max(c.x, w - c.x) * 1.05, RY = Math.max(c.y, h - c.y) * 1.05, ex = c.pw / 2, ey = c.ph / 2;
+    for (var i = 0; i < this.stars.length; i++) {
+      var s = this.stars[i], p = s.t, e = Math.pow(p, 1.35);
+      var cos = Math.cos(s.th), sin = Math.sin(s.th);
+      var rx = RX * s.out + (ex * s.inn - RX * s.out) * e, ry = RY * s.out + (ey * s.inn - RY * s.out) * e;
+      var x = c.x + cos * rx, y = c.y + sin * ry;
+      var a = s.a * smooth(0, 0.14, p) * (1 - smooth(0.62, 0.96, p)) * (0.82 + 0.18 * Math.sin(time * s.tw + s.ph));
+      if (a <= 0.004) continue;
+      var size = s.s * (1 - 0.55 * p) * 4.2;
+      ctx.globalAlpha = a;
+      ctx.drawImage(sp, x - size / 2, y - size / 2, size, size);
+    }
+    ctx.globalAlpha = 1;
+    ctx.globalCompositeOperation = "source-over";
+  };
+
   /* ================================================================== widget */
   function Widget(root) {
     this.root = root;
@@ -395,8 +485,9 @@
     return this.imgCache[u];
   };
 
+  // Возвращает Promise: все изменённые слои появились на сцене (подсветка стартует вместе с проявлением)
   P.renderPhone = function () {
-    var self = this;
+    var self = this, jobs = [];
     this.layers().forEach(function (spec, idx) {
       var slot = spec[0], key = spec[1], color = spec[2] || null;
       var cur = self.slots[slot] || (self.slots[slot] = { key: undefined, color: undefined, node: null });
@@ -407,7 +498,7 @@
       cur.key = key; cur.color = color;
       var token = (cur.token = (cur.token || 0) + 1);
       if (!key) { self.swapNode(cur, null); return; }
-      self.loadImg(key).then(function (img) {
+      jobs.push(self.loadImg(key).then(function (img) {
         if (cur.token !== token) return;
         var node;
         if (color) {
@@ -416,8 +507,9 @@
           node = rc.canvas;
         } else { node = img.cloneNode(); node.alt = ""; }
         self.swapNode(cur, node, key, idx);
-      }).catch(function () { /* нет ассета — слой пропускаем */ });
+      }).catch(function () { /* нет ассета — слой пропускаем */ }));
     });
+    return Promise.all(jobs);
   };
 
   P.swapNode = function (slot, node, key, z) {
@@ -441,7 +533,7 @@
     if (old && old !== node) {
       if (!REDUCED) {
         if (!node) old.style.opacity = "0";
-        setTimeout(function () { if (old.parentNode && old !== slot.node) old.remove(); }, 320);
+        setTimeout(function () { if (old.parentNode && old !== slot.node) old.remove(); }, 620);
       } else old.remove();
     }
   };
@@ -457,7 +549,10 @@
     this.layersBox = el("div", { class: "zd-layers" });
     this.fx = el("div", { class: "zd-fx", "aria-hidden": "true" });
     this.phone = el("div", { class: "zd-phone", role: "img", "aria-label": "Zodiac Duo" }, [this.layersBox, this.fx]);
-    this.zoomBox = el("div", { class: "zd-zoom" }, [this.phone]);
+    this.halo = el("div", { class: "zd-halo", "aria-hidden": "true" });
+    this.zoomBox = el("div", { class: "zd-zoom" }, [this.halo, this.phone]);
+    this.skyCanvas = el("canvas", { class: "zd-sky", "aria-hidden": "true" });
+    this.stage.appendChild(this.skyCanvas);
     this.stage.appendChild(el("div", { class: "zd-stage__head" }, [
       el("div", { class: "zd-brand" }, [el("span", { class: "zd-brand__t", text: t(UI.title) }), el("span", { class: "zd-brand__l", text: t(UI.lead) })])
     ]));
@@ -515,6 +610,11 @@
     else window.addEventListener("resize", function () { self.fit(); });
     window.addEventListener("resize", function () { self.pickResolution(); });
     this.pickResolution(true);
+    var zb = this.zoomBox, stage = this.stage, ph = this.phone;
+    this.sky = new Sky(this.skyCanvas, function () {
+      var sr = stage.getBoundingClientRect(), r = zb.getBoundingClientRect();
+      return { x: r.left - sr.left + r.width / 2, y: r.top - sr.top + r.height / 2, pw: ph.offsetWidth, ph: ph.offsetHeight };
+    });
   };
 
   P.toolBtn = function (k, fn) {
@@ -531,6 +631,8 @@
     if (!(sc > 0)) return;
     this.phone.style.width = Math.round(CROP.w * sc) + "px";
     this.phone.style.height = Math.round(CROP.h * sc) + "px";
+    this.halo.style.width = Math.round(CROP.w * sc * 1.7) + "px";
+    this.halo.style.height = Math.round(CROP.h * sc * 1.38) + "px";
     if (this.zs && this.zs.z > 1 && this.zs.target) this.zoomToCanvas(this.zs.z, this.zs.target.x, this.zs.target.y, false);
   };
 
@@ -561,8 +663,8 @@
     if (!opt.fromHash && location.hash.indexOf("zd=") > -1) history.replaceState(null, "", location.pathname + location.search);
     if (next.sign !== prev.sign) track("zd_sign_select", { sign: next.sign });
     else track("zd_option_change", { step: this.step });
-    this.renderPhone();
-    this.flashChanges(prev, next);
+    var self = this;
+    this.renderPhone().then(function () { self.flashChanges(prev, next); });
     this.renderUI(false);
   };
 
@@ -1147,13 +1249,17 @@
     return n;
   };
   // Короткая подсветка зоны, которая изменилась (0,6 с)
+  // Мягкое свечение зоны + световой блик, проходящий по ней (≈1,4 с, только opacity/transform)
   P.flash = function (zones) {
     if (REDUCED) return;
     var self = this;
     zones.forEach(function (z) {
-      var n = self.zoneEl(z, "zd-flash");
-      self.fx.appendChild(n);
-      setTimeout(function () { n.remove(); }, 700);
+      var glow = self.zoneEl(z, "zd-flash");
+      var sweep = self.zoneEl(z, "zd-sweep");
+      sweep.appendChild(el("i"));
+      self.fx.appendChild(glow);
+      self.fx.appendChild(sweep);
+      setTimeout(function () { glow.remove(); sweep.remove(); }, 1600);
     });
   };
   P.flashChanges = function (a, b) {

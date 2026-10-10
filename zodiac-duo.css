@@ -47,7 +47,16 @@
 
 /* ================= превью */
 .zd-stage { position: relative; z-index: 0; display: flex; flex-direction: column; min-height: 0; padding: var(--zd-pad); overflow: hidden;
-  background: radial-gradient(60% 50% at 50% 52%, #1A212C 0%, var(--zd-black) 70%); }
+  background: radial-gradient(70% 60% at 50% 52%, #121822 0%, #0B0F15 62%, #080B10 100%); }
+/* звёздное небо за телефоном */
+.zd-sky { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+.zd-stage__head, .zd-zoom { z-index: 1; }
+/* лёгкий ореол за телефоном — размытая окружность, едва уловимая, медленно «дышит» */
+.zd-halo { position: absolute; left: 50%; top: 50%; z-index: -1; border-radius: 50%; pointer-events: none;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(closest-side, rgba(214, 198, 158, .2), rgba(214, 198, 158, .085) 50%, rgba(120, 140, 190, .03) 70%, transparent 100%);
+  filter: blur(26px); animation: zd-breathe 9s ease-in-out infinite; }
+@keyframes zd-breathe { 0%, 100% { opacity: .7; transform: translate(-50%, -50%) scale(.97); } 50% { opacity: 1; transform: translate(-50%, -50%) scale(1.03); } }
 .zd-stage__head { position: relative; z-index: 3; padding-right: 260px; }
 .zd-brand { display: flex; flex-direction: column; gap: 2px; }
 .zd-brand__t { font-weight: 800; font-size: 28px; letter-spacing: .06em; text-transform: uppercase; }
@@ -62,10 +71,17 @@
   background: radial-gradient(50% 50% at 50% 50%, rgba(0, 0, 0, .75), transparent 70%); filter: blur(8px); }
 .zd-layers, .zd-fx { position: absolute; inset: 0; }
 .zd-fx { z-index: 50; pointer-events: none; }
-.zd-layer { position: absolute; display: block; max-width: none; user-select: none; -webkit-user-drag: none; pointer-events: none; transition: opacity .28s var(--zd-ease); }
-.zd-flash { position: absolute; border: 2px solid rgba(236, 222, 186, .95); box-shadow: 0 0 22px 2px rgba(201, 188, 152, .65), inset 0 0 22px rgba(201, 188, 152, .35);
-  animation: zd-flash .6s var(--zd-ease) forwards; }
-@keyframes zd-flash { 0% { opacity: 0; transform: scale(1.025); } 30% { opacity: 1; } 100% { opacity: 0; transform: scale(1); } }
+.zd-layer { position: absolute; display: block; max-width: none; user-select: none; -webkit-user-drag: none; pointer-events: none; transition: opacity .55s cubic-bezier(.4, 0, .2, 1); }
+/* подсветка изменения: мягкое свечение контура + блик, проходящий по зоне */
+.zd-flash { position: absolute; border: 1px solid rgba(255, 242, 212, .38);
+  box-shadow: 0 0 34px 6px rgba(214, 196, 150, .22), inset 0 0 30px rgba(255, 240, 205, .16);
+  opacity: 0; animation: zd-glow 1.4s cubic-bezier(.4, 0, .2, 1) forwards; }
+@keyframes zd-glow { 0% { opacity: 0; } 32% { opacity: 1; } 100% { opacity: 0; } }
+.zd-sweep { position: absolute; overflow: hidden; }
+.zd-sweep i { position: absolute; top: -20%; bottom: -20%; left: 0; width: 45%; transform: translateX(-130%) skewX(-18deg);
+  background: linear-gradient(90deg, rgba(255, 246, 225, 0), rgba(255, 246, 225, .26) 50%, rgba(255, 246, 225, 0));
+  mix-blend-mode: screen; animation: zd-sweep 1.35s cubic-bezier(.45, 0, .25, 1) .08s forwards; }
+@keyframes zd-sweep { from { transform: translateX(-130%) skewX(-18deg); } to { transform: translateX(330%) skewX(-18deg); } }
 .zd-hover { position: absolute; border: 1.5px dashed rgba(201, 188, 152, .75); background: rgba(201, 188, 152, .06); animation: zd-fade .18s ease-out; }
 @keyframes zd-fade { from { opacity: 0; } to { opacity: 1; } }
 
