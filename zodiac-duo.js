@@ -18,7 +18,8 @@
     bitrixWebhook: "",       // TODO: входящий вебхук Битрикс24 (лучше проксировать через сервер)
     policyUrl: "#",          // TODO: ссылка на политику конфиденциальности
     ymId: null,              // TODO: ID счётчика Яндекс Метрики
-    storageKey: "zodiac-duo:v1"
+    storageKey: "zodiac-duo:v1",
+    initial: null            // стартовая сборка для новых посетителей (частичный объект состояния), напр. как на hero лендинга
   }, window.ZodiacDuoConfig || {});
 
   var SCRIPT_SRC = (document.currentScript && document.currentScript.src) || "";
@@ -40,7 +41,7 @@
     steps: {
       sign: L("Знак зодиака", "Zodiac sign"), frame: L("Рама", "Frame"), plate: L("Плато", "Back plate"),
       ring: L("Зодиакальный круг", "Zodiac circle"), medal: L("Медальон", "Medallion"),
-      panel: L("Декоративная панель", "Decorative panel"), base: L("Базовый корпус", "Base body"), summary: L("Итог", "Summary")
+      panel: L("Декоративная панель", "Decorative panel"), base: L("Корпус iPhone Duo", "iPhone Duo body"), summary: L("Итог", "Summary")
     },
     short: {
       sign: L("Знак", "Sign"), frame: L("Рама", "Frame"), plate: L("Плато", "Plate"), ring: L("Круг", "Circle"),
@@ -186,6 +187,9 @@
     panel: "clear", panelFrame: "silver", panelFill: "meteorite", panelEnamel: null, panelTex: 1, panelMetal: "silver",
     base: "starwhite"
   };
+
+  // Стартовая сборка: DEFAULT, дополненный настройкой страницы (CFG.initial)
+  var START = Object.assign({}, DEFAULT, CFG.initial || {});
 
   var PRESETS = [
     { id: "midnight", name: L("Полночь", "Midnight"), full: L("Полночь", "Midnight"),
@@ -452,7 +456,7 @@
   P.loadState = function () {
     var qc = /[?&]code=([^&#]+)/.exec(location.search), fromCode = qc && decodeCode(decodeURIComponent(qc[1]));
     if (fromCode) { this.openedByCode = true; return Object.assign(clone(DEFAULT), fromCode); }
-    var s = clone(DEFAULT), fromHash = parseHash();
+    var s = clone(START), fromHash = parseHash();
     if (fromHash) return Object.assign(s, fromHash);
     try { var saved = JSON.parse(localStorage.getItem(CFG.storageKey)); if (saved) Object.assign(s, saved); } catch (e) { }
     return s;
@@ -1669,7 +1673,7 @@
   /* ------------------------------------------------------------ tools */
   P.tool_undo = function () { if (this.history.length) this.commit(this.history.pop(), { noHistory: true, silent: true }); };
   P.tool_reset = function () {
-    this.set(clone(DEFAULT));
+    this.set(clone(START));
     this.visited = { sign: true }; this.tab = {};
     this.go("sign");
   };

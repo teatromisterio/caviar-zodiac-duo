@@ -7,21 +7,29 @@
   <meta name="description" content="Соберите Zodiac Duo: созвездие вашего знака в бриллиантах, медальон с барельефом, золото, метеорит, кожа крокодила и ювелирная эмаль. Каждый экземпляр — 1/1.">
   <meta property="og:title" content="Caviar · Zodiac Duo">
   <meta property="og:description" content="Ваш знак. Ваши материалы. Единственный экземпляр.">
-  <meta property="og:image" content="landing/img/hero-1280.webp">
+  <!-- TODO: при переносе на caviar-phone.ru заменить домен в og:image -->
+  <meta property="og:image" content="https://teatromisterio.github.io/caviar-zodiac-duo/landing/img/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
   <meta name="theme-color" content="#0D1117">
   <script>document.documentElement.classList.add("js");</script>
-  <link rel="stylesheet" href="zodiac-duo.css?v=20261011q">
-  <link rel="stylesheet" href="landing/landing.css?v=4">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700;6..12,800&display=swap">
+  <link rel="preload" as="image" href="landing/img/hero-1280.webp" fetchpriority="high">
+  <link rel="stylesheet" href="tokens.css?v=1">
+  <link rel="stylesheet" href="zodiac-duo.css?v=20261011r">
+  <link rel="stylesheet" href="landing/landing.css?v=6">
 </head>
 <body class="lp">
   <!-- Меню и подвал сайта подключаются шаблоном Caviar (по стандарту caviar-pages) -->
 
   <!-- 1. Hero -->
   <header class="lp-hero" id="top">
-    <video class="lp-hero__video" autoplay muted loop playsinline preload="metadata" poster="landing/img/hero-1280.webp" aria-hidden="true">
-      <source src="landing/video/hero-1280.mp4" type="video/mp4" media="(max-width: 1100px)">
-      <source src="landing/video/hero-1920.mp4" type="video/mp4">
-    </video>
+    <!-- источник видео выбирает landing.js по ширине экрана (атрибут media у <source> в <video> браузеры не поддерживают) -->
+    <video class="lp-hero__video" muted loop playsinline preload="none" poster="landing/img/hero-1280.webp" aria-hidden="true"
+           data-src-sm="landing/video/hero-1280.mp4" data-src-lg="landing/video/hero-1920.mp4"></video>
     <div class="lp-hero__shade"></div>
     <div class="lp-hero__in">
       <div class="lp-kicker">Caviar · Коллекция Zodiac</div>
@@ -29,9 +37,7 @@
       <p class="lp-hero__l">Ваш знак. Ваши материалы. Единственный экземпляр.</p>
       <div class="lp-hero__cta">
         <a class="lp-btn lp-btn--gold" href="#build">Собрать свой</a>
-        <button class="lp-btn lp-btn--ghost" type="button" data-video>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>Смотреть видео
-        </button>
+        <a class="lp-btn lp-btn--ghost" href="#anatomy">Из чего он создан</a>
       </div>
     </div>
     <a class="lp-hero__scroll" href="#intro" aria-label="Листать вниз"><span></span></a>
@@ -50,7 +56,7 @@
   <section class="lp-sec lp-circle">
     <div class="lp-wrap lp-split">
       <figure class="lp-circle__img reveal">
-        <img src="landing/img/circle-1600.webp" srcset="landing/img/circle-900.webp 900w, landing/img/circle-1600.webp 1600w" sizes="(max-width: 900px) 100vw, 55vw"
+        <img src="landing/img/circle-1500.webp" srcset="landing/img/circle-900.webp 900w, landing/img/circle-1500.webp 1500w" sizes="(max-width: 900px) 100vw, 55vw"
              alt="Макро зодиакального круга: кольцо с двенадцатью знаками, эмаль и бриллианты по окружности, созвездие Стрельца в центре" loading="lazy">
       </figure>
       <div class="lp-circle__txt reveal">
@@ -75,16 +81,37 @@
         <p>На медальоне — объёмный барельеф знака: Овен с крутыми рогами, Стрелец с натянутым луком, две Рыбы, плывущие навстречу друг другу. Двенадцать сюжетов, четыре металла.</p>
       </div>
       <div class="lp-metals reveal" role="tablist" aria-label="Металл медальонов">
-        <button type="button" class="is-on" data-metal="silver">Серебро</button>
-        <button type="button" data-metal="gold">Жёлтое золото</button>
-        <button type="button" data-metal="rose">Розовое золото</button>
-        <button type="button" data-metal="black">Чёрный титан</button>
+        <button type="button" role="tab" aria-selected="true" aria-controls="medals" class="is-on" data-metal="silver">Серебро</button>
+        <button type="button" role="tab" aria-selected="false" aria-controls="medals" data-metal="gold">Жёлтое золото</button>
+        <button type="button" role="tab" aria-selected="false" aria-controls="medals" data-metal="rose">Розовое золото</button>
+        <button type="button" role="tab" aria-selected="false" aria-controls="medals" data-metal="black">Чёрный титан</button>
       </div>
-      <ul class="lp-medals reveal" id="medals"></ul>
+      <ul class="lp-medals reveal" id="medals" role="tabpanel" aria-label="Медальоны двенадцати знаков"></ul>
     </div>
   </section>
 
-  <!-- 5. Материалы -->
+  <!-- 5. Анатомия: детали расходятся по глубине при прокрутке -->
+  <section class="lp-anat" id="anatomy">
+    <div class="lp-anat__sticky">
+      <div class="lp-anat__head">
+        <div class="lp-kicker">Анатомия</div>
+        <h2 class="lp-h2">Семь уровней, одна&nbsp;композиция</h2>
+      </div>
+      <div class="lp-anat__stage"><div class="lp-anat__phone" id="anat-phone"></div></div>
+      <ol class="lp-anat__list" id="anat-list">
+        <li><b>Медальон</b><span>Барельеф знака в отдельном металле.</span></li>
+        <li><b>Рама</b><span>Гильошированный металл, обнимающий корпус.</span></li>
+        <li><b>Декоративная панель</b><span>13 вставок из метеорита или эмали в металлической рамке — или цельный металл с гильошем.</span></li>
+        <li><b>Зодиакальный круг</b><span>Кольцо со знаками, камнями и эмалью — сердце композиции.</span></li>
+        <li><b>Созвездие</b><span>Звёзды вашего знака в бриллиантах.</span></li>
+        <li><b>Плато</b><span>Металл с лучевым гильошем или кожа крокодила, питона, телёнка.</span></li>
+        <li><b>Корпус iPhone Duo</b><span>Складной iPhone — основа, которая остаётся собой.</span></li>
+      </ol>
+      <p class="lp-anat__foot">Больше 11 миллионов сочетаний для каждого знака — и бесконечно больше с собственным оттенком эмали.</p>
+    </div>
+  </section>
+
+  <!-- 6. Материалы -->
   <section class="lp-sec lp-mat">
     <div class="lp-wrap">
       <div class="lp-col reveal">
@@ -130,33 +157,15 @@
     </div>
   </section>
 
-  <!-- 6. Анатомия: детали расходятся по глубине при прокрутке -->
-  <section class="lp-anat" id="anatomy">
-    <div class="lp-anat__sticky">
-      <div class="lp-anat__head">
-        <div class="lp-kicker">Анатомия</div>
-        <h2 class="lp-h2">Семь уровней, одна&nbsp;композиция</h2>
-      </div>
-      <div class="lp-anat__stage"><div class="lp-anat__phone" id="anat-phone"></div></div>
-      <ol class="lp-anat__list" id="anat-list">
-        <li><b>Медальон</b><span>Барельеф знака в отдельном металле.</span></li>
-        <li><b>Рама</b><span>Гильошированный металл, обнимающий корпус.</span></li>
-        <li><b>Декоративная панель</b><span>13 вставок из метеорита или эмали в металлической рамке — или цельный металл с гильошем.</span></li>
-        <li><b>Зодиакальный круг</b><span>12 знаков, 24 камня, 24 ячейки эмали.</span></li>
-        <li><b>Созвездие</b><span>Звёзды вашего знака в бриллиантах.</span></li>
-        <li><b>Плато</b><span>Металл с лучевым гильошем или кожа крокодила, питона, телёнка.</span></li>
-        <li><b>iPhone Duo</b><span>Складной iPhone — основа, которая остаётся собой.</span></li>
-      </ol>
-      <p class="lp-anat__foot">Больше 13 миллионов сочетаний для каждого знака — и бесконечно больше с собственным оттенком эмали.</p>
-    </div>
-  </section>
-
   <!-- 7. Конфигуратор -->
   <section class="lp-build" id="build">
     <div class="lp-wrap lp-col lp-center reveal">
       <div class="lp-kicker">Ваш экземпляр</div>
       <h2 class="lp-h2">Соберите свой Zodiac Duo</h2>
       <p>Начните со знака — дальше каждое решение за вами. Готовую сборку можно отправить менеджеру, сохранить ссылкой или вернуться к ней по коду.</p>
+      <button class="lp-btn lp-btn--ghost lp-btn--sm" type="button" data-video>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>Как собрать · видео 4:40
+      </button>
     </div>
     <div data-zodiac-duo></div>
   </section>
@@ -165,7 +174,7 @@
   <section class="lp-sec lp-craft">
     <div class="lp-wrap lp-split lp-split--rev">
       <figure class="lp-craft__img reveal">
-        <img src="landing/img/atelier-1800.webp" srcset="landing/img/atelier-1000.webp 1000w, landing/img/atelier-1800.webp 1800w" sizes="(max-width: 900px) 100vw, 55vw"
+        <img src="landing/img/atelier-1500.webp" srcset="landing/img/atelier-1000.webp 1000w, landing/img/atelier-1500.webp 1500w" sizes="(max-width: 900px) 100vw, 55vw"
              alt="Ювелир Caviar закрепляет бриллиант на зодиакальном круге" loading="lazy">
       </figure>
       <div class="reveal">
@@ -175,21 +184,21 @@
         <ol class="lp-steps">
           <li><b>Гильош</b><span>Узоры на раме и плато наносятся на гильоширной машине вручную, линия за линией.</span></li>
           <li><b>Закрепка</b><span>Каждый из 24 камней окружности и бриллианты созвездия закрепляются вручную под микроскопом.</span></li>
-          <li><b>Эмаль</b><span>Ювелирная эмаль наносится в несколько слоёв и обжигается при температуре около 800&nbsp;°C — так цвет обретает глубину.</span></li>
+          <li><b>Эмаль</b><span>Ювелирная эмаль наносится в несколько слоёв и обжигается — так цвет обретает глубину.</span></li>
           <li><b>Сборка</b><span>Детали соединяются с корпусом iPhone Duo, каждое изделие проходит финальный контроль.</span></li>
         </ol>
       </div>
     </div>
     <div class="lp-wrap lp-stats reveal">
-      <div><b>120</b><span>часов ручной работы</span></div>
-      <div><b>6–8</b><span>недель от заявки до вручения</span></div>
+      <div><b>48</b><span>медальонов: 12 знаков в 4 металлах</span></div>
+      <div><b>15</b><span>вариантов плато: металл и три вида кожи</span></div>
     </div>
   </section>
 
   <!-- 9. Редкость 1/1 -->
   <section class="lp-sec lp-one">
     <div class="lp-wrap lp-center reveal">
-      <div class="lp-kicker">Лимитированная серия</div>
+      <div class="lp-kicker">Тираж</div>
       <div class="lp-one__n">1/1</div>
       <h2 class="lp-h2">Тираж — один экземпляр</h2>
       <p class="lp-col">Вы собираете Zodiac Duo сами, поэтому каждый экземпляр существует в единственном числе. Код сборки становится паспортом изделия: по нему ваш Zodiac Duo узнают в любом бутике Caviar.</p>
@@ -198,7 +207,7 @@
 
   <!-- 10. Финал -->
   <section class="lp-final">
-    <img class="lp-final__bg" src="landing/img/hero-2400.webp" alt="" loading="lazy">
+    <img class="lp-final__bg" src="landing/img/hero-1500.webp" srcset="landing/img/hero-1280.webp 1280w, landing/img/hero-1500.webp 1500w" sizes="100vw" alt="" loading="lazy">
     <div class="lp-final__shade"></div>
     <div class="lp-wrap lp-final__in reveal">
       <h2 class="lp-final__t">Мир Caviar безграничен</h2>
@@ -222,11 +231,14 @@
       leadEndpoint: "",   // TODO: обработчик заявок на email
       bitrixWebhook: "",  // TODO: вебхук Битрикс24
       policyUrl: "#",     // TODO: политика конфиденциальности
-      ymId: null          // TODO: ID Яндекс Метрики
+      ymId: null,         // TODO: ID Яндекс Метрики
+      // новый посетитель видит ту же сборку, что на всей странице: Стрелец, розовое золото, крокодил, метеорит
+      initial: { sign: "sagittarius", frame: "rose", medal: "rose", medalOn: 1, plate: "croc", plateColor: "burgundy", ring: "rose",
+                 decor: "white", enamel: null, core: "white", panel: "clear", panelFrame: "rose", panelFill: "meteorite", base: "starwhite" }
     };
   </script>
-  <script src="assets/manifest.js?v=20261011q"></script>
-  <script src="zodiac-duo.js?v=20261011q"></script>
-  <script src="landing/landing.js?v=5"></script>
+  <script src="assets/manifest.js?v=20261011r"></script>
+  <script src="zodiac-duo.js?v=20261011r"></script>
+  <script src="landing/landing.js?v=6"></script>
 </body>
 </html>

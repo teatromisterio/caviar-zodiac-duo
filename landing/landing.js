@@ -14,11 +14,25 @@
     rv.forEach(function (n) { io.observe(n); });
   } else rv.forEach(function (n) { n.classList.add("is-in"); });
 
+  /* ---------- hero-видео: источник по ширине экрана, запуск после загрузки страницы (постер грузится первым) */
+  var hv = $(".lp-hero__video");
+  if (hv && !REDUCED) {
+    var start = function () {
+      hv.src = window.matchMedia("(max-width: 1100px)").matches ? hv.getAttribute("data-src-sm") : hv.getAttribute("data-src-lg");
+      hv.preload = "auto";
+      hv.addEventListener("canplaythrough", function () { hv.play().catch(function () { }); }, { once: true });
+      hv.load();
+    };
+    if (document.readyState === "complete") start(); else window.addEventListener("load", start);
+  }
+
   /* ---------- видео-инструкция */
   var dlg = $("#lp-video");
+  var opener = null;
   document.querySelectorAll("[data-video]").forEach(function (b) {
     b.addEventListener("click", function () {
       if (!dlg) return;
+      opener = b;
       if (dlg.showModal) dlg.showModal(); else dlg.setAttribute("open", "");
       var v = dlg.querySelector("video"); v.currentTime = 0; v.play().catch(function () { });
     });
@@ -27,7 +41,7 @@
     var close = function () { dlg.querySelector("video").pause(); if (dlg.close) dlg.close(); else dlg.removeAttribute("open"); };
     dlg.querySelector(".lp-video__x").addEventListener("click", close);
     dlg.addEventListener("click", function (e) { if (e.target === dlg) close(); });
-    dlg.addEventListener("close", function () { dlg.querySelector("video").pause(); });
+    dlg.addEventListener("close", function () { dlg.querySelector("video").pause(); if (opener) opener.focus(); });
   }
 
   /* ---------- медальоны: 12 знаков × 4 металла */
@@ -51,7 +65,7 @@
         var nm = b.getAttribute("data-metal");
         if (nm === metal) return;
         metal = nm;
-        document.querySelectorAll(".lp-metals button").forEach(function (x) { x.classList.toggle("is-on", x === b); });
+        document.querySelectorAll(".lp-metals button").forEach(function (x) { x.classList.toggle("is-on", x === b); x.setAttribute("aria-selected", x === b ? "true" : "false"); });
         grid.querySelectorAll("li").forEach(function (li, i) {
           var box = li.querySelector(".m"), old = box.querySelector("img"), nw = el("img");
           nw.alt = old.alt; nw.style.opacity = "0"; nw.src = src(SIGNS[i][0], metal);
@@ -77,6 +91,8 @@
     ];
     // Толщина деталей (в условных px при высоте телефона ~450 px): металл толще, кожа тоньше.
     // Толщина строится срезами: копии слоя под лицевой стороной, каждая на 1 единицу глубже и темнее.
+    var LITE = window.matchMedia("(max-width: 1100px)").matches; // мобильные: без срезов и фильтров
+    if (LITE) sec.classList.add("is-lite");
     var THICK = { medal_sagittarius_rose: 7, frame_rose: 8, panel_frame_rose: 7, ring_rose: 8, plate_croc_burgundy: 3, core_white: 4, const_sagittarius: 3 };
     function place(img, L) {
       img.style.left = ((L.x - CROP.x) / CROP.w * 100) + "%"; img.style.top = ((L.y - CROP.y) / CROP.h * 100) + "%";
@@ -86,7 +102,7 @@
       var g = el("div", "lp-anat__g");
       g.style.zIndex = String(GROUPS.length - i);
       keys.forEach(function (k) {
-        var L = M.layers[k], url = "assets/layers/" + k + "@half.webp", n = THICK[k] || 0;
+        var L = M.layers[k], url = "assets/layers/" + k + "@half.webp", n = LITE ? 0 : (THICK[k] || 0);
         for (var d = n; d >= 1; d--) {
           var sl = el("img", "lp-anat__slice"); sl.src = url; sl.alt = ""; sl.decoding = "async"; place(sl, L);
           sl.style.transform = "translateZ(calc(var(--u) * " + (-d) + "))";

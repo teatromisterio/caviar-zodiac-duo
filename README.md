@@ -1,6 +1,6 @@
 # Caviar · Zodiac Duo — конфигуратор
 
-Автономный виджет: блок внутри продуктового лендинга, работает на любом движке (Tilda, Битрикс, WordPress, свой код). Зависимостей нет; шрифт Nunito Sans подключается из Google Fonts внутри `zodiac-duo.css`.
+Автономный виджет: блок внутри продуктового лендинга, работает на любом движке (Tilda, Битрикс, WordPress, свой код). Зависимостей нет. Шрифт Nunito Sans и токены подключает страница (см. ниже) — `@import` в CSS убран, чтобы не блокировать отрисовку.
 
 ## Состав
 
@@ -15,6 +15,14 @@ zodiac-duo/
     swatches/*.webp   превью вариантов 160×160
 ```
 
+## Токены
+
+`tokens.css` — единственное место с цветами и отступами (гайд caviar-pages). Виджет берёт `--caviar-*` с фолбэком на свои значения, лендинг — напрямую. Цвет проекта **«Ночное небо» #131A24** снят с фона hero-арта.
+
+## Проверка
+
+Перед выкладкой — скриншоты Playwright (headless Chrome) 1440×900 и 390×844 по каждой секции, включая «Анатомию» по скроллу. Скрипты записи видео-инструкции — в `../tools/video/`.
+
 ## Посадочная страница
 
 `index.html` — лендинг коллекции (тексты по канону Caviar, визуалы Higgsfield, «Анатомия» из слоёв PSD) с конфигуратором внутри. Файлы лендинга — в `landing/` (`landing.css`, `landing.js`, `img/`, `video/`). Демо одного блока конфигуратора — `demo.html`. Меню и подвал подключаются шаблоном сайта.
@@ -25,6 +33,10 @@ zodiac-duo/
 2. В месте блока на странице:
 
 ```html
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700;6..12,800&display=swap">
+<link rel="stylesheet" href="/zodiac-duo/tokens.css">
 <link rel="stylesheet" href="/zodiac-duo/zodiac-duo.css">
 <div data-zodiac-duo></div>
 <script>
@@ -47,6 +59,7 @@ Tilda: блок T123 (HTML), тот же код; файлы — на внешн�
 
 | Ключ | Что делает |
 |---|---|
+| `initial` | Стартовая сборка для новых посетителей (частичный объект состояния). На лендинге — та же сборка, что на hero |
 | `lang` | `"ru"` / `"en"`. По умолчанию берётся из `<html lang>` |
 | `leadEndpoint` | POST JSON: `code, link, spec, state, lang, name, phone, email, messenger, comment, page, image` (`image` — JPEG сборки в data URL). Сервер отправляет письмо |
 | `bitrixWebhook` | Создаёт лид `crm.lead.add`: название `Zodiac Duo · <код>`, контакты, спецификация и ссылка в комментарии |

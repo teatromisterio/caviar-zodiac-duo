@@ -1,0 +1,16 @@
+/* Caviar · Zodiac Duo — единые токены (гайд caviar-pages). Подключать первым.
+   Цвет проекта «Ночное небо» #131A24 — снят с фона hero-арта коллекции (звёздное небо). */
+:root {
+  --caviar-gold: #A89974;
+  --caviar-gold-hover: #968758;
+  --caviar-gold-on-light: #85764F;
+  --caviar-gold-light: #C9BC98;
+  --caviar-light: #F7F7F7;
+  --caviar-text-dark: #393838;
+  --caviar-black: #0D1117;
+  --caviar-blue: #06224D;
+  --caviar-night: #131A24;      /* цвет проекта Zodiac */
+  --caviar-ink: #F2EFE8;
+  --caviar-mute: #9A968C;
+  --caviar-p64: 64px; --caviar-p40: 40px; --caviar-p24: 24px; --caviar-p14: 14px;
+}

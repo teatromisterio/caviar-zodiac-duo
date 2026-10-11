@@ -1,14 +1,14 @@
 /* Caviar · Zodiac Duo configurator v2 — все стили изолированы префиксом .zd */
-@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700;6..12,800&display=swap");
+/* Шрифт Nunito Sans подключается страницей: <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700;6..12,800&display=swap"> */
 
 .zd {
-  --zd-gold: #A89974;
-  --zd-gold-h: #968758;
-  --zd-gold-l: #C9BC98;
-  --zd-black: #0D1117;
-  --zd-ink: #F2EFE8;
+  --zd-gold: var(--caviar-gold, #A89974);
+  --zd-gold-h: var(--caviar-gold-hover, #968758);
+  --zd-gold-l: var(--caviar-gold-light, #C9BC98);
+  --zd-black: var(--caviar-black, #0D1117);
+  --zd-ink: var(--caviar-ink, #F2EFE8);
   --zd-ink-2: #D9D5CB;
-  --zd-mute: #9A968C;
+  --zd-mute: var(--caviar-mute, #9A968C);
   --zd-line: rgba(255, 255, 255, 0.09);
   --zd-card: #151A22;
   --zd-panel: #10151C;
