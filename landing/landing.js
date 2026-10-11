@@ -75,14 +75,25 @@
       ["plate_croc_burgundy"],
       ["base_starwhite"]
     ];
+    // Толщина деталей (в условных px при высоте телефона ~450 px): металл толще, кожа тоньше.
+    // Толщина строится срезами: копии слоя под лицевой стороной, каждая на 1 единицу глубже и темнее.
+    var THICK = { medal_sagittarius_rose: 7, frame_rose: 8, panel_frame_rose: 7, ring_rose: 8, plate_croc_burgundy: 3, const_sagittarius: 2 };
+    function place(img, L) {
+      img.style.left = ((L.x - CROP.x) / CROP.w * 100) + "%"; img.style.top = ((L.y - CROP.y) / CROP.h * 100) + "%";
+      img.style.width = (L.w / CROP.w * 100) + "%"; img.style.height = (L.h / CROP.h * 100) + "%";
+    }
     var nodes = GROUPS.map(function (keys, i) {
       var g = el("div", "lp-anat__g");
       g.style.zIndex = String(GROUPS.length - i);
       keys.forEach(function (k) {
-        var L = M.layers[k], img = el("img");
-        img.src = "assets/layers/" + k + "@half.webp"; img.alt = ""; img.decoding = "async";
-        img.style.left = ((L.x - CROP.x) / CROP.w * 100) + "%"; img.style.top = ((L.y - CROP.y) / CROP.h * 100) + "%";
-        img.style.width = (L.w / CROP.w * 100) + "%"; img.style.height = (L.h / CROP.h * 100) + "%";
+        var L = M.layers[k], url = "assets/layers/" + k + "@half.webp", n = THICK[k] || 0;
+        for (var d = n; d >= 1; d--) {
+          var sl = el("img", "lp-anat__slice"); sl.src = url; sl.alt = ""; sl.decoding = "async"; place(sl, L);
+          sl.style.transform = "translateZ(calc(var(--u) * " + (-d) + "))";
+          sl.style.setProperty("--b", (0.62 - 0.3 * d / n).toFixed(3)); // торец темнее к низу
+          g.appendChild(sl);
+        }
+        var img = el("img"); img.src = url; img.alt = ""; img.decoding = "async"; place(img, L);
         g.appendChild(img);
       });
       phone.appendChild(g);
@@ -97,11 +108,15 @@
       var p = REDUCED ? 0.75 : Math.max(0, Math.min(1, -r.top / Math.max(1, total)));
       var tilt = sm(0.02, 0.32, p), ex = sm(0.1, 0.62, p);
       phone.style.transform = "rotateX(" + (54 * tilt) + "deg) rotateZ(" + (-30 * tilt) + "deg) scale(" + (1 - 0.2 * tilt) + ")";
+      phone.style.setProperty("--u", (phone.offsetHeight / 450).toFixed(3) + "px");
       var gap = phone.offsetHeight * 0.13, active = Math.min(GROUPS.length - 1, Math.floor(sm(0.16, 0.9, p) * GROUPS.length));
       nodes.forEach(function (g, i) {
         var j = GROUPS.length - 1 - i; // 0 = нижний уровень
-        g.style.transform = "translateZ(" + ((j - 3) * gap * ex) + "px)";
-        g.style.filter = ex > 0.5 && i !== active ? "brightness(.55) saturate(.8)" : "none";
+        var focus = ex > 0.5;
+        // выбранная деталь чуть приподнимается, остальные приглушаются (фильтр — на изображениях, иначе 3D сплющится)
+        g.style.transform = "translateZ(" + ((j - 3) * gap * ex + (focus && i === active ? gap * 0.18 : 0)) + "px)";
+        g.classList.toggle("is-dim", focus && i !== active);
+        g.classList.toggle("is-act", focus && i === active);
       });
       items.forEach(function (li, i) { li.classList.toggle("is-on", ex > 0.35 ? i === active : false); });
       if (foot) foot.classList.toggle("is-on", p > 0.9);

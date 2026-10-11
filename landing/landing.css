@@ -101,8 +101,11 @@ body.lp { margin: 0; background: var(--black); color: var(--ink); font-family: "
 .lp-anat__head { align-self: start; padding-top: 12vh; position: relative; z-index: 2; }
 .lp-anat__stage { position: relative; height: 82vh; display: flex; align-items: center; justify-content: center; perspective: 2200px; }
 .lp-anat__phone { position: relative; height: 62vh; aspect-ratio: 1160 / 1616; transform-style: preserve-3d; will-change: transform; }
-.lp-anat__g { position: absolute; inset: 0; transform-style: preserve-3d; will-change: transform; transition: filter .3s; }
-.lp-anat__g img { position: absolute; max-width: none; }
+.lp-anat__g { position: absolute; inset: 0; transform-style: preserve-3d; will-change: transform; }
+.lp-anat__g { transition: transform .5s cubic-bezier(.2, .7, .2, 1); }
+.lp-anat__g img { position: absolute; max-width: none; filter: brightness(var(--b, 1)); transition: filter .5s, opacity .5s; backface-visibility: hidden; }
+.lp-anat__g.is-dim img { filter: brightness(calc(var(--b, 1) * .3)) saturate(.45); opacity: .55; }
+.lp-anat__g.is-act img:not(.lp-anat__slice) { filter: brightness(1.06); }
 .lp-anat__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; position: relative; z-index: 2; transition: opacity .5s; }
 .lp-anat.is-end .lp-anat__list { opacity: 0; }
 .lp-anat__list li { opacity: .32; transition: opacity .4s, transform .4s; padding-left: 16px; border-left: 2px solid transparent; }
