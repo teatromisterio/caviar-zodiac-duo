@@ -1,0 +1,194 @@
+/* Caviar · Zodiac Duo — посадочная страница. Токены — по гайду caviar-pages. */
+:root {
+  --gold: #A89974; --gold-h: #968758; --gold-dk: #85764F; --gold-l: #C9BC98;
+  --ink: #F2EFE8; --ink-2: #CFCAC0; --mute: #9A968C; --dark: #393838;
+  --light: #F7F7F7; --black: #0D1117; --line: rgba(255, 255, 255, .09);
+  --p64: 64px; --p40: 40px; --p24: 24px; --p14: 14px;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body.lp { margin: 0; background: var(--black); color: var(--ink); font-family: "Nunito Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 17px; line-height: 24px; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+.lp img { max-width: 100%; display: block; }
+.lp a { color: inherit; }
+.lp-wrap { max-width: 1240px; margin: 0 auto; padding: 0 var(--p24); }
+.lp-col { max-width: 750px; }
+.lp-center { text-align: center; margin-left: auto; margin-right: auto; }
+.lp-kicker { font-size: 13px; font-weight: 700; letter-spacing: .24em; text-transform: uppercase; color: var(--gold); }
+.lp-h2 { margin: 14px 0 var(--p24); font-weight: 700; font-size: 52px; line-height: 52px; letter-spacing: .01em; }
+.lp-lead { font-size: 20px; line-height: 30px; color: var(--ink-2); }
+.lp p { margin: 0 0 var(--p14); }
+.lp-sec { padding: 120px 0; }
+
+/* reveal on scroll (без JS всё видно — см. noscript) */
+.js .reveal { opacity: 0; transform: translateY(24px); transition: opacity .9s cubic-bezier(.2, .7, .2, 1), transform .9s cubic-bezier(.2, .7, .2, 1); }
+.js .reveal.is-in { opacity: 1; transform: none; }
+
+/* кнопки */
+.lp-btn { display: inline-flex; align-items: center; gap: 10px; height: 54px; padding: 0 30px; border-radius: 999px; font: inherit; font-size: 14px; font-weight: 800;
+  letter-spacing: .1em; text-transform: uppercase; text-decoration: none; cursor: pointer; border: 0; transition: background .2s, color .2s, border-color .2s; }
+.lp-btn svg { width: 18px; height: 18px; }
+.lp-btn--gold { background: var(--gold); color: var(--black); }
+.lp-btn--gold:hover { background: var(--gold-h); }
+.lp-btn--ghost { background: transparent; color: var(--ink); border: 1px solid rgba(242, 239, 232, .4); }
+.lp-btn--ghost:hover { border-color: var(--gold); color: var(--gold-l); }
+
+/* 1. hero */
+.lp-hero { position: relative; height: 100vh; height: 100svh; min-height: 640px; overflow: hidden; display: flex; align-items: center; }
+.lp-hero__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 65% 50%; }
+.lp-hero__shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(8, 11, 16, .92) 0%, rgba(8, 11, 16, .55) 38%, rgba(8, 11, 16, 0) 62%),
+  linear-gradient(0deg, rgba(13, 17, 23, 1) 0%, rgba(13, 17, 23, 0) 22%); }
+.lp-hero__in { position: relative; z-index: 1; width: 100%; max-width: 1240px; margin: 0 auto; padding: 0 var(--p24); }
+.lp-hero__t { margin: 18px 0 12px; font-weight: 800; font-size: clamp(52px, 5.6vw, 84px); line-height: .95; letter-spacing: .04em; text-transform: uppercase; }
+.lp-hero__l { font-size: 22px; line-height: 30px; color: var(--ink-2); max-width: 460px; }
+.lp-hero__cta { display: flex; flex-wrap: wrap; gap: 14px; margin-top: var(--p40); }
+.lp-hero__scroll { position: absolute; left: 50%; bottom: 28px; width: 26px; height: 42px; margin-left: -13px; border: 1.5px solid rgba(242, 239, 232, .45); border-radius: 14px; z-index: 1; }
+.lp-hero__scroll span { position: absolute; left: 50%; top: 8px; width: 3px; height: 8px; margin-left: -1.5px; border-radius: 2px; background: var(--gold-l); animation: lp-wheel 2s ease-in-out infinite; }
+@keyframes lp-wheel { 0% { opacity: 0; transform: translateY(0); } 30% { opacity: 1; } 80% { opacity: 0; transform: translateY(12px); } 100% { opacity: 0; } }
+
+/* 2. интро — светлый */
+.lp-intro { background: var(--light); color: var(--dark); padding: 140px 0; }
+.lp-intro .lp-col { margin: 0 auto; text-align: center; }
+.lp-intro .lp-h2 { color: #1d1c1c; }
+.lp-intro .lp-lead { color: var(--dark); font-size: 21px; line-height: 32px; }
+
+/* split */
+.lp-split { display: grid; grid-template-columns: 1.15fr 1fr; gap: 72px; align-items: center; }
+.lp-split--rev { grid-template-columns: 1fr 1.05fr; }
+.lp-split--rev > figure { order: 2; }
+.lp figure { margin: 0; }
+.lp-circle__img img, .lp-craft__img img { border-radius: 18px; box-shadow: 0 30px 80px rgba(0, 0, 0, .55); }
+.lp-circle p, .lp-craft p { color: var(--ink-2); }
+.lp-facts { list-style: none; margin: var(--p40) 0 0; padding: 0; display: grid; gap: 18px; }
+.lp-facts li { display: grid; grid-template-columns: 82px 1fr; align-items: baseline; gap: 16px; padding-top: 18px; border-top: 1px solid var(--line); }
+.lp-facts b { font-size: 46px; line-height: 1; font-weight: 800; color: var(--gold); }
+.lp-facts span { color: var(--ink-2); }
+
+/* 4. медальоны */
+.lp-medal { background: radial-gradient(70% 60% at 50% 40%, #141B25, var(--black) 70%); }
+.lp-medal .lp-col p { color: var(--ink-2); }
+.lp-metals { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin: var(--p40) 0; }
+.lp-metals button { font: inherit; font-size: 14px; font-weight: 700; padding: 10px 18px; border-radius: 999px; background: none; color: var(--mute); border: 1px solid var(--line); cursor: pointer; transition: all .2s; }
+.lp-metals button:hover { color: var(--ink); }
+.lp-metals button.is-on { color: var(--black); background: var(--gold); border-color: var(--gold); }
+.lp-medals { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(6, 1fr); gap: 28px 18px; }
+.lp-medals li { text-align: center; }
+.lp-medals .m { position: relative; aspect-ratio: 1; border-radius: 50%; filter: drop-shadow(0 14px 22px rgba(0, 0, 0, .55)); transition: transform .4s cubic-bezier(.2, .7, .2, 1); }
+.lp-medals li:hover .m { transform: translateY(-4px) scale(1.04); }
+.lp-medals img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; transition: opacity .5s; }
+.lp-medals .n { margin-top: 12px; font-weight: 700; font-size: 15px; }
+.lp-medals .d { font-size: 12px; color: var(--mute); }
+
+/* 5. материалы */
+.lp-mat .lp-col p { color: var(--ink-2); }
+.lp-mat__grid { margin-top: var(--p40); display: grid; grid-template-columns: repeat(12, 1fr); gap: 20px; }
+.lp-card { grid-column: span 6; padding: 22px; border-radius: 20px; background: #121821; border: 1px solid var(--line); }
+.lp-card h3 { margin: 18px 0 8px; font-size: 22px; line-height: 28px; font-weight: 700; }
+.lp-card p { color: var(--ink-2); font-size: 16px; line-height: 24px; margin: 0; }
+.lp-card--metals { grid-column: span 5; }
+.lp-card--wide { grid-column: span 7; }
+.lp-card--hand { grid-column: span 5; grid-row: span 2; padding: 0; overflow: hidden; }
+.lp-card--hand .lp-card__img { width: 100%; height: 100%; object-fit: cover; border-radius: 0; }
+.lp-card__img { width: 100%; border-radius: 12px; }
+.lp-swatches { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.lp-swatches--3 { grid-template-columns: repeat(3, 1fr); }
+.lp-swatches img { aspect-ratio: 1; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 1px var(--line), 0 10px 22px rgba(0, 0, 0, .45); }
+
+/* 6. анатомия */
+.lp-anat { position: relative; height: 340vh; background: radial-gradient(60% 50% at 50% 50%, #131A24, var(--black) 72%); }
+.lp-anat__sticky { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; display: grid; grid-template-columns: 300px minmax(0, 1fr) 300px; gap: 24px; align-items: center;
+  max-width: 1400px; margin: 0 auto; padding: 0 var(--p24); }
+.lp-anat__head { align-self: start; padding-top: 12vh; position: relative; z-index: 2; }
+.lp-anat__stage { position: relative; height: 82vh; display: flex; align-items: center; justify-content: center; perspective: 2200px; }
+.lp-anat__phone { position: relative; height: 62vh; aspect-ratio: 1160 / 1616; transform-style: preserve-3d; will-change: transform; }
+.lp-anat__g { position: absolute; inset: 0; transform-style: preserve-3d; will-change: transform; transition: filter .3s; }
+.lp-anat__g img { position: absolute; max-width: none; }
+.lp-anat__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; position: relative; z-index: 2; transition: opacity .5s; }
+.lp-anat.is-end .lp-anat__list { opacity: 0; }
+.lp-anat__list li { opacity: .32; transition: opacity .4s, transform .4s; padding-left: 16px; border-left: 2px solid transparent; }
+.lp-anat__list li.is-on { opacity: 1; border-left-color: var(--gold); }
+.lp-anat__list b { display: block; font-size: 17px; }
+.lp-anat__list span { display: block; font-size: 14px; line-height: 20px; color: var(--ink-2); }
+.lp-anat__foot { position: absolute; left: 0; right: 0; bottom: 5vh; text-align: center; color: var(--gold-l); font-size: 18px; padding: 0 var(--p24); opacity: 0; transition: opacity .6s; }
+.lp-anat__foot.is-on { opacity: 1; }
+
+/* 7. конфигуратор */
+.lp-build { padding: 120px 0 0; background: var(--black); }
+.lp-build .lp-col p { color: var(--ink-2); }
+.lp-build .lp-col { margin-bottom: var(--p40); }
+
+/* 8. мастерство */
+.lp-steps { list-style: none; counter-reset: s; margin: var(--p24) 0 0; padding: 0; display: grid; gap: 16px; }
+.lp-steps li { counter-increment: s; display: grid; grid-template-columns: 44px 1fr; gap: 4px 14px; }
+.lp-steps li::before { content: "0" counter(s); grid-row: span 2; font-weight: 800; color: var(--gold); font-size: 20px; line-height: 24px; }
+.lp-steps b { font-size: 18px; }
+.lp-steps span { color: var(--ink-2); font-size: 16px; }
+.lp-stats { display: flex; justify-content: center; gap: 120px; margin-top: 110px; text-align: center; }
+.lp-stats b { display: block; font-weight: 800; font-size: 150px; line-height: 1; color: var(--gold); letter-spacing: -.02em; }
+.lp-stats span { display: block; margin-top: 10px; color: var(--ink-2); font-size: 18px; }
+
+/* 9. 1/1 */
+.lp-one { background: var(--light); color: var(--dark); padding: 140px 0; }
+.lp-one__n { font-weight: 800; font-size: clamp(140px, 22vw, 300px); line-height: .9; color: var(--gold-dk); letter-spacing: -.03em; margin: 18px 0 10px; }
+.lp-one .lp-h2 { color: #1d1c1c; }
+.lp-one .lp-col { margin: 0 auto; font-size: 19px; line-height: 29px; }
+
+/* 10. финал */
+.lp-final { position: relative; min-height: 90vh; display: flex; align-items: center; overflow: hidden; }
+.lp-final__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 65% 50%; }
+.lp-final__shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(8, 11, 16, .9), rgba(8, 11, 16, .4) 50%, rgba(8, 11, 16, .1)), linear-gradient(180deg, var(--black), transparent 25%); }
+.lp-final__in { position: relative; z-index: 1; width: 100%; }
+.lp-final__t { font-weight: 800; font-size: clamp(44px, 6vw, 84px); line-height: 1; text-transform: uppercase; letter-spacing: .03em; margin: 0 0 18px; max-width: 760px; }
+.lp-final .lp-btn { margin-top: var(--p24); }
+.lp-final__s { margin-top: 18px !important; color: var(--mute); font-size: 14px; }
+
+/* видео-модалка */
+.lp-video { padding: 0; border: 0; background: #000; width: min(1200px, 94vw); border-radius: 14px; overflow: visible; }
+.lp-video::backdrop { background: rgba(5, 7, 10, .82); backdrop-filter: blur(6px); }
+.lp-video video { width: 100%; display: block; border-radius: 14px; }
+.lp-video__x { position: absolute; top: -46px; right: 0; width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, .3); background: none; color: #fff; font-size: 24px; line-height: 1; cursor: pointer; }
+
+/* ---------- адаптив */
+@media (max-width: 1100px) {
+  .lp-h2 { font-size: 40px; line-height: 44px; }
+  .lp-split, .lp-split--rev { grid-template-columns: 1fr; gap: 40px; }
+  .lp-split--rev > figure { order: 0; }
+  .lp-medals { grid-template-columns: repeat(4, 1fr); }
+  .lp-card, .lp-card--metals, .lp-card--wide { grid-column: span 12; }
+  .lp-card--hand { grid-column: span 12; grid-row: auto; }
+  .lp-anat__sticky { grid-template-columns: 1fr; grid-template-rows: auto 1fr auto; padding-top: 70px; }
+  .lp-anat__head { padding-top: 0; text-align: center; }
+  .lp-anat__head .lp-h2 { margin-bottom: 0; }
+  .lp-anat__stage { height: 52vh; }
+  .lp-anat__phone { height: 46vh; }
+  .lp-anat__list { display: block; min-height: 96px; text-align: center; }
+  .lp-anat__list li { display: none; border: 0; padding: 0; }
+  .lp-anat__list li.is-on { display: block; }
+  .lp-anat__foot { bottom: 3vh; font-size: 15px; }
+  .lp-stats { gap: 48px; }
+  .lp-stats b { font-size: 110px; }
+}
+@media (max-width: 640px) {
+  .lp-sec, .lp-intro, .lp-one { padding: 84px 0; }
+  .lp-h2 { font-size: 32px; line-height: 36px; }
+  .lp-lead, .lp-intro .lp-lead { font-size: 18px; line-height: 27px; }
+  .lp-hero__in { align-self: flex-end; padding-bottom: 96px; }
+  .lp-hero__video { object-position: 72% 50%; }
+  .lp-hero__shade { background: linear-gradient(0deg, rgba(8, 11, 16, .97) 22%, rgba(8, 11, 16, .55) 55%, rgba(8, 11, 16, .15)); }
+  .lp-hero__l { font-size: 18px; line-height: 26px; }
+  .lp-btn { height: 50px; padding: 0 22px; font-size: 13px; }
+  .lp-medals { grid-template-columns: repeat(3, 1fr); gap: 20px 12px; }
+  .lp-facts b { font-size: 38px; }
+  .lp-facts li { grid-template-columns: 64px 1fr; }
+  .lp-stats { flex-direction: column; gap: 40px; margin-top: 70px; }
+  .lp-stats b { font-size: 96px; }
+  .lp-build { padding-top: 84px; }
+  .lp-final__shade { background: linear-gradient(0deg, rgba(8, 11, 16, .95) 20%, rgba(8, 11, 16, .3)); }
+  .lp-final { align-items: flex-end; padding-bottom: 80px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .js .reveal { opacity: 1; transform: none; transition: none; }
+  .lp-hero__scroll span { animation: none; }
+}

@@ -3,32 +3,220 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Caviar · Zodiac Duo — конфигуратор</title>
+  <title>Zodiac Duo — iPhone Duo под ваш знак зодиака | Caviar</title>
+  <meta name="description" content="Соберите Zodiac Duo: созвездие вашего знака в бриллиантах, медальон с барельефом, золото, метеорит, кожа крокодила и ювелирная эмаль. Каждый экземпляр — 1/1.">
   <meta property="og:title" content="Caviar · Zodiac Duo">
-  <meta property="og:description" content="Соберите свой Zodiac Duo: знак, металл, камни и эмаль.">
-  <!-- TODO: og:image — обложка коллекции -->
+  <meta property="og:description" content="Ваш знак. Ваши материалы. Единственный экземпляр.">
+  <meta property="og:image" content="landing/img/hero-1280.webp">
+  <meta name="theme-color" content="#0D1117">
+  <script>document.documentElement.classList.add("js");</script>
   <link rel="stylesheet" href="zodiac-duo.css?v=20261011q">
-  <style>
-    /* Демо-обвязка: имитирует продуктовый лендинг вокруг блока конфигуратора */
-    body { margin: 0; background: #0D1117; color: #F2EFE8; font-family: "Nunito Sans", system-ui, sans-serif; }
-    .demo-section { max-width: 1200px; margin: 0 auto; padding: 64px 24px; }
-    .demo-section h2 { font-weight: 800; font-size: 40px; text-transform: uppercase; margin: 0 0 12px; }
-    .demo-section p { max-width: 750px; color: #9A968C; font-size: 17px; line-height: 24px; margin: 0; }
-  </style>
+  <link rel="stylesheet" href="landing/landing.css?v=2">
 </head>
-<body>
-  <section class="demo-section">
-    <h2>Zodiac</h2>
-    <p>Демо-страница: выше и ниже — место для секций продуктового лендинга. Сам конфигуратор — блок ниже.</p>
+<body class="lp">
+  <!-- Меню и подвал сайта подключаются шаблоном Caviar (по стандарту caviar-pages) -->
+
+  <!-- 1. Hero -->
+  <header class="lp-hero" id="top">
+    <video class="lp-hero__video" autoplay muted loop playsinline preload="metadata" poster="landing/img/hero-1280.webp" aria-hidden="true">
+      <source src="landing/video/hero-1280.mp4" type="video/mp4" media="(max-width: 1100px)">
+      <source src="landing/video/hero-1920.mp4" type="video/mp4">
+    </video>
+    <div class="lp-hero__shade"></div>
+    <div class="lp-hero__in">
+      <div class="lp-kicker">Caviar · Коллекция Zodiac</div>
+      <h1 class="lp-hero__t">Zodiac Duo</h1>
+      <p class="lp-hero__l">Ваш знак. Ваши материалы. Единственный экземпляр.</p>
+      <div class="lp-hero__cta">
+        <a class="lp-btn lp-btn--gold" href="#build">Собрать свой</a>
+        <button class="lp-btn lp-btn--ghost" type="button" data-video>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>Смотреть видео
+        </button>
+      </div>
+    </div>
+    <a class="lp-hero__scroll" href="#intro" aria-label="Листать вниз"><span></span></a>
+  </header>
+
+  <!-- 2. Интро -->
+  <section class="lp-intro" id="intro">
+    <div class="lp-wrap lp-col reveal">
+      <h2 class="lp-h2">Небо, которое было только над&nbsp;вами</h2>
+      <p class="lp-lead">В момент вашего рождения звёзды сложились в рисунок, который больше не повторится. Zodiac Duo переносит его на металл: созвездие вашего знака, выложенное бриллиантами, барельеф на медальоне, круг из двенадцати знаков.</p>
+      <p class="lp-lead">Вы сами выбираете каждый материал. Поэтому двух одинаковых Zodiac Duo не&nbsp;существует.</p>
+    </div>
   </section>
 
-  <!-- Блок конфигуратора: вставить в лендинг вместе с тремя подключениями ниже -->
-  <div data-zodiac-duo></div>
-
-  <section class="demo-section">
-    <p>Продолжение лендинга.</p>
+  <!-- 3. Зодиакальный круг -->
+  <section class="lp-sec lp-circle">
+    <div class="lp-wrap lp-split">
+      <figure class="lp-circle__img reveal">
+        <img src="landing/img/circle-1600.webp" srcset="landing/img/circle-900.webp 900w, landing/img/circle-1600.webp 1600w" sizes="(max-width: 900px) 100vw, 55vw"
+             alt="Макро зодиакального круга: кольцо с двенадцатью знаками, эмаль и бриллианты по окружности, созвездие Стрельца в центре" loading="lazy">
+      </figure>
+      <div class="lp-circle__txt reveal">
+        <div class="lp-kicker">В центре композиции</div>
+        <h2 class="lp-h2">Карта неба в&nbsp;ладони</h2>
+        <p>Зодиакальный круг — сердце Zodiac Duo. Двенадцать знаков выгравированы на кольце, по внешней окружности — 24 камня и 24 ячейки ювелирной эмали. В центре — созвездие вашего знака: каждая звезда отмечена бриллиантом.</p>
+        <ul class="lp-facts">
+          <li><b>12</b><span>знаков на гравированном кольце</span></li>
+          <li><b>24</b><span>камня по окружности: белые или чёрные бриллианты, рубины</span></li>
+          <li><b>24</b><span>ячейки ювелирной эмали — цвет выбираете вы</span></li>
+        </ul>
+      </div>
+    </div>
   </section>
 
+  <!-- 4. Медальон -->
+  <section class="lp-sec lp-medal">
+    <div class="lp-wrap">
+      <div class="lp-col lp-center reveal">
+        <div class="lp-kicker">Знак владельца</div>
+        <h2 class="lp-h2">Барельеф вашего знака</h2>
+        <p>На медальоне — объёмный барельеф знака: Овен с крутыми рогами, Стрелец с натянутым луком, две Рыбы, плывущие навстречу друг другу. Двенадцать сюжетов, четыре металла.</p>
+      </div>
+      <div class="lp-metals reveal" role="tablist" aria-label="Металл медальонов">
+        <button type="button" class="is-on" data-metal="silver">Серебро</button>
+        <button type="button" data-metal="gold">Жёлтое золото</button>
+        <button type="button" data-metal="rose">Розовое золото</button>
+        <button type="button" data-metal="black">Чёрный титан</button>
+      </div>
+      <ul class="lp-medals reveal" id="medals"></ul>
+    </div>
+  </section>
+
+  <!-- 5. Материалы -->
+  <section class="lp-sec lp-mat">
+    <div class="lp-wrap">
+      <div class="lp-col reveal">
+        <div class="lp-kicker">Драгоценная палитра</div>
+        <h2 class="lp-h2">Материалы, которые не&nbsp;повторяются</h2>
+        <p>Каждый материал Zodiac Duo несёт свою историю — и ни один срез не похож на другой.</p>
+      </div>
+      <div class="lp-mat__grid">
+        <article class="lp-card lp-card--metals reveal">
+          <div class="lp-swatches">
+            <img src="landing/img/mat-metal-silver.webp" alt="Ручной гильош на серебре" loading="lazy">
+            <img src="landing/img/mat-metal-gold.webp" alt="Ручной гильош на жёлтом золоте" loading="lazy">
+            <img src="landing/img/mat-metal-rose.webp" alt="Ручной гильош на розовом золоте" loading="lazy">
+            <img src="landing/img/mat-metal-black.webp" alt="Гильош на титане с чёрным PVD-покрытием" loading="lazy">
+          </div>
+          <h3>Четыре металла</h3>
+          <p>Серебро с ручным гильошем. Тёплое жёлтое золото. Розовое золото, раскрывающееся при дневном свете. Титан с чёрным PVD-покрытием — прочный, лёгкий, графитовый.</p>
+        </article>
+        <article class="lp-card lp-card--wide reveal">
+          <img class="lp-card__img" src="landing/img/mat-meteorite.webp" alt="Пластины метеорита с узором кристаллов в рамке из розового золота" loading="lazy">
+          <h3>Метеорит</h3>
+          <p>Пластины метеорита в декоративной панели. Рисунок кристаллов формировался миллионы лет, и каждая пластина уникальна по узору.</p>
+        </article>
+        <article class="lp-card lp-card--hand reveal">
+          <img class="lp-card__img" src="landing/img/hand-1400.webp" srcset="landing/img/hand-800.webp 800w, landing/img/hand-1400.webp 1400w" sizes="(max-width: 900px) 100vw, 40vw"
+               alt="Zodiac Duo в розовом золоте и коже крокодила в руке на фоне тёмно-синего бархата" loading="lazy">
+        </article>
+        <article class="lp-card reveal">
+          <div class="lp-swatches lp-swatches--3">
+            <img src="landing/img/mat-croc.webp" alt="Кожа крокодила цвета бургунди" loading="lazy">
+            <img src="landing/img/mat-python.webp" alt="Кожа питона цвета Violet" loading="lazy">
+            <img src="landing/img/mat-calf.webp" alt="Кожа телёнка цвета Cherry" loading="lazy">
+          </div>
+          <h3>Кожа крокодила, питона, телёнка</h3>
+          <p>Чешуя крокодила с неповторимым рисунком. Питон с живым переливом. Мягкая зернистая кожа телёнка — шесть оттенков от Cherry до Snow White.</p>
+        </article>
+        <article class="lp-card lp-card--wide reveal">
+          <img class="lp-card__img" src="landing/img/mat-enamel.webp" alt="Ячейки красной ювелирной эмали и бриллианты на окружности из розового золота" loading="lazy">
+          <h3>Ювелирная эмаль и камни</h3>
+          <p>Восемь оттенков эмали от Сапфира до Слоновой кости — или ваш собственный. Белые и чёрные бриллианты, рубины. В титане с чёрным покрытием камни не закрепляются: мы предлагаем только то, что можно исполнить безупречно.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Анатомия: детали расходятся по глубине при прокрутке -->
+  <section class="lp-anat" id="anatomy">
+    <div class="lp-anat__sticky">
+      <div class="lp-anat__head">
+        <div class="lp-kicker">Анатомия</div>
+        <h2 class="lp-h2">Семь уровней, одна&nbsp;композиция</h2>
+      </div>
+      <div class="lp-anat__stage"><div class="lp-anat__phone" id="anat-phone"></div></div>
+      <ol class="lp-anat__list" id="anat-list">
+        <li><b>Медальон</b><span>Барельеф знака в отдельном металле.</span></li>
+        <li><b>Рама</b><span>Гильошированный металл, обнимающий корпус.</span></li>
+        <li><b>Декоративная панель</b><span>13 вставок из метеорита или эмали в металлической рамке — или цельный металл с гильошем.</span></li>
+        <li><b>Зодиакальный круг</b><span>12 знаков, 24 камня, 24 ячейки эмали.</span></li>
+        <li><b>Созвездие</b><span>Звёзды вашего знака в бриллиантах.</span></li>
+        <li><b>Плато</b><span>Металл с лучевым гильошем или кожа крокодила, питона, телёнка.</span></li>
+        <li><b>iPhone Duo</b><span>Складной iPhone — основа, которая остаётся собой.</span></li>
+      </ol>
+      <p class="lp-anat__foot">Больше 13 миллионов сочетаний для каждого знака — и бесконечно больше с собственным оттенком эмали.</p>
+    </div>
+  </section>
+
+  <!-- 7. Конфигуратор -->
+  <section class="lp-build" id="build">
+    <div class="lp-wrap lp-col lp-center reveal">
+      <div class="lp-kicker">Ваш экземпляр</div>
+      <h2 class="lp-h2">Соберите свой Zodiac Duo</h2>
+      <p>Начните со знака — дальше каждое решение за вами. Готовую сборку можно отправить менеджеру, сохранить ссылкой или вернуться к ней по коду.</p>
+    </div>
+    <div data-zodiac-duo></div>
+  </section>
+
+  <!-- 8. Мастерство -->
+  <section class="lp-sec lp-craft">
+    <div class="lp-wrap lp-split lp-split--rev">
+      <figure class="lp-craft__img reveal">
+        <img src="landing/img/atelier-1800.webp" srcset="landing/img/atelier-1000.webp 1000w, landing/img/atelier-1800.webp 1800w" sizes="(max-width: 900px) 100vw, 55vw"
+             alt="Ювелир Caviar закрепляет бриллиант на зодиакальном круге" loading="lazy">
+      </figure>
+      <div class="reveal">
+        <div class="lp-kicker">Руки мастера</div>
+        <h2 class="lp-h2">От эскиза до последнего камня</h2>
+        <p>Zodiac Duo создаётся в ювелирных мастерских Caviar вручную. Технологии здесь служат мастеру, а не заменяют его.</p>
+        <ol class="lp-steps">
+          <li><b>Гильош</b><span>Узоры на раме и плато наносятся на гильоширной машине вручную, линия за линией.</span></li>
+          <li><b>Закрепка</b><span>Каждый из 24 камней окружности и бриллианты созвездия закрепляются вручную под микроскопом.</span></li>
+          <li><b>Эмаль</b><span>Ювелирная эмаль наносится в несколько слоёв и обжигается при температуре около 800&nbsp;°C — так цвет обретает глубину.</span></li>
+          <li><b>Сборка</b><span>Детали соединяются с корпусом iPhone Duo, каждое изделие проходит финальный контроль.</span></li>
+        </ol>
+      </div>
+    </div>
+    <div class="lp-wrap lp-stats reveal">
+      <div><b>120</b><span>часов ручной работы</span></div>
+      <div><b>6–8</b><span>недель от заявки до вручения</span></div>
+    </div>
+  </section>
+
+  <!-- 9. Редкость 1/1 -->
+  <section class="lp-sec lp-one">
+    <div class="lp-wrap lp-center reveal">
+      <div class="lp-kicker">Лимитированная серия</div>
+      <div class="lp-one__n">1/1</div>
+      <h2 class="lp-h2">Тираж — один экземпляр</h2>
+      <p class="lp-col">Вы собираете Zodiac Duo сами, поэтому каждый экземпляр существует в единственном числе. Код сборки становится паспортом изделия: по нему ваш Zodiac Duo узнают в любом бутике Caviar.</p>
+    </div>
+  </section>
+
+  <!-- 10. Финал -->
+  <section class="lp-final">
+    <img class="lp-final__bg" src="landing/img/hero-2400.webp" alt="" loading="lazy">
+    <div class="lp-final__shade"></div>
+    <div class="lp-wrap lp-final__in reveal">
+      <h2 class="lp-final__t">Мир Caviar безграничен</h2>
+      <p class="lp-lead">Ваш знак уже выбрал вас. Остальное — за вами.</p>
+      <a class="lp-btn lp-btn--gold" href="#build">Собрать свой Zodiac Duo</a>
+      <p class="lp-final__s">В бутиках Caviar и на caviar-phone.ru</p>
+    </div>
+  </section>
+
+  <!-- Видео-инструкция -->
+  <dialog class="lp-video" id="lp-video" aria-label="Видео: как собрать Zodiac Duo">
+    <button class="lp-video__x" type="button" aria-label="Закрыть">×</button>
+    <video controls playsinline preload="none" poster="landing/img/hero-1280.webp">
+      <source src="landing/video/tutorial.mp4" type="video/mp4">
+    </video>
+  </dialog>
+
+  <noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
   <script>
     window.ZodiacDuoConfig = {
       leadEndpoint: "",   // TODO: обработчик заявок на email
@@ -39,5 +227,6 @@
   </script>
   <script src="assets/manifest.js?v=20261011q"></script>
   <script src="zodiac-duo.js?v=20261011q"></script>
+  <script src="landing/landing.js?v=2"></script>
 </body>
 </html>

@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Caviar · Zodiac Duo — конфигуратор</title>
+  <meta property="og:title" content="Caviar · Zodiac Duo">
+  <meta property="og:description" content="Соберите свой Zodiac Duo: знак, металл, камни и эмаль.">
+  <!-- TODO: og:image — обложка коллекции -->
+  <link rel="stylesheet" href="zodiac-duo.css?v=20261011q">
+  <style>
+    /* Демо-обвязка: имитирует продуктовый лендинг вокруг блока конфигуратора */
+    body { margin: 0; background: #0D1117; color: #F2EFE8; font-family: "Nunito Sans", system-ui, sans-serif; }
+    .demo-section { max-width: 1200px; margin: 0 auto; padding: 64px 24px; }
+    .demo-section h2 { font-weight: 800; font-size: 40px; text-transform: uppercase; margin: 0 0 12px; }
+    .demo-section p { max-width: 750px; color: #9A968C; font-size: 17px; line-height: 24px; margin: 0; }
+  </style>
+</head>
+<body>
+  <section class="demo-section">
+    <h2>Zodiac</h2>
+    <p>Демо-страница блока конфигуратора. Полный лендинг — <a href="./" style="color:#C9BC98">на главной</a>.</p>
+  </section>
+
+  <!-- Блок конфигуратора: вставить в лендинг вместе с тремя подключениями ниже -->
+  <div data-zodiac-duo></div>
+
+  <section class="demo-section">
+    <p>Продолжение лендинга.</p>
+  </section>
+
+  <script>
+    window.ZodiacDuoConfig = {
+      leadEndpoint: "",   // TODO: обработчик заявок на email
+      bitrixWebhook: "",  // TODO: вебхук Битрикс24
+      policyUrl: "#",     // TODO: политика конфиденциальности
+      ymId: null          // TODO: ID Яндекс Метрики
+    };
+  </script>
+  <script src="assets/manifest.js?v=20261011q"></script>
+  <script src="zodiac-duo.js?v=20261011q"></script>
+</body>
+</html>
