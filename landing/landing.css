@@ -114,6 +114,8 @@ body.lp { margin: 0; background: var(--black); color: var(--ink); font-family: "
 .lp-anat.is-lite .lp-anat__g.is-dim img { opacity: .35; }
 .lp-anat.is-lite .lp-anat__g.is-front img { opacity: .1; }
 .lp-anat__g.is-act img:not(.lp-anat__slice) { filter: brightness(1.06); }
+.lp-anat__canvas { position: absolute; inset: 0; display: block; }
+.lp-anat.is-3d .lp-anat__phone { display: none; }
 .lp-anat__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; position: relative; z-index: 2; transition: opacity .5s; }
 .lp-anat.is-end .lp-anat__list { opacity: 0; }
 .lp-anat__list li { opacity: .32; transition: opacity .4s, transform .4s; padding-left: 16px; border-left: 2px solid transparent; }

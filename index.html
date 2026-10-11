@@ -20,7 +20,7 @@
   <link rel="preload" as="image" href="landing/img/hero-1280.webp" fetchpriority="high">
   <link rel="stylesheet" href="tokens.css?v=1">
   <link rel="stylesheet" href="zodiac-duo.css?v=20261011r">
-  <link rel="stylesheet" href="landing/landing.css?v=6">
+  <link rel="stylesheet" href="landing/landing.css?v=7">
 </head>
 <body class="lp">
   <!-- Меню и подвал сайта подключаются шаблоном Caviar (по стандарту caviar-pages) -->
@@ -240,5 +240,13 @@
   <script src="assets/manifest.js?v=20261011r"></script>
   <script src="zodiac-duo.js?v=20261011r"></script>
   <script src="landing/landing.js?v=6"></script>
+  <script type="importmap">
+    { "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+    } }
+  </script>
+  <!-- «Анатомия» в 3D (модель из Blender); без WebGL остаётся CSS-версия -->
+  <script type="module" src="landing/anatomy3d.js?v=3"></script>
 </body>
 </html>
