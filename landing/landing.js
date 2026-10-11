@@ -77,7 +77,7 @@
     ];
     // Толщина деталей (в условных px при высоте телефона ~450 px): металл толще, кожа тоньше.
     // Толщина строится срезами: копии слоя под лицевой стороной, каждая на 1 единицу глубже и темнее.
-    var THICK = { medal_sagittarius_rose: 7, frame_rose: 8, panel_frame_rose: 7, ring_rose: 8, plate_croc_burgundy: 3, const_sagittarius: 2 };
+    var THICK = { medal_sagittarius_rose: 7, frame_rose: 8, panel_frame_rose: 7, ring_rose: 8, plate_croc_burgundy: 3, core_white: 4, const_sagittarius: 3 };
     function place(img, L) {
       img.style.left = ((L.x - CROP.x) / CROP.w * 100) + "%"; img.style.top = ((L.y - CROP.y) / CROP.h * 100) + "%";
       img.style.width = (L.w / CROP.w * 100) + "%"; img.style.height = (L.h / CROP.h * 100) + "%";
