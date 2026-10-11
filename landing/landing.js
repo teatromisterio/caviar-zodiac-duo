@@ -115,7 +115,9 @@
         var focus = ex > 0.5;
         // выбранная деталь чуть приподнимается, остальные приглушаются (фильтр — на изображениях, иначе 3D сплющится)
         g.style.transform = "translateZ(" + ((j - 3) * gap * ex + (focus && i === active ? gap * 0.18 : 0)) + "px)";
-        g.classList.toggle("is-dim", focus && i !== active);
+        g.classList.toggle("is-dim", focus && i > active);
+        // детали над выбранной (ближе к зрителю) почти прозрачны, чтобы не закрывать обзор
+        g.classList.toggle("is-front", focus && i < active);
         g.classList.toggle("is-act", focus && i === active);
       });
       items.forEach(function (li, i) { li.classList.toggle("is-on", ex > 0.35 ? i === active : false); });
