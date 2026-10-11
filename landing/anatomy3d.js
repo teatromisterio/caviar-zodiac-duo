@@ -45,7 +45,7 @@ async function init() {
   const rim = new THREE.DirectionalLight(0xdbe6ff, 0.9); rim.position.set(2.2, 1.6, -2.4); scene.add(rim);
   scene.add(new THREE.HemisphereLight(0xf2efe8, 0x0d1117, 0.35));
 
-  const gltf = await new GLTFLoader().loadAsync("landing/model/anatomy.glb?v=5");
+  const gltf = await new GLTFLoader().loadAsync("landing/model/anatomy.glb?v=6");
   const root = gltf.scene;
   scene.add(root);
 
@@ -65,6 +65,8 @@ async function init() {
     if (m.map) { m.map.anisotropy = renderer.capabilities.getMaxAnisotropy(); }
     if (/^EDGE_metal/.test(m.name)) { m.metalness = 1; m.roughness = 0.24; m.envMapIntensity = 1.3; }
     if (/^TOP_/.test(m.name) && /rose|const/.test(name)) { m.metalness = 0.35; m.roughness = 0.3; m.envMapIntensity = 1.1; }
+    // глазки камер из PSD: без «молочного» налёта от окружения
+    if (m.name === "TOP_base_lens") { m.envMapIntensity = 0.25; m.roughness = 0.4; m.clearcoat = 0.15; m.color.setScalar(0.8); }
     m.userData.baseColor = m.color.clone();
     parts.push({ mesh: o, node: n || o, level, baseY: (n || o).position.y });
   });
