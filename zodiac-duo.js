@@ -26,6 +26,14 @@
   var ASSETS = CFG.assets || SCRIPT_SRC.replace(/[^/]*$/, "") + "assets";
   var AV = "?v=m14"; // версия ассетов (медальоны v2) — сброс кэша слоёв и свотчей
   var M = window.ZD_MANIFEST;
+  // Медальон в конструкторе чуть меньше слоя PSD (масштаб от центра); общий манифест не трогаем — лендинг видит исходный размер
+  var MEDAL_SCALE = 0.9;
+  function box(key) {
+    var L = M.layers[key];
+    if (!L || key.indexOf("medal_") !== 0) return L;
+    var w = L.w * MEDAL_SCALE, h = L.h * MEDAL_SCALE;
+    return { x: L.x + (L.w - w) / 2, y: L.y + (L.h - h) / 2, w: w, h: h };
+  }
   var CANVAS_W = 1792, CANVAS_H = 2400;
   // Видимая область сцены: телефон без пустых полей холста PSD (телефон занимает 346–1445 × 408–1966)
   var CROP = { x: 316, y: 380, w: 1160, h: 1616 };
@@ -218,7 +226,7 @@
 
   // Зоны телефона в координатах холста PSD: подсветка изменений и навигация кликом по превью
   var ZONES = {
-    medal: { shape: "circle", cx: 1197, cy: 598, r: 117 },
+    medal: { shape: "circle", cx: 1197, cy: 598, r: 105 },
     core: { shape: "circle", cx: 869, cy: 1215, r: 231 },
     ring: { shape: "circle", cx: 870, cy: 1214, r: 353 },
     panel: { shape: "rect", x: 418, y: 1362, w: 908, h: 468, rad: 40 },
@@ -544,7 +552,7 @@
   P.swapNode = function (slot, node, key, z) {
     var old = slot.node;
     if (node) {
-      var Ly = M.layers[key];
+      var Ly = box(key);
       node.className = "zd-layer";
       node.style.left = ((Ly.x - CROP.x) / CROP.w * 100) + "%";
       node.style.top = ((Ly.y - CROP.y) / CROP.h * 100) + "%";
@@ -1686,7 +1694,7 @@
     })).then(function (imgs) {
       imgs.forEach(function (img, i) {
         if (!img) return;
-        var Ly = M.layers[specs[i][1]];
+        var Ly = box(specs[i][1]);
         ctx.drawImage(img, Ly.x * scale, Ly.y * scale, Ly.w * scale, Ly.h * scale);
       });
       return c.toDataURL(type || "image/jpeg", quality || 0.9);
