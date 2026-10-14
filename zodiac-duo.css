@@ -611,3 +611,17 @@
 .zd-work.is-sw-sub .zd-body2 > :nth-child(2) { --sd: .16s; }
 .zd-work.is-sw-sub .zd-body2 > :nth-child(3) { --sd: .32s; }
 .zd-work.is-sw-sub .zd-body2 > :nth-child(n+4) { --sd: .48s; }
+
+/* Единый язык кликабельного: вкладки подгрупп — такие же рамки, как карточки выбора
+   (рамка + лёгкая подложка; активная — золотая рамка и подсветка) */
+.zd .zd-tabs2 { gap: 6px; }
+.zd .zd-tab2, .zd .zd-tab2 + .zd-tab2 { padding: 9px 12px 10px; border: 1px solid var(--zd-line-2); border-radius: var(--zd-r); background: rgba(255, 255, 255, .025);
+  box-shadow: none; cursor: pointer; transition: border-color .2s, background .2s; }
+.zd .zd-tab2:hover { border-color: rgba(168, 153, 116, .55); background: rgba(255, 255, 255, .045); }
+.zd .zd-tab2.is-active, .zd .zd-tab2.is-active + .zd-tab2, .zd .zd-tab2 + .zd-tab2.is-active { box-shadow: none; }
+.zd .zd-tab2.is-active { border-color: var(--zd-gold); background: rgba(168, 153, 116, .12); }
+.zd .zd-tab2.is-active .zd-tab2__t { color: var(--zd-gold-l); }
+.zd .zd-card { background: rgba(255, 255, 255, .025); }
+.zd .zd-card.is-sel { background: rgba(168, 153, 116, .12); }
+.zd .zd-tab2, .zd .zd-tab2 + .zd-tab2 { padding: 9px 9px 10px; }
+.zd .zd-tab2__v { font-size: 11.5px; }
