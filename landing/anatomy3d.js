@@ -45,7 +45,7 @@ async function init() {
   const rim = new THREE.DirectionalLight(0xdbe6ff, 0.9); rim.position.set(2.2, 1.6, -2.4); scene.add(rim);
   scene.add(new THREE.HemisphereLight(0xf2efe8, 0x0d1117, 0.35));
 
-  const gltf = await new GLTFLoader().loadAsync("landing/model/anatomy.glb?v=12");
+  const gltf = await new GLTFLoader().loadAsync("landing/model/anatomy.glb?v=13");
   const root = gltf.scene;
   scene.add(root);
 
