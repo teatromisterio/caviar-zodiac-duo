@@ -582,7 +582,12 @@
         node.style.opacity = "0";
         this.layersBox.appendChild(node);
         requestAnimationFrame(function () { requestAnimationFrame(function () { node.style.opacity = "1"; }); });
-      } else this.layersBox.appendChild(node);
+      } else {
+        // перекрашенный слой (эмаль) — общий canvas на ключ: при прошлом скрытии ему ставили opacity 0,
+        // при повторном показе без «старого» слоя прозрачность нужно вернуть, иначе эмаль пропадает
+        node.style.opacity = "";
+        this.layersBox.appendChild(node);
+      }
     }
     slot.node = node;
     if (old && old !== node) {
