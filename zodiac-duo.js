@@ -24,7 +24,7 @@
 
   var SCRIPT_SRC = (document.currentScript && document.currentScript.src) || "";
   var ASSETS = CFG.assets || SCRIPT_SRC.replace(/[^/]*$/, "") + "assets";
-  var AV = "?v=m9"; // версия ассетов (медальоны v2) — сброс кэша слоёв и свотчей
+  var AV = "?v=m10"; // версия ассетов (медальоны v2) — сброс кэша слоёв и свотчей
   var M = window.ZD_MANIFEST;
   var CANVAS_W = 1792, CANVAS_H = 2400;
   // Видимая область сцены: телефон без пустых полей холста PSD (телефон занимает 346–1445 × 408–1966)
@@ -142,14 +142,24 @@
   var LEATHERS = [
     { id: "croc", name: L("Кожа крокодила", "Crocodile leather"), short: L("Крокодил", "Crocodile"),
       info: L("Рисунок чешуи неповторим: двух одинаковых панелей не существует.", "The scale pattern is unrepeatable: no two panels are alike."),
-      colors: [["burgundy", "Burgundy"], ["white", "White"], ["black", "Black"]] },
-    { id: "python", name: L("Кожа питона", "Python leather"), short: L("Питон", "Python"),
-      info: L("Выразительная чешуя питона с живым переливом цвета.", "Expressive python scales with a living shimmer of colour."),
-      colors: [["violet", "Violet"], ["paleblue", "Pale Blue"]] },
+      colors: [["burgundy", "Burgundy"], ["red", "Red"], ["navy", "Navy"], ["black", "Black"]] },
     { id: "calf", name: L("Кожа телёнка", "Calf leather"), short: L("Телёнок", "Calf"),
       info: L("Мягкая зернистая кожа телёнка — тактильная и благородная.", "Soft grained calf leather — tactile and refined."),
-      colors: [["cherry", "Cherry"], ["navy", "Navy"], ["rosepink", "Rose Pink"], ["beigecream", "Beige Cream"], ["snowwhite", "Snow White"], ["black", "Black"]] }
+      colors: [["navy", "Navy"], ["burgundy", "Burgundy"], ["beige", "Beige"], ["white", "Snow White"], ["paleblue", "Sky Blue"]] }
   ];
+  // Кожи, снятые с коллекции 14.10.2026 (питон и прежние оттенки), → ближайшая из текущих:
+  // так открываются старые сохранения, ссылки #zd= и коды сборок.
+  var LEGACY_PLATE = { "croc:white": "calf:white", "python:violet": "croc:navy", "python:paleblue": "calf:paleblue",
+    "calf:cherry": "calf:burgundy", "calf:rosepink": "croc:red", "calf:beigecream": "calf:beige", "calf:snowwhite": "calf:white", "calf:black": "croc:black" };
+  function fixPlate(s) {
+    if (!s || s.plate === "metal") return s;
+    var l = null;
+    for (var i = 0; i < LEATHERS.length; i++) if (LEATHERS[i].id === s.plate) l = LEATHERS[i];
+    if (l && l.colors.some(function (c) { return c[0] === s.plateColor; })) return s;
+    var to = (LEGACY_PLATE[s.plate + ":" + s.plateColor] || "croc:burgundy").split(":");
+    s.plate = to[0]; s.plateColor = to[1];
+    return s;
+  }
   var STONES = [
     { id: "white", name: L("Белые бриллианты", "White diamonds"), info: L("Бриллианты в закрепке по всей внешней окружности — чистый холодный блеск.", "Diamonds set around the entire outer ring — a pure, cool sparkle.") },
     { id: "black", name: L("Чёрные бриллианты", "Black diamonds"), info: L("Чёрные бриллианты по окружности — графичный, глубокий блеск.", "Black diamonds around the ring — a graphic, deep sparkle.") },
@@ -194,13 +204,13 @@
 
   var PRESETS = [
     { id: "midnight", name: L("Полночь", "Midnight"), full: L("Полночь", "Midnight"),
-      s: { frame: "black", medal: "black", medalOn: 1, plate: "calf", plateColor: "black", ring: "black", decor: "metal", enamel: null, core: "blacksky", panel: "solid", panelTex: 1, panelMetal: "black", base: "nightsky" } },
+      s: { frame: "black", medal: "black", medalOn: 1, plate: "croc", plateColor: "black", ring: "black", decor: "metal", enamel: null, core: "blacksky", panel: "solid", panelTex: 1, panelMetal: "black", base: "nightsky" } },
     { id: "imperial", name: L("Империя", "Imperial"), full: L("Имперское золото", "Imperial gold"),
       s: { frame: "gold", medal: "gold", medalOn: 1, plate: "croc", plateColor: "burgundy", ring: "gold", decor: "white", enamel: null, core: "red", panel: "clear", panelFrame: "gold", panelFill: "enamel", panelEnamel: null, base: "starwhite" } },
     { id: "moon", name: L("Луна", "Moon"), full: L("Лунное серебро", "Moon silver"),
-      s: { frame: "silver", medal: "silver", medalOn: 1, plate: "python", plateColor: "paleblue", ring: "silver", decor: "white", enamel: "#123E8C", core: "bluesky", panel: "clear", panelFrame: "silver", panelFill: "meteorite", base: "nightsky" } },
+      s: { frame: "silver", medal: "silver", medalOn: 1, plate: "calf", plateColor: "paleblue", ring: "silver", decor: "white", enamel: "#123E8C", core: "bluesky", panel: "clear", panelFrame: "silver", panelFill: "meteorite", base: "nightsky" } },
     { id: "dawn", name: L("Рассвет", "Dawn"), full: L("Розовый рассвет", "Rose dawn"),
-      s: { frame: "rose", medal: "rose", medalOn: 1, plate: "calf", plateColor: "rosepink", ring: "rose", decor: "ruby", enamel: "#A3121F", core: "white", panel: "solid", panelTex: 2, panelMetal: "rose", base: "starwhite" } }
+      s: { frame: "rose", medal: "rose", medalOn: 1, plate: "calf", plateColor: "beige", ring: "rose", decor: "ruby", enamel: "#A3121F", core: "white", panel: "solid", panelTex: 2, panelMetal: "rose", base: "starwhite" } }
   ];
 
   var STEP_IDS = ["sign", "base", "frame", "plate", "ring", "medal", "panel", "summary"];
@@ -456,11 +466,11 @@
 
   P.loadState = function () {
     var qc = /[?&]code=([^&#]+)/.exec(location.search), fromCode = qc && decodeCode(decodeURIComponent(qc[1]));
-    if (fromCode) { this.openedByCode = true; return Object.assign(clone(DEFAULT), fromCode); }
-    var s = clone(START), fromHash = parseHash();
-    if (fromHash) return Object.assign(s, fromHash);
+    if (fromCode) { this.openedByCode = true; return fixPlate(Object.assign(clone(DEFAULT), fromCode)); }
+    var s = fixPlate(clone(START)), fromHash = parseHash();
+    if (fromHash) return fixPlate(Object.assign(s, fromHash));
     try { var saved = JSON.parse(localStorage.getItem(CFG.storageKey)); if (saved) Object.assign(s, saved); } catch (e) { }
-    return s;
+    return fixPlate(s);
   };
   P.saveState = function () { try { localStorage.setItem(CFG.storageKey, JSON.stringify(this.state)); } catch (e) { } };
 
@@ -669,6 +679,7 @@
 
   P.commit = function (next, opt) {
     opt = opt || {};
+    fixPlate(next);
     // Правило: камни нельзя закрепить в чёрном титане
     if (next.ring === "black" && next.decor !== "metal") {
       next.decor = "metal";
@@ -1680,7 +1691,7 @@
   };
   P.tool_random = function () {
     function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
-    var m = METALS.map(function (x) { return x.id; }), plate = pick(["metal", "croc", "python", "calf"]), ring = pick(m);
+    var m = METALS.map(function (x) { return x.id; }), plate = pick(["metal", "croc", "calf"]), ring = pick(m);
     this.set({
       frame: pick(m), medal: pick(m), medalOn: Math.random() < 0.8 ? 1 : 0,
       plate: plate, plateColor: plate === "metal" ? pick(m) : pick(find(LEATHERS, plate).colors)[0],
@@ -1733,7 +1744,11 @@
   // Свои оттенки эмали (не из готовых) добавляются хвостом HEX.
   var B32 = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
   var SIGN_CODE = { aries: "ARI", taurus: "TAU", gemini: "GEM", cancer: "CAN", leo: "LEO", virgo: "VIR", libra: "LIB", scorpio: "SCO", sagittarius: "SAG", capricorn: "CAP", aquarius: "AQU", pisces: "PIS" };
-  var PLATES = ["metal:silver", "metal:gold", "metal:rose", "metal:black"].concat(LEATHERS.reduce(function (a, l) { return a.concat(l.colors.map(function (c) { return l.id + ":" + c[0]; })); }, []));
+  // 15 позиций плато в коде — как в первой версии, чтобы выданные коды открывались и дальше:
+  // позиции снятых кож отданы новым, а две последние — дубли (при кодировании берётся первая позиция).
+  var PLATES = ["metal:silver", "metal:gold", "metal:rose", "metal:black",
+    "croc:burgundy", "calf:white", "croc:black", "croc:navy", "calf:paleblue", "calf:burgundy", "calf:navy", "croc:red", "calf:beige",
+    "calf:white", "croc:black"];
   var MIDS = METALS.map(function (m) { return m.id; });
   var EN = [null].concat(ENAMEL_PRESETS.map(function (p) { return p.hex; })).concat(["custom"]);
   var FIELDS = [
