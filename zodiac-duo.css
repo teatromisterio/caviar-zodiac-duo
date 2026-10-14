@@ -598,3 +598,10 @@
 .zd-work:is(.is-sw, .is-sw-back) .zd-body2 > :nth-child(3) { --sd: .30s; }
 .zd-work:is(.is-sw, .is-sw-back) .zd-body2 > :nth-child(n+4) { --sd: .38s; }
 @media (prefers-reduced-motion: reduce) { .zd-work :is(.zd-work__head, .zd-tabs2--top, .zd-body2 > *) { animation: none !important; } }
+/* смена раздела — медленнее (v2) */
+.zd-work:is(.is-sw, .is-sw-back) :is(.zd-work__head, .zd-tabs2--top, .zd-body2 > *) { animation-duration: 1.3s; }
+.zd-work:is(.is-sw, .is-sw-back) .zd-tabs2--top { --sd: .15s; }
+.zd-work:is(.is-sw, .is-sw-back) .zd-body2 > :nth-child(1) { --sd: .28s; }
+.zd-work:is(.is-sw, .is-sw-back) .zd-body2 > :nth-child(2) { --sd: .44s; }
+.zd-work:is(.is-sw, .is-sw-back) .zd-body2 > :nth-child(3) { --sd: .6s; }
+.zd-work:is(.is-sw, .is-sw-back) .zd-body2 > :nth-child(n+4) { --sd: .76s; }

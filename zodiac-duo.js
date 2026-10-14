@@ -1112,7 +1112,7 @@
     if (animate && !REDUCED) {
       var w = this.work, cls = dir < 0 ? "is-sw-back" : "is-sw";
       w.classList.remove("is-sw", "is-sw-back"); void w.offsetWidth; w.classList.add(cls);
-      clearTimeout(this._swT); this._swT = setTimeout(function () { w.classList.remove(cls); }, 1500);
+      clearTimeout(this._swT); this._swT = setTimeout(function () { w.classList.remove(cls); }, 2400);
     }
     this.content.scrollTop = keepScroll;
     this.checkMore();
