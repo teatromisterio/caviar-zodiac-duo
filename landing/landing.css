@@ -220,7 +220,7 @@ body.lp { margin: 0; background: var(--black); color: var(--ink); font-family: "
 .lp-cfg { position: fixed; inset: 0; z-index: 1000; background: var(--black); height: 100vh; height: 100dvh; overscroll-behavior: none; }
 .lp-cfg[hidden] { display: none; }
 .lp-cfg > [data-zodiac-duo], .lp-cfg .zd { height: 100%; max-height: none; min-height: 0; }
-.lp-cfg__close { position: absolute; z-index: 20; top: 14px; right: 14px; width: 40px; height: 40px; display: grid; place-items: center; border-radius: 50%;
+.lp-cfg__close { position: absolute; z-index: 20; top: 14px; right: 14px; width: 40px; height: 40px; display: grid; place-items: center; border-radius: 2px;
   color: var(--ink); background: rgba(13, 17, 23, .72); border: 1px solid rgba(255, 255, 255, .14); cursor: pointer; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
 .lp-cfg__close:hover { border-color: var(--gold); color: var(--gold-l); }
 .lp-cfg__close svg { width: 20px; height: 20px; }

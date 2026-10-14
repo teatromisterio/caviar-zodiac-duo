@@ -498,3 +498,87 @@
 .zd-nav { overflow-x: hidden; }
 .zd-nav__build, .zd-code { min-width: 0; }
 .zd-nav .zd-code__v { white-space: normal; overflow-wrap: anywhere; min-width: 0; }
+
+/* =====================================================================
+   Строгий стиль (15.10.2026): прямые углы, волосяные линии, сдержанная типографика.
+   Активные состояния — золотой линией, без заливок; материалы остаются круглыми.
+   ===================================================================== */
+.zd { --zd-r: 2px; --zd-line: rgba(255, 255, 255, .08); --zd-line-2: rgba(255, 255, 255, .14); }
+
+/* заголовки и подписи */
+.zd .zd-brand__t { font-weight: 700; font-size: 24px; letter-spacing: .22em; }
+.zd .zd-brand__l { font-size: 12.5px; letter-spacing: .02em; }
+.zd .zd-work__step, .zd .zd-group__t, .zd .zd-nav__bt, .zd .zd-spec__h { font-size: 10.5px; font-weight: 700; letter-spacing: .2em; }
+.zd .zd-work__title { font-size: 20px; font-weight: 600; letter-spacing: .01em; margin-top: 6px; }
+.zd .zd-group__t { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.zd .zd-group__t::after { content: ""; flex: 1; height: 1px; background: var(--zd-line); }
+.zd .zd-work__head { border-bottom: 1px solid var(--zd-line); padding-bottom: 16px; margin-bottom: 14px; }
+
+/* панели инструментов и кнопки */
+.zd .zd-tool { border-radius: var(--zd-r); height: 34px; padding: 0 12px; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; border: 1px solid var(--zd-line-2); background: rgba(13, 17, 23, .55); }
+.zd .zd-tool:hover { background: transparent; border-color: var(--zd-gold); }
+.zd .zd-btn { border-radius: var(--zd-r); min-height: 40px; font-size: 11.5px; letter-spacing: .14em; text-transform: uppercase; }
+.zd .zd-btn--next { border-color: var(--zd-gold); }
+.zd .zd-cta { border-radius: var(--zd-r); letter-spacing: .2em; font-size: 12.5px; }
+.zd .zd-cta-bar, .zd .zd-cta-bar.is-main { background: var(--zd-black); }
+.zd .zd-link { font-size: 11.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+
+/* навигатор шагов */
+.zd .zd-nav { background: var(--zd-black); padding-top: 22px; }
+.zd .zd-nav__list { gap: 0; }
+.zd .zd-nav__item + .zd-nav__item button { border-top: 1px solid var(--zd-line); }
+.zd .zd-nav__item button { border-radius: 0; padding: 12px 10px 12px 12px; }
+.zd .zd-nav__item button:hover { background: transparent; }
+.zd .zd-nav__item.is-active button { background: transparent; }
+.zd .zd-nav__item.is-active button::before { top: 0; bottom: 0; width: 1px; border-radius: 0; }
+.zd .zd-nav__n { border-radius: var(--zd-r); width: 22px; height: 22px; font-size: 10.5px; }
+.zd .zd-nav__item.is-active .zd-nav__n { background: transparent; color: var(--zd-gold-l); border-color: var(--zd-gold); }
+.zd .zd-nav__name { font-weight: 600; font-size: 13px; letter-spacing: .01em; }
+.zd .zd-nav__val { font-size: 11.5px; }
+
+/* вкладки, карточки, плашки */
+.zd .zd-tabs2 { gap: 0; }
+.zd .zd-tab2 { border-radius: 0; border: 0; border-bottom: 1px solid var(--zd-line-2); background: transparent; padding: 9px 12px 10px 0; }
+.zd .zd-tab2 + .zd-tab2 { padding-left: 12px; box-shadow: inset 1px 0 0 var(--zd-line); }
+.zd .zd-tab2:hover { background: rgba(255, 255, 255, .025); }
+.zd .zd-tab2.is-active { background: transparent; border-bottom-color: var(--zd-gold); }
+.zd .zd-tab2.is-active + .zd-tab2, .zd .zd-tab2 + .zd-tab2.is-active { box-shadow: inset 1px 0 0 var(--zd-line); }
+.zd .zd-tab2__t { font-size: 10px; letter-spacing: .14em; text-transform: uppercase; }
+.zd .zd-card { border-radius: var(--zd-r); background: transparent; }
+.zd .zd-card.is-sel { background: transparent; border-color: var(--zd-gold); }
+.zd .zd-mat, .zd .zd-code, .zd .zd-pop, .zd .zd-dialog, .zd .zd-toast, .zd .zd-open__row, .zd .zd-field { border-radius: var(--zd-r); }
+.zd .zd-mat { background: transparent; border-color: var(--zd-line); }
+.zd .zd-code { background: transparent; border-color: var(--zd-line-2); }
+.zd .zd-code--big { border-color: rgba(168, 153, 116, .5); }
+.zd .zd-code--big .zd-code__v { font-weight: 600; letter-spacing: .08em; }
+.zd .zd-code__l { font-size: 10px; letter-spacing: .14em; text-transform: uppercase; }
+.zd .zd-code__copy { border-radius: var(--zd-r); }
+.zd .zd-act { border-radius: var(--zd-r); font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+
+/* итог */
+.zd .zd-spec__n { border-radius: var(--zd-r); }
+.zd .zd-spec__r { border-radius: 0; border-bottom: 1px solid var(--zd-line); font-size: 13px; }
+.zd .zd-spec__r:hover { background: rgba(255, 255, 255, .025); }
+
+/* свотчи: круг материала, выбор — тонкое золотое кольцо, без «пухлых» теней */
+.zd .zd-sw { border-radius: 0; }
+.zd .zd-sw__ring { border-width: 1px; }
+.zd .zd-sw__c { box-shadow: 0 0 0 1px rgba(255, 255, 255, .08); }
+.zd .zd-sw:hover .zd-sw__c { transform: none; }
+.zd .zd-sw__ok { width: 16px; height: 16px; border-radius: var(--zd-r); }
+.zd .zd-sw__l { font-size: 11.5px; letter-spacing: .02em; }
+.zd .zd-sw.is-sel .zd-sw__l { font-weight: 600; }
+
+/* сцена: ореол тише */
+.zd .zd-halo { opacity: .55; }
+
+@media (max-width: 860px) {
+  .zd .zd-tool { width: 34px; padding: 0; }
+  .zd .zd-brand__t { font-size: 17px; letter-spacing: .16em; }
+  .zd .zd-work { border-radius: 6px 6px 0 0; background: var(--zd-black); }
+  .zd .zd-mstep__b { border-radius: 0; padding: 8px 10px; font-size: 12px; letter-spacing: .04em; }
+  .zd .zd-mstep__b.is-active { background: transparent; box-shadow: inset 0 -1px 0 var(--zd-gold); }
+  .zd .zd-mstep__n { border-radius: var(--zd-r); width: 18px; height: 18px; font-size: 10px; }
+  .zd .zd-mstep__b.is-active .zd-mstep__n { background: transparent; color: var(--zd-gold-l); border-color: var(--zd-gold); }
+  .zd .zd-work__head { margin-bottom: 8px; padding-bottom: 10px; }
+}
