@@ -625,3 +625,6 @@
 .zd .zd-card.is-sel { background: rgba(168, 153, 116, .12); }
 .zd .zd-tab2, .zd .zd-tab2 + .zd-tab2 { padding: 9px 9px 10px; }
 .zd .zd-tab2__v { font-size: 11.5px; }
+/* итог: без номеров шагов */
+.zd .zd-spec__n { display: none; }
+.zd .zd-spec__r { padding-left: 0; }
