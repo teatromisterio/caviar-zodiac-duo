@@ -1110,10 +1110,13 @@
     this.content.appendChild(body);
     // смена раздела: заголовок, вкладки и блоки содержимого проявляются по очереди
     if (animate && !REDUCED) {
-      var w = this.work, cls = dir < 0 ? "is-sw-back" : "is-sw";
-      w.classList.remove("is-sw", "is-sw-back"); void w.offsetWidth; w.classList.add(cls);
-      clearTimeout(this._swT); this._swT = setTimeout(function () { w.classList.remove(cls); }, 2400);
+      // тот же шаг (переключение вкладки) — анимируется только содержимое подгруппы, заголовок и вкладки стоят
+      var w = this.work, cls = dir < 0 ? "is-sw-back" : "is-sw", sub = this._swStep === step;
+      w.classList.remove("is-sw", "is-sw-back", "is-sw-sub"); void w.offsetWidth; w.classList.add(cls);
+      if (sub) w.classList.add("is-sw-sub");
+      clearTimeout(this._swT); this._swT = setTimeout(function () { w.classList.remove(cls, "is-sw-sub"); }, 2400);
     }
+    this._swStep = step;
     this.content.scrollTop = keepScroll;
     this.checkMore();
     // в горизонтальных лентах выбранный вариант всегда в поле зрения

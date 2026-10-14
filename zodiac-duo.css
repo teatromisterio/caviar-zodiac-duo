@@ -605,3 +605,9 @@
 .zd-work:is(.is-sw, .is-sw-back) .zd-body2 > :nth-child(2) { --sd: .44s; }
 .zd-work:is(.is-sw, .is-sw-back) .zd-body2 > :nth-child(3) { --sd: .6s; }
 .zd-work:is(.is-sw, .is-sw-back) .zd-body2 > :nth-child(n+4) { --sd: .76s; }
+/* вкладка внутри шага: заголовок и строка вкладок не анимируются, подгруппа — сразу */
+.zd-work.is-sw-sub :is(.zd-work__head, .zd-tabs2--top) { animation: none; }
+.zd-work.is-sw-sub .zd-body2 > :nth-child(1) { --sd: 0s; }
+.zd-work.is-sw-sub .zd-body2 > :nth-child(2) { --sd: .16s; }
+.zd-work.is-sw-sub .zd-body2 > :nth-child(3) { --sd: .32s; }
+.zd-work.is-sw-sub .zd-body2 > :nth-child(n+4) { --sd: .48s; }
