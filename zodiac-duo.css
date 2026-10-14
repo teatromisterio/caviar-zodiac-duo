@@ -628,3 +628,6 @@
 /* итог: без номеров шагов */
 .zd .zd-spec__n { display: none; }
 .zd .zd-spec__r { padding-left: 0; }
+/* без «Шаг N из 8» над заголовком */
+.zd .zd-work__step { display: none; }
+.zd .zd-work__title { margin-top: 0; }
