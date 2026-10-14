@@ -622,7 +622,7 @@
     this.zoomBtn = this.toolBtn("zoom", function () { self.toggleZoom(); });
     tools.appendChild(this.undoBtn);
     tools.appendChild(this.toolBtn("reset", function () { self.tool_reset(); }));
-    tools.appendChild(this.zoomBtn);
+    // кнопка «Лупа» убрана из панели; приближение — щипком и колесом
     this.stage.appendChild(tools);
     this.toastEl = el("div", { class: "zd-toast", role: "status", "aria-live": "polite" });
     this.stage.appendChild(this.toastEl);
