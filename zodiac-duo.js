@@ -24,7 +24,7 @@
 
   var SCRIPT_SRC = (document.currentScript && document.currentScript.src) || "";
   var ASSETS = CFG.assets || SCRIPT_SRC.replace(/[^/]*$/, "") + "assets";
-  var AV = "?v=m19"; // версия ассетов (медальоны v2) — сброс кэша слоёв и свотчей
+  var AV = "?v=m20"; // версия ассетов (медальоны v2) — сброс кэша слоёв и свотчей
   var M = window.ZD_MANIFEST;
   // Медальон в конструкторе чуть меньше слоя PSD (масштаб от центра); общий манифест не трогаем — лендинг видит исходный размер
   var MEDAL_SCALE = 0.9;
