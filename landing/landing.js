@@ -49,11 +49,11 @@
     ["leo", "Лев", "23.07–22.08"], ["virgo", "Дева", "23.08–22.09"], ["libra", "Весы", "23.09–22.10"], ["scorpio", "Скорпион", "23.10–21.11"],
     ["sagittarius", "Стрелец", "22.11–21.12"], ["capricorn", "Козерог", "22.12–19.01"], ["aquarius", "Водолей", "20.01–18.02"], ["pisces", "Рыбы", "19.02–20.03"]];
   var grid = $("#medals"), metal = "silver";
-  function src(sign, m) { return "assets/layers/medal_" + sign + "_" + m + ".webp"; }
+  function src(sign, m) { return "assets/layers/medal_" + sign + "_" + m + ".webp?v=m2"; }
   if (grid) {
     SIGNS.forEach(function (s) {
       var li = el("li"), m = el("div", "m"), img = el("img");
-      img.src = src(s[0], metal); img.alt = "Медальон «" + s[1] + "» — барельеф знака"; img.loading = "lazy";
+      img.src = src(s[0], metal); img.alt = "Медальон «" + s[1] + "» — рельефный символ знака"; img.loading = "lazy";
       m.appendChild(img);
       var n = el("div", "n"); n.textContent = s[1];
       var d = el("div", "d"); d.textContent = s[2];
@@ -102,7 +102,7 @@
       var g = el("div", "lp-anat__g");
       g.style.zIndex = String(GROUPS.length - i);
       keys.forEach(function (k) {
-        var L = M.layers[k], url = "assets/layers/" + k + "@half.webp", n = LITE ? 0 : (THICK[k] || 0);
+        var L = M.layers[k], url = "assets/layers/" + k + "@half.webp?v=m2", n = LITE ? 0 : (THICK[k] || 0);
         for (var d = n; d >= 1; d--) {
           var sl = el("img", "lp-anat__slice"); sl.src = url; sl.alt = ""; sl.decoding = "async"; place(sl, L);
           sl.style.transform = "translateZ(calc(var(--u) * " + (-d) + "))";

@@ -24,6 +24,7 @@
 
   var SCRIPT_SRC = (document.currentScript && document.currentScript.src) || "";
   var ASSETS = CFG.assets || SCRIPT_SRC.replace(/[^/]*$/, "") + "assets";
+  var AV = "?v=m2"; // версия ассетов (медальоны v2) — сброс кэша слоёв и свотчей
   var M = window.ZD_MANIFEST;
   var CANVAS_W = 1792, CANVAS_H = 2400;
   // Видимая область сцены: телефон без пустых полей холста PSD (телефон занимает 346–1445 × 408–1966)
@@ -242,7 +243,7 @@
   }
   function find(list, id) { for (var i = 0; i < list.length; i++) if (list[i].id === id) return list[i]; return list[0]; }
   function clone(o) { return JSON.parse(JSON.stringify(o)); }
-  function sw(name) { return ASSETS + "/swatches/" + name + ".webp"; }
+  function sw(name) { return ASSETS + "/swatches/" + name + ".webp" + AV; }
   function fmt(s, n) { return s.replace("{n}", n); }
 
   function hexToHsl(hex) {
@@ -486,7 +487,7 @@
 
   P.url = function (key) {
     var k = key + (this.half ? "@half" : "");
-    return (M.inline && M.inline[k]) || ASSETS + "/layers/" + k + ".webp";
+    return (M.inline && M.inline[k]) || ASSETS + "/layers/" + k + ".webp" + AV;
   };
   P.loadImg = function (key) {
     var u = this.url(key);
@@ -703,7 +704,7 @@
           var elm = ELEMENTS[z.id];
           return { id: z.id, label: t(z.name), sub: z.dates, sw: sw("sign_" + z.id), sel: s.sign === z.id,
             cardSw: sw("const_" + z.id), cardTitle: t(z.name) + " · " + t(elm), cardSub: z.dates,
-            info: L("Созвездие знака выложено бриллиантами в центре круга, на медальоне — барельеф знака.", "The constellation is set with diamonds in the centre of the circle; the medallion carries a bas-relief of the sign."),
+            info: L("Созвездие знака выложено бриллиантами в центре круга, на медальоне — рельефный символ знака.", "The constellation is set with diamonds in the centre of the circle; the medallion carries the sign's symbol in relief."),
             infoTitle: t(z.name) + " · " + z.dates,
             pick: function () { self.set({ sign: z.id }); } };
         }) });
@@ -764,7 +765,7 @@
         break;
       case "medal":
         m.parent = { id: "medal", title: t(UI.g.medal), opts: [
-          { id: "on", label: t(UI.on), sw: sw("medal_" + s.sign + "_" + s.medal), sel: !!s.medalOn, info: L("Медальон с барельефом знака.", "Medallion with a bas-relief of your sign."), pick: function () { self.set({ medalOn: 1 }); } },
+          { id: "on", label: t(UI.on), sw: sw("medal_" + s.sign + "_" + s.medal), sel: !!s.medalOn, info: L("Медальон с рельефным символом знака.", "Medallion with your sign's symbol in relief."), pick: function () { self.set({ medalOn: 1 }); } },
           { id: "off", label: t(UI.off), sw: sw("frame_" + s.frame), sel: !s.medalOn, info: L("Гильош рамы остаётся открытым.", "The frame guilloché stays open."), pick: function () { self.set({ medalOn: 0 }); } }
         ] };
         if (s.medalOn) m.blocks.push({ id: "metal", child: true, title: t(UI.g.metal) + " · " + t(UI.g.medal).toLowerCase(), opts: METALS.map(function (mt) {
@@ -1283,7 +1284,7 @@
     R.push({ step: "ring", tab: "decor", label: t(UI.g.decor), value: s.decor === "metal" ? t(UI.noStones) : t(find(STONES, s.decor).name) });
     R.push({ step: "ring", tab: "enamel", label: t(UI.g.enamel), value: enamelName(s.enamel) + (s.enamel ? " · " + s.enamel : "") });
     R.push({ step: "ring", tab: "core", label: t(UI.g.core), value: t(find(CORES, s.core).name) });
-    R.push({ step: "medal", label: t(UI.g.medal), value: s.medalOn ? { ru: "С барельефом знака · ", en: "Sign bas-relief · " }[LANG] + metal(s.medal) : t(UI.off) });
+    R.push({ step: "medal", label: t(UI.g.medal), value: s.medalOn ? { ru: "Символ знака · ", en: "Sign symbol · " }[LANG] + metal(s.medal) : t(UI.off) });
     if (s.panel === "none") R.push({ step: "panel", label: t(UI.g.panel), value: t(UI.noPanel) });
     else if (s.panel === "clear") {
       R.push({ step: "panel", label: t(UI.g.panel), value: t(UI.clear) });
