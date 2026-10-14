@@ -24,7 +24,7 @@
 
   var SCRIPT_SRC = (document.currentScript && document.currentScript.src) || "";
   var ASSETS = CFG.assets || SCRIPT_SRC.replace(/[^/]*$/, "") + "assets";
-  var AV = "?v=m17"; // версия ассетов (медальоны v2) — сброс кэша слоёв и свотчей
+  var AV = "?v=m18"; // версия ассетов (медальоны v2) — сброс кэша слоёв и свотчей
   var M = window.ZD_MANIFEST;
   // Медальон в конструкторе чуть меньше слоя PSD (масштаб от центра); общий манифест не трогаем — лендинг видит исходный размер
   var MEDAL_SCALE = 0.9;
@@ -797,7 +797,7 @@
         var black = s.ring === "black";
         m.tabs = [
           { id: "metal", title: t(UI.g.metal), opts: metalOpts("ring", frameSw) },
-          { id: "decor", title: t(UI.g.decor), opts: [{ id: "metal", label: t(UI.noStones), sw: sw("decor_metal_" + s.ring), sel: s.decor === "metal",
+          { id: "decor", title: t(UI.g.decor), opts: [{ id: "metal", label: t(UI.noStones), sw: sw("none"), sel: s.decor === "metal",
               info: L("Металлические вставки в цвет круга.", "Metal inserts matching the circle."), pick: function () { self.set({ decor: "metal" }); } }]
             .concat(STONES.map(function (st) {
               return { id: st.id, label: t(st.name), sw: sw("decor_" + st.id), sel: s.decor === st.id, info: st.info,
@@ -812,7 +812,7 @@
       case "medal":
         m.parent = { id: "medal", title: t(UI.g.medal), opts: [
           { id: "on", label: t(UI.on), sw: sw("medal_" + s.sign + "_" + s.medal), sel: !!s.medalOn, info: L("Медальон с рельефным символом знака.", "Medallion with your sign's symbol in relief."), pick: function () { self.set({ medalOn: 1 }); } },
-          { id: "off", label: t(UI.off), sw: sw("frame_" + s.frame), sel: !s.medalOn, info: L("Гильош рамы остаётся открытым.", "The frame guilloché stays open."), pick: function () { self.set({ medalOn: 0 }); } }
+          { id: "off", label: t(UI.off), sw: sw("none"), sel: !s.medalOn, info: L("Гильош рамы остаётся открытым.", "The frame guilloché stays open."), pick: function () { self.set({ medalOn: 0 }); } }
         ] };
         if (s.medalOn) m.blocks.push({ id: "metal", child: true, title: t(UI.g.metal) + " · " + t(UI.g.medal).toLowerCase(), opts: METALS.map(function (mt) {
           return { id: mt.id, label: t(mt.name), sw: sw("medal_" + s.sign + "_" + mt.id), sel: s.medal === mt.id, info: mt.info, pick: function () { self.set({ medal: mt.id }); } };
@@ -824,7 +824,7 @@
             info: L("Ажурная рамка с вставками: метеорит или ювелирная эмаль.", "An open-work frame with inlays: meteorite or jewellery enamel."), pick: function () { self.set({ panel: "clear" }); } },
           { id: "solid", label: t(UI.solid), sub: { ru: "Металл с гильошем", en: "Metal with guilloché" }[LANG], sw: sw("panel_mono1_" + s.panelMetal), sel: s.panel === "solid",
             info: L("Цельный металл с гильошем.", "Solid metal with guilloché."), pick: function () { self.set({ panel: "solid" }); } },
-          { id: "none", label: t(UI.noPanel), sub: { ru: "Плато открыто", en: "Plate fully open" }[LANG], sw: sw(s.plate === "metal" ? "plate_metal_" + s.plateColor : "plate_" + s.plate + "_" + s.plateColor), sel: s.panel === "none",
+          { id: "none", label: t(UI.noPanel), sub: { ru: "Плато открыто", en: "Plate fully open" }[LANG], sw: sw("none"), sel: s.panel === "none",
             info: L("Плато открыто целиком.", "The plate stays fully open."), pick: function () { self.set({ panel: "none" }); } }
         ] };
         if (s.panel === "clear") {
