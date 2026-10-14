@@ -287,3 +287,10 @@ html.is-builder, html.is-builder body { overflow: hidden; overscroll-behavior: n
   .lp-cfg :is(.zd-work__head, .zd-handle, .zd-mstep-wrap) { --d: 1.1s; }
   .lp-cfg .zd-tabs2--top { --d: 1.35s; } .lp-cfg .zd-content { --d: 1.6s; } .lp-cfg :is(.zd-work__foot, .zd-cta-bar) { --d: 1.9s; }
 }
+
+/* Safari: размытие (filter) внутри контейнеров с overflow (навигатор, панель, сцена) даёт чёрные полосы по краю.
+   Размываем только сам телефон, остальные блоки — чистый fade + сдвиг. */
+.lp-cfg.is-pre :is(.zd-brand, .zd-tools, .lp-cfg__close, .zd-nav__item, .zd-nav__build, .zd-work__head, .zd-tabs2--top, .zd-content, .zd-work__foot, .zd-cta-bar, .zd-mstep-wrap, .zd-handle) { filter: none; }
+.lp-cfg.is-pre .zd-zoom { filter: none; }
+.lp-cfg.is-pre .zd-phone { filter: blur(12px); }
+.lp-cfg.is-anim .zd-phone { transition: filter 1.6s cubic-bezier(.25, .1, .25, 1) .15s; }

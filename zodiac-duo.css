@@ -587,7 +587,7 @@
 .zd .zd-nav__item button { grid-template-columns: 1fr; padding-left: 14px; }
 
 /* смена раздела в духе Apple: мягкий сдвиг + расфокус → резкость, блоки по очереди */
-@keyframes zd-sw { from { opacity: 0; transform: translate3d(var(--sx, 18px), 6px, 0); filter: blur(5px); } to { opacity: 1; transform: none; filter: none; } }
+@keyframes zd-sw { from { opacity: 0; transform: translate3d(var(--sx, 18px), 6px, 0); } to { opacity: 1; transform: none; } }
 .zd-work.is-sw-back { --sx: -18px; }
 .zd-work:is(.is-sw, .is-sw-back) :is(.zd-work__head, .zd-tabs2--top, .zd-body2 > *) {
   animation: zd-sw .75s cubic-bezier(.32, .72, 0, 1) both; animation-delay: var(--sd, 0s); }
