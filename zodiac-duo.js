@@ -1142,7 +1142,7 @@
     this.cta.appendChild(el("button", { class: "zd-cta" + (isSum ? " zd-cta--big" : ""), type: "button", text: t(UI.order), onclick: function () { self.openForm(); } }));
     this.cta.appendChild(el("div", { class: "zd-cta__cap" }, [
       isSum ? el("span", { class: "zd-cta__code", text: t(UI.price) + " · " + this.code() }) : null,
-      isSum ? null : el("span", { text: fmt(t(UI.progress), this.progress()) })
+      null // счётчик «N из 7 пройдено» убран
     ]));
     // мобильный: на шагах 1–7 вместо второй большой кнопки — тонкая строка «прогресс · Оформить →»
     if (!isSum) this.cta.appendChild(el("button", { class: "zd-cta__link", type: "button", onclick: function () { self.openForm(); } },
