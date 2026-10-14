@@ -174,7 +174,7 @@
       // два кадра: браузер фиксирует стартовое состояние, затем — плавный переход
       requestAnimationFrame(function () { requestAnimationFrame(function () {
         box.classList.add("is-anim"); box.classList.remove("is-pre");
-        clearTimeout(box._t); box._t = setTimeout(function () { box.classList.remove("is-anim"); }, 1600);
+        clearTimeout(box._t); box._t = setTimeout(function () { box.classList.remove("is-anim"); }, 3600);
       }); });
       if (push !== false) history.pushState({ zdBuilder: 1 }, "", location.pathname + location.search + "#builder");
       box.querySelector("[data-close-builder]").focus({ preventScroll: true });
@@ -188,7 +188,7 @@
       box._t = setTimeout(function () {
         box.hidden = true; box.classList.remove("is-out"); unlock();
         requestAnimationFrame(function () { window.scrollTo({ top: scrollY, behavior: "instant" }); });
-      }, REDUCED_MOTION ? 0 : 380);
+      }, REDUCED_MOTION ? 0 : 480);
       if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
     }
     document.addEventListener("click", function (e) {
