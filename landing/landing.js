@@ -164,11 +164,18 @@
       window.scrollTo({ top: scrollY, behavior: "instant" });
     }
     if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+    var REDUCED_MOTION = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
     function open(push) {
       if (opened) return;
       opened = true; lastFocus = document.activeElement;
+      box.classList.remove("is-out", "is-anim"); box.classList.add("is-pre");
       box.hidden = false; lock();
       if (window.ZodiacDuo) window.ZodiacDuo.mount(host);
+      // два кадра: браузер фиксирует стартовое состояние, затем — плавный переход
+      requestAnimationFrame(function () { requestAnimationFrame(function () {
+        box.classList.add("is-anim"); box.classList.remove("is-pre");
+        clearTimeout(box._t); box._t = setTimeout(function () { box.classList.remove("is-anim"); }, 1600);
+      }); });
       if (push !== false) history.pushState({ zdBuilder: 1 }, "", location.pathname + location.search + "#builder");
       box.querySelector("[data-close-builder]").focus({ preventScroll: true });
     }
@@ -176,8 +183,12 @@
       if (!opened) return;
       // открыт через pushState — закрываем шагом назад, сам оверлей уберёт popstate
       if (!fromHistory && history.state && history.state.zdBuilder) { history.back(); return; }
-      opened = false; box.hidden = true; unlock();
-      requestAnimationFrame(function () { window.scrollTo({ top: scrollY, behavior: "instant" }); });
+      opened = false;
+      clearTimeout(box._t); box.classList.remove("is-anim", "is-pre"); box.classList.add("is-out");
+      box._t = setTimeout(function () {
+        box.hidden = true; box.classList.remove("is-out"); unlock();
+        requestAnimationFrame(function () { window.scrollTo({ top: scrollY, behavior: "instant" }); });
+      }, REDUCED_MOTION ? 0 : 380);
       if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
     }
     document.addEventListener("click", function (e) {

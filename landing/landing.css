@@ -231,3 +231,38 @@ html.is-builder, html.is-builder body { overflow: hidden; overscroll-behavior: n
   .lp-cfg .zd-tools { right: 56px; }
   .lp-launch { padding-bottom: 84px; }
 }
+
+/* ---- появление конструктора в духе Apple: мягкий fade + scale, расфокус → резкость, элементы каскадом.
+   Классы: is-pre (стартовое состояние) → is-anim (переход) → без классов (обычная вёрстка). */
+.lp-cfg { --ap-ease: cubic-bezier(.32, .72, 0, 1); --ap-fade: cubic-bezier(.25, .1, .25, 1); }
+.lp-cfg.is-pre { opacity: 0; transform: scale(.985); }
+.lp-cfg.is-anim { transition: opacity .55s var(--ap-fade), transform .8s var(--ap-ease); }
+.lp-cfg.is-out { opacity: 0; transform: scale(.985); transition: opacity .32s var(--ap-fade), transform .4s var(--ap-ease); pointer-events: none; }
+
+.lp-cfg.is-pre .zd-zoom { opacity: 0; transform: translateY(18px) scale(.94); filter: blur(12px); }
+.lp-cfg.is-pre .zd-sky { opacity: 0; }
+.lp-cfg.is-pre :is(.zd-brand, .zd-tools, .lp-cfg__close, .zd-nav__item, .zd-nav__build, .zd-work__head, .zd-tabs2--top, .zd-content, .zd-work__foot, .zd-cta-bar, .zd-mstep-wrap, .zd-handle) {
+  opacity: 0; transform: translateY(10px); filter: blur(4px); }
+.lp-cfg.is-anim :is(.zd-zoom, .zd-sky, .zd-brand, .zd-tools, .lp-cfg__close, .zd-nav__item, .zd-nav__build, .zd-work__head, .zd-tabs2--top, .zd-content, .zd-work__foot, .zd-cta-bar, .zd-mstep-wrap, .zd-handle) {
+  transition: opacity .7s var(--ap-fade) var(--d, 0s), transform .9s var(--ap-ease) var(--d, 0s), filter .7s var(--ap-fade) var(--d, 0s); }
+.lp-cfg.is-anim .zd-sky { transition-duration: 1.4s; }
+.lp-cfg.is-anim .zd-zoom { --d: .08s; transition-duration: 1s, 1.25s, 1s; }
+.lp-cfg :is(.zd-brand, .lp-cfg__close) { --d: .18s; }
+.lp-cfg .zd-tools { --d: .24s; }
+.lp-cfg .zd-nav__item:nth-child(1) { --d: .22s; } .lp-cfg .zd-nav__item:nth-child(2) { --d: .26s; }
+.lp-cfg .zd-nav__item:nth-child(3) { --d: .30s; } .lp-cfg .zd-nav__item:nth-child(4) { --d: .34s; }
+.lp-cfg .zd-nav__item:nth-child(5) { --d: .38s; } .lp-cfg .zd-nav__item:nth-child(6) { --d: .42s; }
+.lp-cfg .zd-nav__item:nth-child(7) { --d: .46s; } .lp-cfg .zd-nav__item:nth-child(8) { --d: .50s; }
+.lp-cfg .zd-nav__build { --d: .56s; }
+.lp-cfg :is(.zd-work__head, .zd-handle, .zd-mstep-wrap) { --d: .28s; }
+.lp-cfg .zd-tabs2--top { --d: .34s; }
+.lp-cfg .zd-content { --d: .40s; }
+.lp-cfg :is(.zd-work__foot, .zd-cta-bar) { --d: .50s; }
+/* телефон: шторка выезжает снизу, как системный sheet */
+@media (max-width: 860px) {
+  .lp-cfg.is-pre .zd-work { transform: translateY(42%); }
+  .lp-cfg.is-anim .zd-work { transition: transform .95s var(--ap-ease) .12s, height .32s var(--zd-ease); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lp-cfg.is-pre, .lp-cfg.is-pre * { opacity: 1 !important; transform: none !important; filter: none !important; }
+}
