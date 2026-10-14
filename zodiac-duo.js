@@ -24,7 +24,7 @@
 
   var SCRIPT_SRC = (document.currentScript && document.currentScript.src) || "";
   var ASSETS = CFG.assets || SCRIPT_SRC.replace(/[^/]*$/, "") + "assets";
-  var AV = "?v=m12"; // версия ассетов (медальоны v2) — сброс кэша слоёв и свотчей
+  var AV = "?v=m13"; // версия ассетов (медальоны v2) — сброс кэша слоёв и свотчей
   var M = window.ZD_MANIFEST;
   var CANVAS_W = 1792, CANVAS_H = 2400;
   // Видимая область сцены: телефон без пустых полей холста PSD (телефон занимает 346–1445 × 408–1966)
@@ -89,6 +89,7 @@
     disclaimer: L("Изображение носит иллюстративный характер. Финальный вид изделия согласуется с менеджером.",
                   "The image is for illustration only. The final appearance is agreed with your manager."),
     enamelDefault: L("Бургундия", "Burgundy"), enamelDefaultInfo: L("Оттенок из эскиза Caviar — рекомендация дома.", "The shade from the Caviar sketch — the house recommendation."), tune: L("Настроить оттенок", "Fine-tune colour"), tuneHide: L("Скрыть настройку", "Hide fine-tuning"),
+    custom: L("Свой оттенок", "Custom shade"), customInfo: L("Любой оттенок эмали: тон, насыщенность и яркость настраиваются вручную.", "Any enamel shade: hue, saturation and lightness set by hand."),
     hue: L("Оттенок", "Hue"), sat: L("Насыщенность", "Saturation"), light: L("Яркость", "Lightness"),
     random: L("Удивите меня", "Surprise me"),
     randomInfo: L("Случайная сборка из допустимых сочетаний. Нажмите ещё раз — будет новая.", "A random design from valid combinations. Tap again for another."),
@@ -1230,19 +1231,28 @@
     ENAMEL_PRESETS.filter(function (p) { return p.id !== "burgundy"; }).forEach(function (p) {
       row.appendChild(self.renderOpt({ id: p.id, label: t(p.name), color: p.hex, sw: sw("enamel_" + p.id), sel: cur === p.hex, pick: function () { var x = {}; x[field] = p.hex; self.set(x); } }));
     });
-    box.appendChild(row);
+    // «Свой оттенок» — свотч в общем ряду: открывает настройку, выбранный свой цвет подписан под ним
     var open = !!this.tune[field];
-    var toggle = el("button", { class: "zd-link zd-link--tune", type: "button", "aria-expanded": open ? "true" : "false" }, [
-      el("span", { class: "zd-tune-dot", style: "background:" + hex }), el("span", { text: open ? t(UI.tuneHide) : t(UI.tune) })
-    ]);
+    var isCustom = !!cur && !ENAMEL_PRESETS.some(function (p) { return p.hex.toUpperCase() === String(cur).toUpperCase(); });
     var sliders = el("div", { class: "zd-sliders" + (open ? " is-open" : "") });
-    toggle.addEventListener("click", function () {
-      self.tune[field] = !self.tune[field];
-      sliders.classList.toggle("is-open", self.tune[field]);
-      toggle.setAttribute("aria-expanded", self.tune[field] ? "true" : "false");
-      toggle.lastChild.textContent = self.tune[field] ? t(UI.tuneHide) : t(UI.tune);
-    });
-    box.appendChild(toggle);
+    var customBtn = this.renderOpt({ id: "custom", label: t(UI.custom), sub: isCustom ? cur.toUpperCase() : null, sw: sw("enamel_custom"), sel: isCustom,
+      info: UI.customInfo, infoTitle: t(UI.custom),
+      pick: function () {
+        self.tune[field] = !self.tune[field];
+        sliders.classList.toggle("is-open", self.tune[field]);
+        customBtn.classList.toggle("is-tune", self.tune[field]);
+        customBtn.setAttribute("aria-expanded", self.tune[field] ? "true" : "false");
+      } });
+    customBtn.classList.toggle("is-tune", open);
+    customBtn.setAttribute("aria-expanded", open ? "true" : "false");
+    row.appendChild(customBtn);
+    box.appendChild(row);
+    function setCustomSub(hx) {
+      var sub = customBtn.querySelector(".zd-sw__s");
+      if (!sub) { sub = el("span", { class: "zd-sw__s" }); customBtn.appendChild(sub); }
+      sub.textContent = hx.toUpperCase();
+      [].forEach.call(row.querySelectorAll(".zd-sw"), function (x) { x.classList.toggle("is-sel", x === customBtn); });
+    }
     var vals = hsl.slice(), readout = el("span", { class: "zd-hex", text: hex });
     function grad(i) {
       if (i === 0) return "linear-gradient(90deg," + [0, 60, 120, 180, 240, 300, 360].map(function (h) { return hslToHex(h, Math.max(40, vals[1]), 45); }).join(",") + ")";
@@ -1257,7 +1267,7 @@
         vals[i] = +inp.value;
         var hx = hslToHex(vals[0], vals[1], vals[2]);
         readout.textContent = hx;
-        toggle.firstChild.style.background = hx;
+        setCustomSub(hx);
         inputs.forEach(function (x, j) { x.style.background = grad(j); });
         var p = {}; p[field] = hx;
         // живое обновление без перерисовки панели и без лишних записей в историю

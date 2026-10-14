@@ -492,3 +492,5 @@
 @media (prefers-reduced-motion: reduce) {
   .zd *, .zd *::before, .zd *::after { animation: none !important; transition: none !important; }
 }
+/* «Свой оттенок»: настройка открыта, но свой цвет ещё не выбран — пунктирное кольцо */
+.zd-sw.is-tune:not(.is-sel) .zd-sw__ring { border-color: var(--zd-gold); border-style: dashed; }
