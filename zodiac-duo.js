@@ -1052,7 +1052,7 @@
     this.head.appendChild(el("h3", { class: "zd-work__title", text: t(UI.steps[step]) }));
 
     // контент
-    var body = el("div", { class: "zd-body2" + (animate && !REDUCED ? (dir < 0 ? " is-in-back" : " is-in") : "") });
+    var body = el("div", { class: "zd-body2" });
     this.tabsBar.innerHTML = "";
     this.tabsBar.hidden = true;
     if (step === "summary") body.appendChild(this.renderSummary());
@@ -1108,6 +1108,12 @@
 
     this.content.innerHTML = "";
     this.content.appendChild(body);
+    // смена раздела: заголовок, вкладки и блоки содержимого проявляются по очереди
+    if (animate && !REDUCED) {
+      var w = this.work, cls = dir < 0 ? "is-sw-back" : "is-sw";
+      w.classList.remove("is-sw", "is-sw-back"); void w.offsetWidth; w.classList.add(cls);
+      clearTimeout(this._swT); this._swT = setTimeout(function () { w.classList.remove(cls); }, 1500);
+    }
     this.content.scrollTop = keepScroll;
     this.checkMore();
     // в горизонтальных лентах выбранный вариант всегда в поле зрения

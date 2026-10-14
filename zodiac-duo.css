@@ -585,3 +585,16 @@
 /* навигатор шагов: без номеров — только название и выбор */
 .zd .zd-nav__n { display: none; }
 .zd .zd-nav__item button { grid-template-columns: 1fr; padding-left: 14px; }
+
+/* смена раздела в духе Apple: мягкий сдвиг + расфокус → резкость, блоки по очереди */
+@keyframes zd-sw { from { opacity: 0; transform: translate3d(var(--sx, 18px), 6px, 0); filter: blur(5px); } to { opacity: 1; transform: none; filter: none; } }
+.zd-work.is-sw-back { --sx: -18px; }
+.zd-work:is(.is-sw, .is-sw-back) :is(.zd-work__head, .zd-tabs2--top, .zd-body2 > *) {
+  animation: zd-sw .75s cubic-bezier(.32, .72, 0, 1) both; animation-delay: var(--sd, 0s); }
+.zd-work:is(.is-sw, .is-sw-back) .zd-work__head { --sd: 0s; }
+.zd-work:is(.is-sw, .is-sw-back) .zd-tabs2--top { --sd: .08s; }
+.zd-work:is(.is-sw, .is-sw-back) .zd-body2 > :nth-child(1) { --sd: .14s; }
+.zd-work:is(.is-sw, .is-sw-back) .zd-body2 > :nth-child(2) { --sd: .22s; }
+.zd-work:is(.is-sw, .is-sw-back) .zd-body2 > :nth-child(3) { --sd: .30s; }
+.zd-work:is(.is-sw, .is-sw-back) .zd-body2 > :nth-child(n+4) { --sd: .38s; }
+@media (prefers-reduced-motion: reduce) { .zd-work :is(.zd-work__head, .zd-tabs2--top, .zd-body2 > *) { animation: none !important; } }
