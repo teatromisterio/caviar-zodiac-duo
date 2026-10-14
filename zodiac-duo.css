@@ -494,3 +494,7 @@
 }
 /* «Свой оттенок»: настройка открыта, но свой цвет ещё не выбран — пунктирное кольцо */
 .zd-sw.is-tune:not(.is-sel) .zd-sw__ring { border-color: var(--zd-gold); border-style: dashed; }
+/* Навигатор: без горизонтального скролла — длинный код сборки (с HEX своей эмали) переносится по дефисам */
+.zd-nav { overflow-x: hidden; }
+.zd-nav__build, .zd-code { min-width: 0; }
+.zd-nav .zd-code__v { white-space: normal; overflow-wrap: anywhere; min-width: 0; }
