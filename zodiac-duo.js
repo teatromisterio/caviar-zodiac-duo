@@ -24,7 +24,7 @@
 
   var SCRIPT_SRC = (document.currentScript && document.currentScript.src) || "";
   var ASSETS = CFG.assets || SCRIPT_SRC.replace(/[^/]*$/, "") + "assets";
-  var AV = "?v=m11"; // версия ассетов (медальоны v2) — сброс кэша слоёв и свотчей
+  var AV = "?v=m12"; // версия ассетов (медальоны v2) — сброс кэша слоёв и свотчей
   var M = window.ZD_MANIFEST;
   var CANVAS_W = 1792, CANVAS_H = 2400;
   // Видимая область сцены: телефон без пустых полей холста PSD (телефон занимает 346–1445 × 408–1966)
@@ -816,7 +816,7 @@
         break;
       case "base":
         m.blocks.push({ id: "body", title: t(UI.g.body), opts: BASES.map(function (b) {
-          return { id: b.id, label: t(b.name), color: b.color, sel: s.base === b.id, info: b.info, pick: function () { self.set({ base: b.id }); } };
+          return { id: b.id, label: t(b.name), color: b.color, sw: sw("base_" + b.id), sel: s.base === b.id, info: b.info, pick: function () { self.set({ base: b.id }); } };
         }) });
         break;
     }
@@ -1152,7 +1152,7 @@
   P.matCard = function (o) {
     var img = el("span", { class: "zd-mat__img" });
     if (o.cardSw || o.sw) img.style.backgroundImage = "url('" + (o.cardSw || o.sw) + "')";
-    if (o.color) img.style.background = o.color;
+    if (o.color) { if (o.cardSw || o.sw) img.style.backgroundColor = o.color; else img.style.background = o.color; }
     return el("div", { class: "zd-mat" }, [img, el("div", { class: "zd-mat__txt" }, [
       el("div", { class: "zd-mat__t", text: o.cardTitle || o.infoTitle || o.label }),
       o.cardSub ? el("div", { class: "zd-mat__s", text: o.cardSub }) : null,
@@ -1165,7 +1165,7 @@
     var self = this;
     var circle = el("span", { class: "zd-sw__c" });
     if (o.sw) circle.style.backgroundImage = "url('" + o.sw + "')";
-    if (o.color) circle.style.background = o.color;
+    if (o.color) { if (o.sw) circle.style.backgroundColor = o.color; else circle.style.background = o.color; }
     if (o.iconSw) circle.innerHTML = icon(o.iconSw, "zd-sw__ico");
     var kids = [el("span", { class: "zd-sw__ring" }, [circle, el("span", { class: "zd-sw__ok", html: icon("check") })]), el("span", { class: "zd-sw__l", text: o.label })];
     if (o.sub) kids.push(el("span", { class: "zd-sw__s", text: o.sub }));
@@ -1224,10 +1224,11 @@
     var self = this, field = g.field, cur = this.state[field], hex = cur || g.base, hsl = hexToHsl(hex);
     var box = el("div", { class: "zd-color" });
     var row = el("div", { class: "zd-grid zd-grid--dots" });
-    row.appendChild(this.renderOpt({ id: "default", label: t(UI.enamelDefault), color: g.base, sel: !cur, info: UI.enamelDefaultInfo, infoTitle: t(UI.enamelDefault) + " · Caviar", pick: function () { var p = {}; p[field] = null; self.set(p); } }));
+    var basePreset = ENAMEL_PRESETS.filter(function (p) { return p.hex.toUpperCase() === String(g.base).toUpperCase(); })[0];
+    row.appendChild(this.renderOpt({ id: "default", label: t(UI.enamelDefault), color: g.base, sw: basePreset ? sw("enamel_" + basePreset.id) : null, sel: !cur, info: UI.enamelDefaultInfo, infoTitle: t(UI.enamelDefault) + " · Caviar", pick: function () { var p = {}; p[field] = null; self.set(p); } }));
     // «Бургундия» уже представлена оттенком из эскиза — в списке не дублируем
     ENAMEL_PRESETS.filter(function (p) { return p.id !== "burgundy"; }).forEach(function (p) {
-      row.appendChild(self.renderOpt({ id: p.id, label: t(p.name), color: p.hex, sel: cur === p.hex, pick: function () { var x = {}; x[field] = p.hex; self.set(x); } }));
+      row.appendChild(self.renderOpt({ id: p.id, label: t(p.name), color: p.hex, sw: sw("enamel_" + p.id), sel: cur === p.hex, pick: function () { var x = {}; x[field] = p.hex; self.set(x); } }));
     });
     box.appendChild(row);
     var open = !!this.tune[field];
