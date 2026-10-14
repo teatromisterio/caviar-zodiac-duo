@@ -24,7 +24,7 @@
 
   var SCRIPT_SRC = (document.currentScript && document.currentScript.src) || "";
   var ASSETS = CFG.assets || SCRIPT_SRC.replace(/[^/]*$/, "") + "assets";
-  var AV = "?v=m16"; // версия ассетов (медальоны v2) — сброс кэша слоёв и свотчей
+  var AV = "?v=m17"; // версия ассетов (медальоны v2) — сброс кэша слоёв и свотчей
   var M = window.ZD_MANIFEST;
   // Медальон в конструкторе чуть меньше слоя PSD (масштаб от центра); общий манифест не трогаем — лендинг видит исходный размер
   var MEDAL_SCALE = 0.9;
@@ -214,30 +214,30 @@
   // Сборки знаков: по одной на знак, палитра — от стихии, сочетания — по правилам цветового круга.
   var ELEM_TONE = { fire: L("Огонь", "Fire"), earth: L("Земля", "Earth"), air: L("Воздух", "Air"), water: L("Вода", "Water") };
   var PRESETS = [
-    { id: "aries", name: L("Пламя", "Flame"), el: "fire", harmony: L("Аналоговая гамма: красный, оранжевый, янтарь — цвет огня от углей до искры.", "Analogous palette: red, orange and amber — fire from embers to spark."),
-      s: { frame: "gold", medal: "gold", medalOn: 1, plate: "croc", plateColor: "red", ring: "gold", decor: "ruby", enamel: "#E8B04A", core: "red", panel: "clear", panelFrame: "gold", panelFill: "enamel", panelEnamel: "#C2410C", base: "starwhite" } },
+    { id: "aries", name: L("Пламя", "Flame"), el: "fire", harmony: L("Аналоговая тёплая гамма: красный и янтарь в жёлтом золоте, рубины — искры пламени.", "Analogous warm palette: red and amber in yellow gold, rubies as sparks."),
+      s: { frame: "gold", medal: "gold", medalOn: 1, plate: "croc", plateColor: "red", ring: "gold", decor: "ruby", enamel: "#E8B04A", core: "red", panel: "solid", panelFrame: "gold", panelFill: "enamel", panelEnamel: "#5B2A86", panelTex: 2, panelMetal: "gold", base: "starwhite" } },
     { id: "taurus", name: L("Сад Венеры", "Garden of Venus"), el: "earth", harmony: L("Комплементарная пара: розовое золото и изумруд — тёплое против прохладного.", "Complementary pair: rose gold against emerald — warm against cool."),
-      s: { frame: "rose", medal: "rose", medalOn: 1, plate: "calf", plateColor: "beige", ring: "rose", decor: "white", enamel: "#0D5E3C", core: "white", panel: "solid", panelTex: 1, panelMetal: "rose", base: "starwhite" } },
-    { id: "gemini", name: L("Двойной свет", "Twin light"), el: "air", harmony: L("Комплементарная пара жёлтый — синий; два металла и чёрно-белые камни — дуальность знака.", "Complementary yellow and blue; two metals and black-and-white stones for the sign's duality."),
-      s: { frame: "silver", medal: "gold", medalOn: 1, plate: "calf", plateColor: "white", ring: "silver", decor: "black", enamel: "#D9B84A", core: "bluesky", panel: "clear", panelFrame: "silver", panelFill: "enamel", panelEnamel: "#4F7FBF", base: "starwhite" } },
-    { id: "cancer", name: L("Лунный прилив", "Lunar tide"), el: "water", harmony: L("Аналоговая гамма: сапфир, бирюза, небесно-голубой — вода под лунным серебром.", "Analogous palette: sapphire, turquoise and sky blue — water under lunar silver."),
-      s: { frame: "silver", medal: "silver", medalOn: 1, plate: "calf", plateColor: "paleblue", ring: "silver", decor: "white", enamel: "#123E8C", core: "white", panel: "clear", panelFrame: "silver", panelFill: "enamel", panelEnamel: "#14808C", base: "starwhite" } },
-    { id: "leo", name: L("Солнце", "Sun"), el: "fire", harmony: L("Аналоговая гамма жёлтый — оранжевый — красный на чёрном: золото как солнечный диск.", "Analogous yellow, orange and red on black: gold as the solar disc."),
-      s: { frame: "gold", medal: "gold", medalOn: 1, plate: "croc", plateColor: "black", ring: "gold", decor: "white", enamel: "#E07B1A", core: "red", panel: "solid", panelTex: 2, panelMetal: "gold", base: "nightsky" } },
-    { id: "virgo", name: L("Жатва", "Harvest"), el: "earth", harmony: L("Аналоговая гамма: шалфей, беж и золото — спокойные тона созревшего поля.", "Analogous palette: sage, beige and gold — the calm tones of a ripe field."),
-      s: { frame: "gold", medal: "gold", medalOn: 1, plate: "calf", plateColor: "beige", ring: "gold", decor: "white", enamel: "#7A8B5A", core: "white", panel: "clear", panelFrame: "gold", panelFill: "meteorite", base: "starwhite" } },
+      s: { frame: "rose", medal: "rose", medalOn: 1, plate: "calf", plateColor: "beige", ring: "rose", decor: "white", enamel: "#0D5E3C", core: "white", panel: "solid", panelFrame: "rose", panelFill: "meteorite", panelEnamel: null, panelTex: 1, panelMetal: "rose", base: "starwhite" } },
+    { id: "gemini", name: L("Двойной свет", "Twin light"), el: "air", harmony: L("Светлая гамма: серебро, белый и дымчато-голубой; чёрные бриллианты — дуальность знака.", "Light palette: silver, white and misty blue; black diamonds for the sign's duality."),
+      s: { frame: "silver", medal: "silver", medalOn: 1, plate: "calf", plateColor: "white", ring: "silver", decor: "black", enamel: "#D2DEEF", core: "white", panel: "clear", panelFrame: "silver", panelFill: "enamel", panelEnamel: "#D6E1F0", panelTex: 1, panelMetal: "silver", base: "starwhite" } },
+    { id: "cancer", name: L("Лунный прилив", "Lunar tide"), el: "water", harmony: L("Контраст глубокого синего и бордо под лунным серебром, перламутр в центре.", "Deep blue against bordeaux under lunar silver, with pearl at the centre."),
+      s: { frame: "silver", medal: "silver", medalOn: 1, plate: "croc", plateColor: "burgundy", ring: "silver", decor: "white", enamel: "#1D3154", core: "white", panel: "clear", panelFrame: "silver", panelFill: "enamel", panelEnamel: "#DBDBDB", panelTex: 1, panelMetal: "silver", base: "starwhite" } },
+    { id: "leo", name: L("Солнце", "Sun"), el: "fire", harmony: L("Тёплая гамма: золото, бургундия и красный на чёрном — солнечный диск.", "Warm palette: gold, burgundy and red on black — the solar disc."),
+      s: { frame: "gold", medal: "gold", medalOn: 1, plate: "croc", plateColor: "black", ring: "gold", decor: "white", enamel: null, core: "red", panel: "solid", panelFrame: "gold", panelFill: "meteorite", panelEnamel: null, panelTex: 2, panelMetal: "gold", base: "nightsky" } },
+    { id: "virgo", name: L("Жатва", "Harvest"), el: "earth", harmony: L("Аналоговая земляная гамма: шалфей, слоновая кость, беж и золото.", "Analogous earth palette: sage, ivory, beige and gold."),
+      s: { frame: "gold", medal: "gold", medalOn: 1, plate: "calf", plateColor: "beige", ring: "gold", decor: "white", enamel: "#7A8B5A", core: "white", panel: "clear", panelFrame: "gold", panelFill: "enamel", panelEnamel: "#EAE2CF", panelTex: 1, panelMetal: "gold", base: "starwhite" } },
     { id: "libra", name: L("Равновесие", "Balance"), el: "air", harmony: L("Пастельная комплементарная пара: пудрово-розовый и небесно-голубой в равных долях.", "Pastel complementary pair: powder pink and sky blue in equal measure."),
-      s: { frame: "rose", medal: "rose", medalOn: 1, plate: "calf", plateColor: "paleblue", ring: "rose", decor: "white", enamel: "#C98BA0", core: "white", panel: "clear", panelFrame: "rose", panelFill: "enamel", panelEnamel: "#9FC3E0", base: "starwhite" } },
+      s: { frame: "rose", medal: "rose", medalOn: 1, plate: "calf", plateColor: "paleblue", ring: "rose", decor: "white", enamel: "#C98BA0", core: "white", panel: "clear", panelFrame: "rose", panelFill: "enamel", panelEnamel: "#9FC3E0", panelTex: 1, panelMetal: "rose", base: "starwhite" } },
     { id: "scorpio", name: L("Глубина", "Depth"), el: "water", harmony: L("Комплементарная пара: бордо и глубокая морская бирюза в чёрном титане.", "Complementary pair: bordeaux and deep sea teal in black titanium."),
-      s: { frame: "black", medal: "black", medalOn: 1, plate: "croc", plateColor: "burgundy", ring: "black", decor: "metal", enamel: "#0F4C4A", core: "blacksky", panel: "clear", panelFrame: "black", panelFill: "meteorite", base: "nightsky" } },
-    { id: "sagittarius", name: L("Стрела", "Arrow"), el: "fire", harmony: L("Аналоговая гамма: бордо, терракота, розовое золото — огонь в движении.", "Analogous palette: bordeaux, terracotta and rose gold — fire in motion."),
-      s: { frame: "rose", medal: "rose", medalOn: 1, plate: "croc", plateColor: "burgundy", ring: "rose", decor: "white", enamel: "#C8461E", core: "white", panel: "clear", panelFrame: "rose", panelFill: "meteorite", base: "starwhite" } },
-    { id: "capricorn", name: L("Вершина", "Summit"), el: "earth", harmony: L("Земляная гамма: умбра и беж в чёрном титане, золото — как свет на вершине.", "Earth palette: umber and beige in black titanium, with gold as light on the summit."),
-      s: { frame: "black", medal: "gold", medalOn: 1, plate: "calf", plateColor: "beige", ring: "gold", decor: "black", enamel: "#6B4A2E", core: "blacksky", panel: "solid", panelTex: 2, panelMetal: "black", base: "nightsky" } },
+      s: { frame: "black", medal: "black", medalOn: 1, plate: "croc", plateColor: "burgundy", ring: "black", decor: "metal", enamel: "#0F4C4A", core: "blacksky", panel: "clear", panelFrame: "black", panelFill: "meteorite", panelEnamel: null, panelTex: 1, panelMetal: "black", base: "nightsky" } },
+    { id: "sagittarius", name: L("Стрела", "Arrow"), el: "fire", harmony: L("Бордо, оникс и розовое золото — сдержанный огонь в движении.", "Bordeaux, onyx and rose gold — restrained fire in motion."),
+      s: { frame: "rose", medal: "rose", medalOn: 1, plate: "croc", plateColor: "burgundy", ring: "rose", decor: "white", enamel: "#141414", core: "white", panel: "clear", panelFrame: "rose", panelFill: "meteorite", panelEnamel: null, panelTex: 1, panelMetal: "rose", base: "starwhite" } },
+    { id: "capricorn", name: L("Вершина", "Summit"), el: "earth", harmony: L("Земляная гамма: умбра и беж в чёрном титане — строгость вершины.", "Earth palette: umber and beige in black titanium — the rigour of the summit."),
+      s: { frame: "black", medal: "black", medalOn: 1, plate: "calf", plateColor: "beige", ring: "black", decor: "metal", enamel: "#6B4A2E", core: "blacksky", panel: "solid", panelFrame: "black", panelFill: "meteorite", panelEnamel: null, panelTex: 2, panelMetal: "black", base: "nightsky" } },
     { id: "aquarius", name: L("Ток", "Current"), el: "air", harmony: L("Расщеплённая комплементарность: бирюза и тёмно-синий, рубины — точечный тёплый акцент.", "Split complementary: turquoise and navy, with rubies as a warm accent."),
-      s: { frame: "silver", medal: "silver", medalOn: 1, plate: "calf", plateColor: "navy", ring: "silver", decor: "ruby", enamel: "#14808C", core: "bluesky", panel: "solid", panelTex: 1, panelMetal: "silver", base: "nightsky" } },
-    { id: "pisces", name: L("Океан", "Ocean"), el: "water", harmony: L("Аналоговая гамма: аметист, синий, морская волна — переливы глубины.", "Analogous palette: amethyst, blue and sea green — the shimmer of the deep."),
-      s: { frame: "silver", medal: "silver", medalOn: 1, plate: "croc", plateColor: "navy", ring: "silver", decor: "white", enamel: "#5B2A86", core: "bluesky", panel: "clear", panelFrame: "silver", panelFill: "enamel", panelEnamel: "#14808C", base: "nightsky" } }
+      s: { frame: "silver", medal: "silver", medalOn: 1, plate: "calf", plateColor: "navy", ring: "silver", decor: "ruby", enamel: "#14808C", core: "bluesky", panel: "solid", panelFrame: "silver", panelFill: "meteorite", panelEnamel: null, panelTex: 1, panelMetal: "silver", base: "nightsky" } },
+    { id: "pisces", name: L("Океан", "Ocean"), el: "water", harmony: L("Аналоговая гамма: глубокий фиолетовый и тёмно-синий — толща воды.", "Analogous palette: deep violet and navy — the depth of the water."),
+      s: { frame: "silver", medal: "silver", medalOn: 1, plate: "croc", plateColor: "navy", ring: "silver", decor: "white", enamel: "#3D1C59", core: "bluesky", panel: "solid", panelFrame: "silver", panelFill: "enamel", panelEnamel: "#1A263C", panelTex: 2, panelMetal: "silver", base: "nightsky" } }
   ];
 
   var STEP_IDS = ["sign", "base", "frame", "plate", "ring", "medal", "panel", "summary"];
