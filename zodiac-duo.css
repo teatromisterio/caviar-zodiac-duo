@@ -582,3 +582,6 @@
   .zd .zd-mstep__b.is-active .zd-mstep__n { background: transparent; color: var(--zd-gold-l); border-color: var(--zd-gold); }
   .zd .zd-work__head { margin-bottom: 8px; padding-bottom: 10px; }
 }
+/* навигатор шагов: без номеров — только название и выбор */
+.zd .zd-nav__n { display: none; }
+.zd .zd-nav__item button { grid-template-columns: 1fr; padding-left: 14px; }

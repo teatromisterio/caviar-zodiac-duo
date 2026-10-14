@@ -970,7 +970,7 @@
     this.navBuild.appendChild(el("div", { class: "zd-nav__bt", text: t(UI.build) }));
     this.navBuild.appendChild(this.codeChip());
     this.navBuild.appendChild(el("div", { class: "zd-nav__acts" }, [
-      this.actBtn("share", function () { self.tool_share(); }), this.actBtn("download", function () { self.tool_download(); })
+      this.actBtn("download", function () { self.tool_download(); })
     ]));
 
     // мобильный степпер: короткие ярлыки, активный по центру
@@ -1376,7 +1376,7 @@
     });
     box.appendChild(list);
     box.appendChild(el("div", { class: "zd-sum__acts" }, [
-      this.actBtn("share", function () { self.tool_share(); }), this.actBtn("download", function () { self.tool_download(); })
+      this.actBtn("download", function () { self.tool_download(); })
     ]));
     box.appendChild(el("p", { class: "zd-disc", text: t(UI.disclaimer) }));
     // инструмент менеджера — свёрнут в самом низу итога
