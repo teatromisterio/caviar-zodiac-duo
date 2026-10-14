@@ -24,7 +24,7 @@
 
   var SCRIPT_SRC = (document.currentScript && document.currentScript.src) || "";
   var ASSETS = CFG.assets || SCRIPT_SRC.replace(/[^/]*$/, "") + "assets";
-  var AV = "?v=m18"; // версия ассетов (медальоны v2) — сброс кэша слоёв и свотчей
+  var AV = "?v=m19"; // версия ассетов (медальоны v2) — сброс кэша слоёв и свотчей
   var M = window.ZD_MANIFEST;
   // Медальон в конструкторе чуть меньше слоя PSD (масштаб от центра); общий манифест не трогаем — лендинг видит исходный размер
   var MEDAL_SCALE = 0.9;
@@ -820,7 +820,7 @@
         break;
       case "panel":
         m.parent = { id: "panel", title: t(UI.g.panel), big: true, opts: [
-          { id: "clear", label: t(UI.clear), sub: { ru: "Метеорит или эмаль", en: "Meteorite or enamel" }[LANG], sw: sw("panel_fill_meteorite"), sel: s.panel === "clear",
+          { id: "clear", label: t(UI.clear), sub: { ru: "Метеорит или эмаль", en: "Meteorite or enamel" }[LANG], sw: sw("panel_clear"), sel: s.panel === "clear",
             info: L("Ажурная рамка с вставками: метеорит или ювелирная эмаль.", "An open-work frame with inlays: meteorite or jewellery enamel."), pick: function () { self.set({ panel: "clear" }); } },
           { id: "solid", label: t(UI.solid), sub: { ru: "Металл с гильошем", en: "Metal with guilloché" }[LANG], sw: sw("panel_mono1_" + s.panelMetal), sel: s.panel === "solid",
             info: L("Цельный металл с гильошем.", "Solid metal with guilloché."), pick: function () { self.set({ panel: "solid" }); } },
