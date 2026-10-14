@@ -92,9 +92,9 @@ body.lp { margin: 0; background: var(--black); color: var(--ink); font-family: "
 .lp-card--hand { grid-column: span 5; grid-row: span 2; padding: 0; overflow: hidden; }
 .lp-card--hand .lp-card__img { width: 100%; height: 100%; object-fit: cover; border-radius: 0; }
 .lp-card__img { width: 100%; border-radius: 12px; }
-.lp-swatches { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-.lp-swatches--3 { grid-template-columns: repeat(3, 1fr); }
-.lp-swatches img { aspect-ratio: 1; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 1px var(--line), 0 10px 22px rgba(0, 0, 0, .45); }
+.lp-swatches { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.lp-swatches--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.lp-swatches img { width: 100%; height: auto; aspect-ratio: 1; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 1px var(--line), 0 10px 22px rgba(0, 0, 0, .45); }
 
 /* 6. анатомия */
 .lp-anat { position: relative; height: 220vh; background: radial-gradient(60% 50% at 50% 50%, var(--night), var(--black) 72%); }
@@ -209,3 +209,6 @@ body.lp { margin: 0; background: var(--black); color: var(--ink); font-family: "
   .js .reveal { opacity: 1; transform: none; transition: none; }
   .lp-hero__scroll span { animation: none; }
 }
+
+/* картинки с width/height: место резервируется заранее, а размер по-прежнему задаёт CSS — страница не прыгает при догрузке */
+:where(img[width][height]) { height: auto; }
