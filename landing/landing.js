@@ -102,7 +102,7 @@
       var g = el("div", "lp-anat__g");
       g.style.zIndex = String(GROUPS.length - i);
       keys.forEach(function (k) {
-        var L = M.layers[k], url = "assets/layers/" + k + "@half.webp?v=m10", n = LITE ? 0 : (THICK[k] || 0);
+        var L = M.layers[k], url = "assets/layers/" + k + "@half.webp?v=m15", n = LITE ? 0 : (THICK[k] || 0);
         for (var d = n; d >= 1; d--) {
           var sl = el("img", "lp-anat__slice"); sl.src = url; sl.alt = ""; sl.decoding = "async"; place(sl, L);
           sl.style.transform = "translateZ(calc(var(--u) * " + (-d) + "))";
