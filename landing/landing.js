@@ -146,4 +146,48 @@
     update();
   }
 
+
+  /* ---------- конструктор на весь экран: монтируется при первом открытии, страница под ним не прокручивается */
+  (function () {
+    var box = document.getElementById("builder");
+    if (!box) return;
+    var host = box.querySelector("[data-zodiac-duo]"), html = document.documentElement, scrollY = 0, opened = false, lastFocus = null;
+    function lock() {
+      scrollY = window.scrollY;
+      html.classList.add("is-builder");
+      // iOS: фиксируем body, иначе страница под оверлеем всё равно скроллится
+      document.body.style.position = "fixed"; document.body.style.top = -scrollY + "px"; document.body.style.width = "100%";
+    }
+    function unlock() {
+      html.classList.remove("is-builder");
+      document.body.style.position = ""; document.body.style.top = ""; document.body.style.width = "";
+      window.scrollTo({ top: scrollY, behavior: "instant" });
+    }
+    if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+    function open(push) {
+      if (opened) return;
+      opened = true; lastFocus = document.activeElement;
+      box.hidden = false; lock();
+      if (window.ZodiacDuo) window.ZodiacDuo.mount(host);
+      if (push !== false) history.pushState({ zdBuilder: 1 }, "", location.pathname + location.search + "#builder");
+      box.querySelector("[data-close-builder]").focus({ preventScroll: true });
+    }
+    function close(fromHistory) {
+      if (!opened) return;
+      // открыт через pushState — закрываем шагом назад, сам оверлей уберёт popstate
+      if (!fromHistory && history.state && history.state.zdBuilder) { history.back(); return; }
+      opened = false; box.hidden = true; unlock();
+      requestAnimationFrame(function () { window.scrollTo({ top: scrollY, behavior: "instant" }); });
+      if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
+    }
+    document.addEventListener("click", function (e) {
+      var o = e.target.closest("[data-open-builder]");
+      if (o) { e.preventDefault(); open(); return; }
+      if (e.target.closest("[data-close-builder]")) { e.preventDefault(); close(); }
+    });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape" && opened && !document.querySelector(".zd-modal:not([hidden])")) close(); });
+    window.addEventListener("popstate", function () { if (opened && !location.hash.match(/builder|zd=/)) close(true); else if (!opened && location.hash === "#builder") open(false); });
+    // ссылка на сборку (?code=… или #zd=…) или прямой #builder — открываем сразу
+    if (/[?&]code=/.test(location.search) || /zd=/.test(location.hash) || location.hash === "#builder") open(false);
+  })();
 })();

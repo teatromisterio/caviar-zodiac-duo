@@ -1860,7 +1860,9 @@
   /* ================================================================== boot */
   function boot() {
     if (!M) { console.error("[Zodiac Duo] Не найден assets/manifest.js"); return; }
-    document.querySelectorAll("[data-zodiac-duo]").forEach(function (n) { if (!n.__zd) n.__zd = new Widget(n); });
+    // data-zd-defer — виджет создаётся позже, по вызову ZodiacDuo.mount(node) (например, при открытии на весь экран)
+    document.querySelectorAll("[data-zodiac-duo]:not([data-zd-defer])").forEach(function (n) { if (!n.__zd) n.__zd = new Widget(n); });
   }
+  window.ZodiacDuo = { mount: function (n) { if (M && n && !n.__zd) n.__zd = new Widget(n); return n && n.__zd; } };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot); else boot();
 })();

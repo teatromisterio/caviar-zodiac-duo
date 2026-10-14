@@ -20,7 +20,7 @@
   <link rel="preload" as="image" href="landing/img/hero-1280.webp" fetchpriority="high">
   <link rel="stylesheet" href="tokens.css?v=1">
   <link rel="stylesheet" href="zodiac-duo.css?v=20261015nx">
-  <link rel="stylesheet" href="landing/landing.css?v=9">
+  <link rel="stylesheet" href="landing/landing.css?v=10">
 </head>
 <body class="lp">
   <!-- Меню и подвал сайта подключаются шаблоном Caviar (по стандарту caviar-pages) -->
@@ -36,7 +36,7 @@
       <h1 class="lp-hero__t">Zodiac Duo</h1>
       <p class="lp-hero__l">Ваш знак. Ваши материалы. Единственный экземпляр.</p>
       <div class="lp-hero__cta">
-        <a class="lp-btn lp-btn--gold" href="#build">Собрать свой</a>
+        <a class="lp-btn lp-btn--gold" href="#build" data-open-builder>Собрать свой</a>
         <a class="lp-btn lp-btn--ghost" href="#anatomy">Из чего он создан</a>
       </div>
     </div>
@@ -167,7 +167,18 @@
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>Как собрать · видео 4:40
       </button>
     </div>
-    <div data-zodiac-duo></div>
+    <div class="lp-launch reveal">
+      <img class="lp-launch__img" src="landing/img/build-preview.webp" alt="Zodiac Duo: Стрелец, розовое золото, кожа крокодила, метеорит" width="580" height="808" loading="lazy">
+      <button class="lp-btn lp-btn--gold" type="button" data-open-builder>Открыть конструктор</button>
+      <p class="lp-launch__note">Откроется на весь экран</p>
+    </div>
+    <!-- конструктор: загружается при первом открытии, на весь экран без прокрутки страницы -->
+    <div class="lp-cfg" id="builder" role="dialog" aria-modal="true" aria-label="Конструктор Zodiac Duo" hidden>
+      <button class="lp-cfg__close" type="button" aria-label="Закрыть конструктор" data-close-builder>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+      <div data-zodiac-duo data-zd-defer></div>
+    </div>
   </section>
 
   <!-- 8. Мастерство -->
@@ -212,7 +223,7 @@
     <div class="lp-wrap lp-final__in reveal">
       <h2 class="lp-final__t">Мир Caviar безграничен</h2>
       <p class="lp-lead">Ваш знак уже выбрал вас. Остальное — за вами.</p>
-      <a class="lp-btn lp-btn--gold" href="#build">Собрать свой Zodiac Duo</a>
+      <a class="lp-btn lp-btn--gold" href="#build" data-open-builder>Собрать свой Zodiac Duo</a>
       <p class="lp-final__s">В бутиках Caviar и на caviar-phone.ru</p>
     </div>
   </section>
@@ -238,8 +249,8 @@
     };
   </script>
   <script src="assets/manifest.js?v=20261011r"></script>
-  <script src="zodiac-duo.js?v=20261015en"></script>
-  <script src="landing/landing.js?v=15"></script>
+  <script src="zodiac-duo.js?v=20261015fs"></script>
+  <script src="landing/landing.js?v=18"></script>
   <script type="importmap">
     { "imports": {
       "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",

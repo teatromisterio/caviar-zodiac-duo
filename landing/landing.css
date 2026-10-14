@@ -212,3 +212,22 @@ body.lp { margin: 0; background: var(--black); color: var(--ink); font-family: "
 
 /* картинки с width/height: место резервируется заранее, а размер по-прежнему задаёт CSS — страница не прыгает при догрузке */
 :where(img[width][height]) { height: auto; }
+
+/* ---- запуск конструктора: превью + кнопка, сам конструктор — на весь экран */
+.lp-launch { display: flex; flex-direction: column; align-items: center; gap: 22px; padding: 0 var(--p24) 120px; }
+.lp-launch__img { width: min(300px, 62vw); height: auto; filter: drop-shadow(0 40px 60px rgba(0, 0, 0, .6)); }
+.lp-launch__note { margin: -8px 0 0; font-size: 13px; color: var(--mute); }
+.lp-cfg { position: fixed; inset: 0; z-index: 1000; background: var(--black); height: 100vh; height: 100dvh; overscroll-behavior: none; }
+.lp-cfg[hidden] { display: none; }
+.lp-cfg > [data-zodiac-duo], .lp-cfg .zd { height: 100%; max-height: none; min-height: 0; }
+.lp-cfg__close { position: absolute; z-index: 20; top: 14px; right: 14px; width: 40px; height: 40px; display: grid; place-items: center; border-radius: 50%;
+  color: var(--ink); background: rgba(13, 17, 23, .72); border: 1px solid rgba(255, 255, 255, .14); cursor: pointer; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+.lp-cfg__close:hover { border-color: var(--gold); color: var(--gold-l); }
+.lp-cfg__close svg { width: 20px; height: 20px; }
+.lp-cfg .zd-nav { padding-top: 64px; }
+html.is-builder, html.is-builder body { overflow: hidden; overscroll-behavior: none; }
+@media (max-width: 860px) {
+  .lp-cfg__close { top: 12px; right: 12px; width: 36px; height: 36px; }
+  .lp-cfg .zd-tools { right: 56px; }
+  .lp-launch { padding-bottom: 84px; }
+}
