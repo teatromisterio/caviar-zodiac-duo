@@ -24,7 +24,7 @@
 
   var SCRIPT_SRC = (document.currentScript && document.currentScript.src) || "";
   var ASSETS = CFG.assets || SCRIPT_SRC.replace(/[^/]*$/, "") + "assets";
-  var AV = "?v=m24"; // версия ассетов (медальоны v2) — сброс кэша слоёв и свотчей
+  var AV = "?v=m25"; // версия ассетов (медальоны v2) — сброс кэша слоёв и свотчей
   var M = window.ZD_MANIFEST;
   // Медальон в конструкторе чуть меньше слоя PSD (масштаб от центра); общий манифест не трогаем — лендинг видит исходный размер
   var MEDAL_SCALE = 0.9;
@@ -151,15 +151,21 @@
   var LEATHERS = [
     { id: "croc", name: L("Кожа крокодила", "Crocodile leather"), short: L("Крокодил", "Crocodile"),
       info: L("Рисунок чешуи неповторим: двух одинаковых панелей не существует.", "The scale pattern is unrepeatable: no two panels are alike."),
-      colors: [["burgundy", "Burgundy"], ["red", "Red"], ["navy", "Navy"], ["black", "Black"]] },
+      colors: [["burgundy", "Burgundy"], ["red", "Red"], ["navy", "Navy"], ["black", "Black"], ["white", "Snow White"]] },
+    { id: "python", name: L("Кожа питона", "Python leather"), short: L("Питон", "Python"),
+      info: L("Крупная чешуя питона с живым рельефом — каждый срез со своим рисунком.", "Large python scales in living relief — every cut has its own pattern."),
+      colors: [["natural", "Natural"], ["blue", "Sky Blue"], ["red", "Red"], ["violet", "Violet"], ["black", "Black"]] },
     { id: "calf", name: L("Кожа телёнка", "Calf leather"), short: L("Телёнок", "Calf"),
       info: L("Мягкая зернистая кожа телёнка — тактильная и благородная.", "Soft grained calf leather — tactile and refined."),
-      colors: [["navy", "Navy"], ["burgundy", "Burgundy"], ["beige", "Beige"], ["white", "Snow White"], ["paleblue", "Sky Blue"]] }
+      colors: [["navy", "Navy"], ["burgundy", "Burgundy"], ["beige", "Beige"], ["white", "Snow White"], ["paleblue", "Sky Blue"], ["pink", "Rose Pink"]] },
+    { id: "carbon", name: L("Кованый карбон", "Forged carbon"), short: L("Карбон", "Carbon"),
+      info: L("Кованый карбон: мраморный рисунок волокон под глубоким глянцем — лёгкий и прочный.", "Forged carbon: a marbled fibre pattern under deep gloss — light and strong."),
+      colors: [["black", "Black"]] }
   ];
   // Кожи, снятые с коллекции 14.10.2026 (питон и прежние оттенки), → ближайшая из текущих:
   // так открываются старые сохранения, ссылки #zd= и коды сборок.
-  var LEGACY_PLATE = { "croc:white": "calf:white", "python:violet": "croc:navy", "python:paleblue": "calf:paleblue",
-    "calf:cherry": "calf:burgundy", "calf:rosepink": "croc:red", "calf:beigecream": "calf:beige", "calf:snowwhite": "calf:white", "calf:black": "croc:black" };
+  var LEGACY_PLATE = { "python:paleblue": "python:blue",
+    "calf:cherry": "calf:burgundy", "calf:rosepink": "calf:pink", "calf:beigecream": "calf:beige", "calf:snowwhite": "calf:white", "calf:black": "croc:black" };
   function fixPlate(s) {
     if (!s || s.plate === "metal") return s;
     var l = null;
@@ -775,7 +781,7 @@
         m.parent = { id: "base", title: t(UI.g.base), opts: [{ id: "metal", label: t(UI.g.metal), sub: { ru: "Лучевой гильош", en: "Radial guilloché" }[LANG],
           sw: sw("plate_metal_" + (s.plate === "metal" ? s.plateColor : "silver")), info: PLATE_METAL_INFO }]
           .concat(LEATHERS.map(function (l) {
-            return { id: l.id, label: t(l.short), sub: { ru: l.colors.length + (l.colors.length > 4 ? " цветов" : " цвета"), en: l.colors.length + " colours" }[LANG],
+            return { id: l.id, label: t(l.short), sub: l.colors.length === 1 ? { ru: "Глянец", en: "Gloss" }[LANG] : { ru: l.colors.length + (l.colors.length > 4 ? " цветов" : " цвета"), en: l.colors.length + " colours" }[LANG],
               sw: sw("plate_" + l.id + "_" + (s.plate === l.id ? s.plateColor : l.colors[0][0])), info: l.info };
           })).map(function (o) {
             return Object.assign(o, { sel: s.plate === o.id, pick: function () {
@@ -1745,7 +1751,7 @@
   };
   P.tool_random = function () {
     function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
-    var m = METALS.map(function (x) { return x.id; }), plate = pick(["metal", "croc", "calf"]), ring = pick(m);
+    var m = METALS.map(function (x) { return x.id; }), plate = pick(["metal", "croc", "python", "calf", "carbon"]), ring = pick(m);
     this.set({
       frame: pick(m), medal: pick(m), medalOn: Math.random() < 0.8 ? 1 : 0,
       plate: plate, plateColor: plate === "metal" ? pick(m) : pick(find(LEATHERS, plate).colors)[0],
@@ -1803,10 +1809,12 @@
   var PLATES = ["metal:silver", "metal:gold", "metal:rose", "metal:black",
     "croc:burgundy", "calf:white", "croc:black", "croc:navy", "calf:paleblue", "calf:burgundy", "calf:navy", "croc:red", "calf:beige",
     "calf:white", "croc:black"];
+  // материалы, добавленные 15.10.2026: старшее поле кода; значение 0 = «как в PLATES», поэтому прежние коды декодируются без изменений
+  var PLATES2 = [null, "croc:white", "python:natural", "python:blue", "python:red", "python:violet", "python:black", "calf:pink", "carbon:black"];
   var MIDS = METALS.map(function (m) { return m.id; });
   var EN = [null].concat(ENAMEL_PRESETS.map(function (p) { return p.hex; })).concat(["custom"]);
   var FIELDS = [
-    ["frame", MIDS], ["medal", MIDS], ["medalOn", [0, 1]], ["_plate", PLATES], ["ring", MIDS], ["decor", ["metal", "white", "black", "ruby"]],
+    ["_plate2", PLATES2], ["frame", MIDS], ["medal", MIDS], ["medalOn", [0, 1]], ["_plate", PLATES], ["ring", MIDS], ["decor", ["metal", "white", "black", "ruby"]],
     ["enamel", EN], ["core", CORES.map(function (c) { return c.id; })], ["panel", ["clear", "solid", "none"]], ["panelFrame", MIDS],
     ["panelFill", ["meteorite", "enamel"]], ["panelEnamel", EN], ["panelTex", [1, 2]], ["panelMetal", MIDS], ["base", BASES.map(function (b) { return b.id; })]
   ];
@@ -1815,7 +1823,8 @@
     var n = 0, tail = [];
     FIELDS.forEach(function (f) {
       var k = f[0], list = f[1], i;
-      if (k === "_plate") i = PLATES.indexOf(s.plate + ":" + s.plateColor);
+      if (k === "_plate2") i = Math.max(0, PLATES2.indexOf(s.plate + ":" + s.plateColor));
+      else if (k === "_plate") i = PLATES2.indexOf(s.plate + ":" + s.plateColor) > 0 ? 0 : PLATES.indexOf(s.plate + ":" + s.plateColor);
       else if (k === "enamel" || k === "panelEnamel") { i = enIdx(s[k]); if (EN[i] === "custom") tail.push(s[k].slice(1).toUpperCase()); }
       else i = list.indexOf(s[k]);
       n = n * list.length + Math.max(0, i);
@@ -1843,7 +1852,8 @@
     if (n !== 0) return null;
     FIELDS.forEach(function (f, i) {
       var v = f[1][vals[i]];
-      if (f[0] === "_plate") { var pp = v.split(":"); st.plate = pp[0]; st.plateColor = pp[1]; }
+      if (f[0] === "_plate2") { if (v) { var p2 = v.split(":"); st._p2 = p2; } }
+      else if (f[0] === "_plate") { var pp = (st._p2 || v.split(":")); st.plate = pp[0]; st.plateColor = pp[1]; delete st._p2; }
       else if (v === "custom") st[f[0]] = tail.shift() || null;
       else st[f[0]] = v;
     });
