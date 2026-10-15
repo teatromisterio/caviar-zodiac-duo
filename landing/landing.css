@@ -294,3 +294,8 @@ html.is-builder, html.is-builder body { overflow: hidden; overscroll-behavior: n
 .lp-cfg.is-pre .zd-zoom { filter: none; }
 .lp-cfg.is-pre .zd-phone { filter: blur(12px); }
 .lp-cfg.is-anim .zd-phone { transition: filter 1.6s cubic-bezier(.25, .1, .25, 1) .15s; }
+
+/* Временный режим: на странице только конструктор (класс lp--builder-only на <body>; убрать класс — вернётся весь лендинг) */
+.lp--builder-only > :is(header, section):not(#build) { display: none !important; }
+.lp--builder-only #build { min-height: 100vh; min-height: 100svh; padding: 64px 0 0; display: flex; flex-direction: column; justify-content: center; }
+.lp--builder-only #build .lp-launch { padding-bottom: 64px; }
